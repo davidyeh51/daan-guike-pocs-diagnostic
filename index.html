@@ -3,15 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>大安區龜殼段 POCS 光伏電廠：發電資料診斷報告暨 AI Agent 資產賦能決策平台｜進金生能源 6692</title>
-<meta name="description" content="大安區龜殼段 POCS 812.3kWp 光伏電廠發電資料診斷報告：90 天逆變器層級深度分析、INV-013 致命容量缺損與火災隱患、IEC 62446-1 現場處置 SOP、AI Agent 7x24 主動守護與投資人 IRR 價值增益。">
+<title>台中大安龜殼段 1.5MW 光伏電廠：案場定位、發電診斷、雜草治理暨 AI Agent 投資人賦能決策平台｜進金生能源 6692</title>
+<meta name="description" content="大安龜殼段 253-1 地號 1,505.155kWp 光伏電廠決策報告：精確地理區位定位、竣工串接圖 C-002 銘牌校正、友達 SCADA 實時告警穿透、鳳山圳工法鋪設高耐候抑草蓆財務效益評估，以 AI Agent 守護投資人資產現金流。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230C3A63%27 rx=%2712%27/%3E%3Cpath d=%27M12 48 L28 20 L38 34 L52 14%27 stroke=%27%231BB1BF%27 stroke-width=%275%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%2752%27 cy=%2714%27 r=%275%27 fill=%27%23E09A2B%27/%3E%3C/svg%3E">
 
-<!-- Google Fonts & ECharts -->
+<!-- Google Fonts, ECharts & Leaflet -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <style>
 :root {
@@ -51,7 +53,7 @@ body {
 
 /* Top Navigation Bar */
 .topbar {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 54px;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 54px;
   display: flex; align-items: center; gap: 8px; padding: 0 20px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
@@ -78,7 +80,7 @@ body {
 .topnav::-webkit-scrollbar { display: none; }
 .topnav a {
   text-decoration: none; color: var(--muted); font-size: .84rem; font-weight: 600;
-  padding: 6px 13px; border-radius: 4px; white-space: nowrap; border: 1px solid transparent;
+  padding: 6px 12px; border-radius: 4px; white-space: nowrap; border: 1px solid transparent;
   transition: all .15s ease;
 }
 .topnav a:hover { color: var(--blue); background: var(--blue-soft); }
@@ -107,14 +109,14 @@ body {
 }
 .slide-header h1, .slide-header h2 {
   font-size: clamp(1.3rem, 2.5vw, 1.85rem); line-height: 1.3;
-  font-weight: 800; max-width: 32em; color: var(--ink);
+  font-weight: 800; max-width: 36em; color: var(--ink);
 }
 .slide-header h1::after, .slide-header h2::after {
   content: ""; display: block; width: 68px; height: 4px; margin-top: 8px;
   background: linear-gradient(90deg, var(--blue), var(--teal));
 }
 .slide-header .sub {
-  margin-top: 8px; color: var(--muted); font-size: .90rem; max-width: 60em; line-height: 1.55;
+  margin-top: 8px; color: var(--muted); font-size: .90rem; max-width: 64em; line-height: 1.55;
 }
 .flags { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
 .flag {
@@ -144,8 +146,8 @@ body {
 .split-45 { display: grid; grid-template-columns: 45% 1fr; gap: 18px; align-items: start; }
 .split-55 { display: grid; grid-template-columns: 1fr 45%; gap: 18px; align-items: start; }
 .split-60 { display: grid; grid-template-columns: 58% 1fr; gap: 18px; align-items: start; }
-.split-img-right { display: grid; grid-template-columns: 1fr 1.08fr; gap: 18px; align-items: stretch; }
-.split-img-left { display: grid; grid-template-columns: 1.08fr 1fr; gap: 18px; align-items: stretch; }
+.split-img-right { display: grid; grid-template-columns: 1fr 1.15fr; gap: 18px; align-items: stretch; }
+.split-img-left { display: grid; grid-template-columns: 1.15fr 1fr; gap: 18px; align-items: stretch; }
 
 @media (max-width: 1050px) {
   .slide { padding: 70px 18px 90px; }
@@ -240,6 +242,22 @@ td.ctr, th.ctr { text-align: center; }
 .fig .cap { font-size: .74rem; color: var(--muted); margin-top: 6px; text-align: center; }
 .chart-box { width: 100%; min-height: 280px; flex: 1; }
 
+.doc-img-wrap {
+  border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06); background: #fdfdfd;
+}
+.doc-img-wrap img {
+  width: 100%; height: auto; display: block; object-fit: contain; cursor: zoom-in;
+  transition: transform .2s ease;
+}
+.doc-img-wrap img:hover {
+  transform: scale(1.01);
+}
+
+#map-container {
+  width: 100%; height: 360px; border-radius: 4px; border: 1px solid var(--line); z-index: 10;
+}
+
 /* Home / Hero */
 .home { min-height: 100vh; }
 .hero {
@@ -249,8 +267,8 @@ td.ctr, th.ctr { text-align: center; }
 }
 .hero .inner { max-width: 1400px; margin: 0 auto; position: relative; z-index: 2; }
 .hero .kicker { font-size: .80rem; font-weight: 800; letter-spacing: .16em; color: #8FD9E4; }
-.hero h1 { font-size: clamp(1.6rem, 3.8vw, 2.7rem); font-weight: 900; line-height: 1.25; margin-top: 10px; max-width: 26em; }
-.hero .lede { margin-top: 12px; max-width: 52em; font-size: .95rem; opacity: .94; line-height: 1.65; }
+.hero h1 { font-size: clamp(1.6rem, 3.8vw, 2.7rem); font-weight: 900; line-height: 1.25; margin-top: 10px; max-width: 30em; }
+.hero .lede { margin-top: 12px; max-width: 56em; font-size: .95rem; opacity: .94; line-height: 1.65; }
 .hero .herometa { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; }
 .hero .herometa span { font-size: .74rem; font-weight: 700; background: rgba(255, 255, 255, 0.16); padding: 5px 12px; border-radius: 3px; }
 .hero .deco { position: absolute; right: -50px; top: -30px; width: 780px; opacity: .35; pointer-events: none; z-index: 1; }
@@ -283,7 +301,7 @@ td.ctr, th.ctr { text-align: center; }
 .quick-spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
 
 /* Bottom Deck Bar Controls */
-.deckbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 100; pointer-events: none; }
+.deckbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; pointer-events: none; }
 .progress { height: 4px; background: #DFE7EE; }
 .progress .fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--blue), var(--teal)); transition: width .25s ease; }
 .hint {
@@ -319,16 +337,16 @@ svg text { font-family: inherit; }
       <rect x="0" y="14" width="12" height="12" rx="2" fill="#1BB1BF" opacity=".6"/>
       <rect x="14" y="14" width="12" height="12" rx="2" fill="#1968AD"/>
     </svg>
-    <div class="tx">進金生能源 6692<small>大安龜殼段 POCS・光伏電廠資產決策中樞</small></div>
+    <div class="tx">進金生能源 6692<small>台中大安龜殼段 1.5MW・光伏資產決策中樞</small></div>
   </a>
   <nav class="topnav">
     <a href="#home" data-nav="home">封面總覽</a>
-    <a href="#p1-1" data-nav="p1">Part 1 案場概況 (2 頁)</a>
-    <a href="#p2-1" data-nav="p2">Part 2 根因診斷 (3 頁)</a>
-    <a href="#p3-1" data-nav="p3">Part 3 現場處置與安全 (2 頁)</a>
+    <a href="#p1-1" data-nav="p1">Part 1 案場位置與圖紙 (3 頁)</a>
+    <a href="#p2-1" data-nav="p2">Part 2 實時告警與破案 (3 頁)</a>
+    <a href="#p3-1" data-nav="p3">Part 3 雜草治理與安全 (3 頁)</a>
     <a href="#p4-1" data-nav="p4">Part 4 AI Agent 資產賦能 (2 頁)</a>
   </nav>
-  <div class="meta">基準：2026/09/18 ｜ 呈閱：電廠投資人・資產管理委員會</div>
+  <div class="meta">更新基準：2026/09/21 ｜ 呈閱：電廠投資人・資產管理委員會</div>
 </header>
 
 <!-- ================= HOME VIEW ================= -->
@@ -348,18 +366,17 @@ svg text { font-family: inherit; }
       </g>
     </svg>
     <div class="inner">
-      <div class="kicker">進金生能源 6692 · 智慧維運與資產管理決策庫</div>
-      <h1>大安龜殼段 POCS 光伏電廠<br>發電資料診斷報告暨 AI Agent 資產賦能平台</h1>
+      <div class="kicker">進金生能源 6692 · 智慧光電維運與資產管理決策中樞</div>
+      <h1>台中市大安區龜殼段 253-1 地號 1.5MW 光伏電廠<br>案場位置・工程覆核・雜草治理暨 AI Agent 決策平台</h1>
       <p class="lede">
-        本決策報告深度穿透 90 天（2026/06/20–09/17）逐日逆變器運行數據（總累計 309,824 kWh）。鎖定 🔴 <b>INV-013</b> 直流容量缺損約 50% 且復機後惡化至 45%（90 天損失達 24,645 kWh，具直流電弧火災高風險）；揭露 🟠 <b>INV-001</b> 局部衰退、🟡 <b>A/B 組容量倒掛</b> 及 🟡 <b>日射計失能 PR=0</b> 之監控盲區。同步呈現 <b>AI Agent 7×24 小時動態同儕守護架構</b>，如何協助投資者在 3 天內止血避損、保全專案 IRR 與 20 年長期資產溢價。
+        <b>【重大實證與治理更新】</b>結合昶恆科技<b>模組串接圖 C-002</b>、現場雜草重災分佈照片，以及友達 SCADA（<b>AUO BDL221110076</b>）最新 2026/09/21 即時監控。全場實體容量覆核為 <b>1,505.155 kWp（4,493 片 335W 模組，13 台 SUNGROW SG110CX）</b>。徹底破案「平台容量建檔誤植」、「COM2 日射計正常運作 720W/m² 卻未關聯」、「全場驚見 6 台逆變器告警」、「INV-013 實發 31.3kW（僅44.7%）火災高危」；並針對<b>「一年僅除草兩次」導致雜草淹沒面板之嚴重發電失血，提出「借鏡鳳山圳高耐候抑草蓆」之 5 年財務增益改善提案</b>！
       </p>
       <div class="herometa">
-        <span>📍 台中大安區龜殼段 POCS</span>
-        <span>⚡ 7 台在線逆變器 / 812.3 kWp</span>
-        <span>📊 90 天逐日資料分析</span>
-        <span>🔴 P1 累計損失 24,645 kWh (7.4%)</span>
-        <span>🔥 具高壓直流電弧火災隱患</span>
-        <span>🛡️ AI Agent 年化保全 NT$ 44.3 萬元</span>
+        <span>📍 台中大安龜殼段 253-1 地號 (24.380°N, 120.575°E)</span>
+        <span>⚡ 全場 1,505.155 kWp (4,493 片)</span>
+        <span>🚨 6 台逆變器即時紅字告警 (含INV-013腰斬44.7%)</span>
+        <span>☀️ 日射計接於 COM2 (720 W/m²) 破案</span>
+        <span>🌿 鳳山圳抑草蓆工法：8.8 個月回本・5年淨賺 NT$ 130 萬</span>
       </div>
     </div>
   </div>
@@ -368,34 +385,34 @@ svg text { font-family: inherit; }
     <!-- 4 Part Navigation Cards -->
     <div class="part-cards">
       <a class="part-card" href="#p1-1">
-        <div class="pc-eyebrow">PART 1 · 案場事實</div>
-        <h2>案場概況與發電事實</h2>
-        <p>7 台逆變器運行數據全面穿透。建立 006/009 標竿同儕基準，透過晴雨天比值驗證排除逆變器削峰與天氣假象，確認硬體結構性缺損。</p>
-        <div class="pc-flags"><span class="chip blue">2 頁</span><span class="chip teal">同儕基準</span><span class="chip grey">天候抗擾</span></div>
-        <div class="pc-go">進入案場事實章節 &rarr;</div>
+        <div class="pc-eyebrow">PART 1 · 位置與圖紙</div>
+        <h2>案場位置、圖紙核驗與配置</h2>
+        <p>台中大安龜殼段 253-1 地號 GIS 地圖定位；依據模組串接圖 C-002 覆核 1,505.155 kWp 真實容量，揭穿平台登錄誤植，重構 13 台真實銘牌基準。</p>
+        <div class="pc-flags"><span class="chip blue">3 頁</span><span class="chip teal">GIS 地圖</span><span class="chip amber">1.505 MWp</span></div>
+        <div class="pc-go">進入位置與圖紙章節 &rarr;</div>
       </a>
 
       <a class="part-card c2" href="#p2-1">
-        <div class="pc-eyebrow">PART 2 · 深度診斷</div>
-        <h2>逆變器異常與根因分析</h2>
-        <p>🔴 INV-013 直流缺損 50% 兼停機 5 天（損失 24,645 度、電弧火災隱患）；🟠 INV-001 階躍下滑；🟡 A/B 組容量倒掛與監控 PR=0 盲區。</p>
-        <div class="pc-flags"><span class="chip coral">3 頁</span><span class="chip amber">P1~P4 評級</span><span class="chip purple">火災風險</span></div>
-        <div class="pc-go">進入根因診斷章節 &rarr;</div>
+        <div class="pc-eyebrow">PART 2 · 深度破案</div>
+        <h2>實時告警穿透與四大懸疑破案</h2>
+        <p>調閱 9/21 友達 SCADA 截圖：日射計 720W/m² 正常接於 COM2；驚見 6 台逆變器紅字告警；INV-013 即時實發 31.3kW（44.7%）電弧火災高危！</p>
+        <div class="pc-flags"><span class="chip coral">3 頁</span><span class="chip purple">6台告警</span><span class="chip coral">COM2日射計</span></div>
+        <div class="pc-go">進入實時破案章節 &rarr;</div>
       </a>
 
       <a class="part-card c3" href="#p3-1">
-        <div class="pc-eyebrow">PART 3 · 處置與安全</div>
-        <h2>現場處置與安全 SOP</h2>
-        <p>遵循 IEC 62446-1 國際標準：INV-013 一週內緊急到場 6 步檢測（Voc、Isc、Riso 兆歐表）；嚴格落實 1500V DC 帶電防弧與 LOTO 掛牌作業。</p>
-        <div class="pc-flags"><span class="chip amber">2 頁</span><span class="chip blue">IEC 62446-1</span><span class="chip coral">LOTO 禁令</span></div>
-        <div class="pc-go">進入處置與安全章節 &rarr;</div>
+        <div class="pc-eyebrow">PART 3 · 雜草與安全</div>
+        <h2>雜草遮蔭重災與鳳山圳抑草蓆提案</h2>
+        <p>現場照片與 C-002 紅框雜草分佈：一年除草兩次造成年損 5.8 萬度（NT$ 26 萬）；提案鋪設鳳山圳高耐候抑草蓆，8.8 個月回本，5 年淨賺 NT$ 130 萬！</p>
+        <div class="pc-flags"><span class="chip amber">3 頁</span><span class="chip green">鳳山圳工法</span><span class="chip coral">8.8月回本</span></div>
+        <div class="pc-go">進入雜草治理與安全章節 &rarr;</div>
       </a>
 
       <a class="part-card c4" href="#p4-1">
         <div class="pc-eyebrow">PART 4 · 投資人賦能</div>
-        <h2>AI Agent 資產賦能與投資回報</h2>
-        <p>從「被動苦等 90 天」到「7×24 小時動態避損」；量化財務模型（年增發 9.8 萬度、營收 +NT$ 44 萬、IRR +0.42%），守護 20 年資產二級市場溢價。</p>
-        <div class="pc-flags"><span class="chip green">2 頁</span><span class="chip teal">IRR 守護</span><span class="chip purple">數位病歷</span></div>
+        <h2>AI Agent 資產賦能與全場效益</h2>
+        <p>AI Agent 自動打通 COM1/COM2 數位孤島、監控雜草遮蔭衰退、推播閉環工單；全場修復＋抑草蓆每年為投資人增益 NT$ 115 萬元、提升 IRR +0.68%！</p>
+        <div class="pc-flags"><span class="chip green">2 頁</span><span class="chip teal">IRR +0.68%</span><span class="chip purple">年增115萬</span></div>
         <div class="pc-go">進入投資人賦能章節 &rarr;</div>
       </a>
     </div>
@@ -403,28 +420,28 @@ svg text { font-family: inherit; }
     <!-- Quick Spec Grid -->
     <div class="quick-spec-grid">
       <div class="metric blue">
-        <div class="k">812.3 kWp</div>
-        <div class="t">平台登錄總容量（7 台在線逆變器，中間有跳號）</div>
+        <div class="k">253-1 地號</div>
+        <div class="t">台中大安區龜殼段（近西濱台61線・溫寮溪出海口）</div>
       </div>
       <div class="metric teal">
-        <div class="k">309,824 kWh</div>
-        <div class="t">90 天累計實發總電量（2026/06/20–09/17）</div>
+        <div class="k">1,505.15 kWp</div>
+        <div class="t">全場實體總容量（4,493 片 335W 模組，13 台 SG110CX）</div>
       </div>
       <div class="metric coral">
-        <div class="k">24,645 kWh</div>
-        <div class="t">🔴 P1 INV-013 累計損失（占全場發電 7.4%）</div>
+        <div class="k">6 台 紅字告警</div>
+        <div class="t">🚨 9/21 實時截圖：003, 004, 007, 008, 009, 013 告警</div>
       </div>
       <div class="metric amber">
-        <div class="k">NT$ 110,900</div>
-        <div class="t">90 天直接躉購電費損失（以平均 NT$ 4.5/度計）</div>
-      </div>
-      <div class="metric grey">
-        <div class="k">PR = 0.00</div>
-        <div class="t">⚠️ 日射計通訊失聯，傳統監控完全失能</div>
+        <div class="k">31.26 kW (44.7%)</div>
+        <div class="t">🔴 INV-013 持續腰斬發電，直流電弧火災隱患極高</div>
       </div>
       <div class="metric green">
-        <div class="k">+NT$ 44.3 萬/年</div>
-        <div class="t">🛡️ AI Agent 閉環修復後每年預期保全現金流</div>
+        <div class="k">8.8 個月回本</div>
+        <div class="t">🌿 鋪設鳳山圳耐候抑草蓆（工程費22.5萬，年省30.6萬）</div>
+      </div>
+      <div class="metric purple">
+        <div class="k">+NT$ 115 萬/年</div>
+        <div class="t">🛡️ AI Agent 閉環檢修 ＋ 抑草蓆全場保全現金流</div>
       </div>
     </div>
 
@@ -433,225 +450,365 @@ svg text { font-family: inherit; }
       <table>
         <thead>
           <tr>
-            <th style="width: 80px;">優先級</th>
-            <th style="width: 110px;">對象</th>
-            <th>異常現象（Facts）</th>
-            <th class="num" style="width: 140px;">90 天發電損失</th>
-            <th>工程根因判斷與潛在資產風險</th>
-            <th>AI Agent 改善機制與投資人賦能價值</th>
+            <th style="width: 100px;">核心決策議題</th>
+            <th style="width: 130px;">涉及設備與圖號</th>
+            <th>現場實證與最新事實（New Facts）</th>
+            <th>工程根因分析（Root Cause）</th>
+            <th>AI Agent 處置方案與投資人商業價值</th>
           </tr>
         </thead>
         <tbody>
           <tr class="bad-row">
-            <td><span class="chip coral">🔴 P1 急件</span></td>
-            <td><b>INV-013</b></td>
-            <td>發電僅同儕 54%，9/5–9/9 幾乎停機 5 天，9/10 復機後惡化至 45%</td>
-            <td class="num"><b style="color:var(--coral)">24,645 kWh</b><br><small style="color:var(--muted)">佔全場 7.4%</small></td>
-            <td>直流側 45–55% 容量未併入（組串或 MPPT 斷路），絕緣劣化引發保護跳脫，<b>具高壓直流電弧火災風險</b>。</td>
-            <td><b>7×24 小時微偏差警報</b>：在比值偏離 5% 且持續 48hr 即推播工單，將 90 天損失壓至 3 天止血，保全 NT$ 10.7 萬。</td>
+            <td><span class="chip coral">🔴 雜草遮蔭重災</span></td>
+            <td><b>全場周邊組串</b><br><small>特別是 INV13/1/4/7</small></td>
+            <td><b>一年僅除草兩次</b>，現場照片證實雜草叢生淹沒面板、割草碎屑覆蓋玻璃；C-002 紅框標註嚴重雜草區涵蓋全場近 30% 組串！年損度數達 5.8 萬度（NT$ 26 萬）。</td>
+            <td>濱海夏秋雨水豐沛且日照強，雜草 1~2 個月即長高至 1.5 米，長期遮蔽下緣引發二極體導通與高溫熱斑；人工割草飛石更易擊破玻璃。</td>
+            <td><b>借鏡鳳山圳高耐候抑草蓆提案</b>：一次性鋪設 3,000 m²（工程費約 NT$ 22.5 萬），徹底免除每年 9 萬除草費並挽回 21.6 萬發電，<b>8.8 個月全額回本，5 年淨賺 NT$ 130 萬元！</b></td>
           </tr>
-          <tr>
-            <td><span class="chip amber">🟠 P2 追蹤</span></td>
-            <td><b>INV-001</b></td>
-            <td>相對同儕緩步下滑，9/4 起階躍性再掉一階（89.7% &rarr; 88.3%）</td>
-            <td class="num">約 480 kWh</td>
-            <td>疑似新增 1 處組件局部失效（旁路二極體導通、局部熱斑或鳥糞積污，約 1/3~1/2 串缺損）。</td>
-            <td><b>階躍事件特徵識別</b>：自動標記突發階降，派發無人機熱斑紅外線掃描巡檢任務。</td>
+          <tr class="bad-row">
+            <td><span class="chip coral">🔴 致命硬體故障</span></td>
+            <td><b>INV-013</b><br><small>SUNGROW SG110CX</small></td>
+            <td><b>9/21 09:51 實測發電僅 31.26kW</b>（同儕均值 70.1kW，僅 <b>44.6%</b>），電流僅 47.3A，紅色警報亮起。90 天損失達 24,645 kWh。且 INV-013 正處於東南雜草重災區！</td>
+            <td>約 46% 直流組串/MPPT 斷路，絕緣阻抗 Riso 劣化跳脫，MC4 接頭燒蝕，<b>具持續性直流電弧火災重大風險</b>。</td>
+            <td><b>立即緊急到場排查</b>：依 IEC 62446-1 更換損壞接頭與保險絲，單台即挽回年化營收 NT$ 44.3 萬元，消除全場燒毀風險。</td>
           </tr>
-          <tr>
-            <td><span class="chip blue">🟡 P3 核對</span></td>
-            <td><b>A 組 vs B 組</b></td>
-            <td>A 組登錄容量較大（119.9 vs 113.2 kWp），實際發電量反而較少</td>
-            <td class="num">待核算</td>
-            <td>平台容量參數設定錯誤、屋頂傾角方位遮蔭不同、或 A 組原廠裝設即短缺 6~10% 組串。</td>
-            <td><b>虛擬數位孿生校正</b>：結合竣工圖與衛星照度反推真實銘牌容量，消除資產帳目與實體偏差。</td>
+          <tr class="hl-row">
+            <td><span class="chip amber">🟠 破案解密</span></td>
+            <td><b>A/B 組容量倒掛</b><br><small>001/005 vs 009/010</small></td>
+            <td>圖紙證實：INV1 僅 111.9kWp、INV5 僅 113.9kWp；而 INV9/010 各有 120.6kWp。但平台卻把前者登錄為 119.9kWp、後者 113.2kWp！</td>
+            <td><b>人為建檔誤植</b>：平台建檔將 A 組高報 7%、B 組低報 6%，導致發電比值倒掛，非設備品質問題！</td>
+            <td><b>數位銘牌一鍵校正</b>：AI Agent 自動依圖紙更新後台 kWp，消弭資產財務帳面偏差，還原真實 PR 與發電基準。</td>
           </tr>
-          <tr>
-            <td><span class="chip grey">🟡 P4 治理</span></td>
-            <td><b>監控系統</b></td>
-            <td>日射量 <code>insolation</code> 與 PR 全為 0；逆變器編號跳過 6 台</td>
-            <td class="num">—</td>
-            <td>日射計未接線或 Modbus 點位對應錯誤；跳號設備存在脫管盲區，無法向金融機構出具 PR 憑證。</td>
-            <td><b>同儕相對法免除日射計依賴</b>：自動偵測通訊斷線，建立虛擬 PR 並健全歷史病歷庫，維護二級市場估值。</td>
+          <tr class="hl-row">
+            <td><span class="chip teal">🟡 破案解密</span></td>
+            <td><b>日射計與 PR 歸零</b><br><small>ADTEK CS1-PR-A1</small></td>
+            <td>9/21 截圖證實日射計正常讀出 <b>720 W/m²</b>，但其硬體連接在 <b>COM2_031</b>，而非 COM1；溫度計 COM2_032 顯示 327.67°C 斷線。</td>
+            <td><b>串列埠對應錯誤</b>：原匯出資料僅抓 COM1，未對齊 COM2 日射數據，導致計算公式分母為 0，PR 完全癱瘓。</td>
+            <td><b>跨串列埠自動關聯</b>：AI Agent 自動打通 COM1 與 COM2 資料流，即時恢復全場 PR，並指派修復斷線之溫度傳感器。</td>
+          </tr>
+          <tr class="bad-row">
+            <td><span class="chip coral">🚨 重大新發現</span></td>
+            <td><b>全場 6 台機台告警</b><br><small>003, 004, 007, 008, 009, 013</small></td>
+            <td>原本跳號未納入分析的 6 台逆變器中，<b>003, 004, 007, 008 現場均亮起紅色告警圖示</b>！007 發電僅 61.9kW (落後 12%)，009 亦亮紅燈。</td>
+            <td>多台機台存在內部故障代碼或直流側微短路，傳統維運「只看 7 台」造成嚴重監控盲區。</td>
+            <td><b>全場 13 台全感知守護</b>：將全場 1.505 MWp 納入統一 AI 監控，預期為投資人守護每年 <b>NT$ 85~120 萬元</b> 隱性電費損失。</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <div class="home-foot" style="margin-top:24px; font-size:.75rem; color:var(--muted); line-height:1.8; border-top:1px solid var(--line); padding-top:14px;">
-      進金生能源服務股份有限公司（6692）｜ 8.4 光伏電廠智慧維運決策庫 ｜ 支援鍵盤 &larr; &rarr; 鍵切換、Home 鍵回封面、F 鍵全螢幕
+      進金生能源服務股份有限公司（6692）｜ 台中大安龜殼段 1.5MW 光伏智慧維運決策庫 ｜ 支援鍵盤 &larr; &rarr; 鍵切換、Home 鍵回封面、F 鍵全螢幕
     </div>
   </div>
 </div>
 
-<!-- ================= PART 1: 案場概況與事實 ================= -->
+<!-- ================= PART 1: 案場位置與圖紙 ================= -->
 <div class="view" id="view-p1">
 
-  <!-- P1.1 -->
+  <!-- P1.1 (NEW: Location & Environmental Microclimate) -->
   <section class="slide" id="p1-1">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 1 · 案場概況 1.1</div>
-        <h1>7 台逆變器運行數據穿透與同儕基準建立</h1>
-        <p class="sub">以 90 天（2026/06/20–09/17）逆變器逐日數據為事實依據。正常逆變器間的比值標準差小於 1%，具備極高同儕統計可信度，清楚突顯 INV-013 之嚴重離群。</p>
+        <div class="eyebrow">Part 1 · 案場位置 1.1</div>
+        <h1>案場地理位置：台中市大安區龜殼段 253-1 地號 GIS 定位與微氣候</h1>
+        <p class="sub">案場座落於台中市大安區龜殼段濱海農漁專區，鄰近台61線西濱快速道路與溫寮溪出海口。地處濱海強風、高鹽霧、地下水位高且夏秋雜草瘋長之特殊地理環境。</p>
       </div>
       <div class="flags">
-        <span class="flag blue">數據事實</span>
-        <span class="flag teal">同儕基準線</span>
-        <span class="flag coral">INV-013 離群</span>
+        <span class="flag blue">台中大安龜殼段 253-1</span>
+        <span class="flag teal">24.380°N, 120.575°E</span>
+        <span class="flag amber">濱海高鹽霧濕地</span>
       </div>
     </div>
     <div class="slide-body">
-      <div class="split-60">
+      <div class="split-img-left">
+        <!-- Interactive Leaflet Map Container -->
+        <div class="fig">
+          <div class="figtitle">
+            <span>大安龜殼段 253-1 地號 GIS 地圖定位</span>
+            <span class="chip blue">互動地圖可縮放</span>
+          </div>
+          <div id="map-container"></div>
+          <div class="cap">坐標：24°22'48.0"N 120°34'30.0"E ｜ 位於大安區龜殼里海岸線防風林內側。</div>
+        </div>
+
+        <!-- Geographic Specifications Table -->
         <div class="table-wrap">
+          <div style="padding:10px 14px; background:var(--blue-soft); font-weight:800; font-size:.85rem; color:var(--blue-dd);">
+            📍 案場地籍與環境微氣候特徵表
+          </div>
           <table>
             <thead>
               <tr>
-                <th>逆變器 ID</th>
-                <th class="num">平台 kWp</th>
-                <th class="num">90天實發 (kWh)</th>
-                <th class="num">日均 ey (kWh/kWp)</th>
-                <th class="ctr">相對 006/009 均比</th>
-                <th class="ctr">標準差 (Std)</th>
-                <th class="ctr">健康評等</th>
+                <th>項目</th>
+                <th>規格與現場實況</th>
+                <th>對光電設備與維運之影響</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><b>INV-001</b></td>
-                <td class="num">119.9</td>
-                <td class="num">45,631</td>
-                <td class="num">4.23</td>
-                <td class="ctr">0.89</td>
-                <td class="ctr">&lt; 0.9%</td>
-                <td class="ctr"><span class="chip amber">🟠 P2 局部衰退</span></td>
+                <td><b>地段地號</b></td>
+                <td>台中市大安區龜殼段 253-1 地號</td>
+                <td>海埔新生地/農牧特定用地，產權單一</td>
               </tr>
               <tr>
-                <td><b>INV-002</b></td>
-                <td class="num">119.9</td>
-                <td class="num">47,745</td>
-                <td class="num">4.42</td>
-                <td class="ctr">0.94</td>
-                <td class="ctr">&lt; 0.8%</td>
-                <td class="ctr"><span class="chip green">🟢 正常運作</span></td>
-              </tr>
-              <tr>
-                <td><b>INV-005</b></td>
-                <td class="num">119.9</td>
-                <td class="num">46,110</td>
-                <td class="num">4.27</td>
-                <td class="ctr">0.90</td>
-                <td class="ctr">&lt; 0.8%</td>
-                <td class="ctr"><span class="chip green">🟢 正常運作</span></td>
+                <td><b>地理經緯度</b></td>
+                <td>24.3800° N, 120.5750° E</td>
+                <td>全年等效日照時數約 3.4 ~ 3.7 h/day</td>
               </tr>
               <tr class="hl-row">
-                <td><b>INV-006</b></td>
-                <td class="num">112.9</td>
-                <td class="num">48,266</td>
-                <td class="num">4.75</td>
-                <td class="ctr">1.00</td>
-                <td class="ctr">&lt; 0.5%</td>
-                <td class="ctr"><span class="chip blue">🔵 標竿同儕</span></td>
-              </tr>
-              <tr class="hl-row">
-                <td><b>INV-009</b></td>
-                <td class="num">113.2</td>
-                <td class="num">47,951</td>
-                <td class="num">4.71</td>
-                <td class="ctr">1.00</td>
-                <td class="ctr">&lt; 0.5%</td>
-                <td class="ctr"><span class="chip blue">🔵 標竿同儕</span></td>
-              </tr>
-              <tr>
-                <td><b>INV-010</b></td>
-                <td class="num">113.2</td>
-                <td class="num">50,597</td>
-                <td class="num">4.97</td>
-                <td class="ctr">1.05</td>
-                <td class="ctr">&lt; 0.6%</td>
-                <td class="ctr"><span class="chip teal">🟢 效能領先</span></td>
+                <td><b>環境微氣候</b></td>
+                <td>濱海強風帶、高鹽霧、高濕度</td>
+                <td>金屬接頭氧化速度為內陸 3 倍，易引發接頭接觸阻抗過高與電弧</td>
               </tr>
               <tr class="bad-row">
-                <td><b>INV-013</b></td>
-                <td class="num">113.2</td>
-                <td class="num"><b style="color:var(--coral)">23,524</b></td>
-                <td class="num"><b style="color:var(--coral)">2.31</b></td>
-                <td class="ctr"><b style="color:var(--coral)">0.54 &rarr; 0.45</b></td>
-                <td class="ctr"><b style="color:var(--coral)">13.2%</b></td>
-                <td class="ctr"><span class="chip coral">🔴 P1 嚴重缺損</span></td>
+                <td><b>土壤與植被特徵</b></td>
+                <td>地下水位高、富含腐植質之沖積土壤</td>
+                <td><b>芒草、蘆葦生長速度極快（夏秋 1~2 個月長高 1.5 米）</b>，造成嚴重遮蔭</td>
               </tr>
-              <tr style="background:#EDF4FA; font-weight:bold;">
-                <td>全場合計</td>
-                <td class="num">812.3</td>
-                <td class="num">309,824</td>
-                <td class="num">4.24 (均)</td>
-                <td class="ctr">—</td>
-                <td class="ctr">—</td>
-                <td class="ctr"><span class="chip coral">全場受累 7.4%</span></td>
+              <tr>
+                <td><b>台電併網饋線</b></td>
+                <td>經特高壓沿海線路引接 (COM1/COM2 採集)</td>
+                <td>颱風季與東北季風期間電網電壓波動大</td>
+              </tr>
+              <tr class="good-row">
+                <td><b>維運進出動線</b></td>
+                <td>鄰近台61線西濱高架匝道，大型吊車可達</td>
+                <td>重型維修設備進出便利，有助於緊急派工進場</td>
               </tr>
             </tbody>
           </table>
-        </div>
-
-        <!-- Horizontal Bar Chart -->
-        <div class="fig">
-          <div class="figtitle">
-            <span>7 台逆變器 90 天累計發電量 (kWh) 對比</span>
-            <span class="chip coral">缺口 24,645 kWh</span>
-          </div>
-          <div id="chart-inv-bars" class="chart-box"></div>
-          <div class="cap">基準線：006 與 009 均值 48,109 kWh。INV-013 僅 23,524 kWh，產能腰斬。</div>
         </div>
       </div>
 
       <div class="three-col" style="margin-top:6px;">
         <div class="card amber">
-          <h3>⚠️ 逆變器跳號事實</h3>
-          <p>編號為 001, 002, 005, 006, 009, 010, 013，中間跳過 6 台編號。必須向資產端確認是否漏匯出或現場未併網。</p>
-        </div>
-        <div class="card teal">
-          <h3>📈 穩健同儕標準差 &lt; 1%</h3>
-          <p>正常台之間天天比值極為平穩（標準差 &lt; 1%），證明無氣候干擾，是日射計損壞時最強健的「虛擬基準」。</p>
+          <h3>🌊 濱海高鹽霧防護</h3>
+          <p>沿海環境鹽霧沉積速度快，逆變器外殼（SG110CX 具 IP66）與直流 MC4 接頭必須具備高等級抗鹽腐蝕防護，定期紅外線測溫不可或缺。</p>
         </div>
         <div class="card coral">
-          <h3>🔴 INV-013 離群變異達 13%</h3>
-          <p>013 標準差高達 13%，且 9 月經歷 5 天完全停機，復機後效率持續探底，屬於典型的漸進性硬體重大故障。</p>
+          <h3>🌿 雜草生長失控痛點</h3>
+          <p>濱海濕潤地帶夏秋季野草蘆葦瘋長，若一年僅除草兩次，草高將直接淹沒光電板下緣，造成旁路二極體常態性導通與發電重創！</p>
+        </div>
+        <div class="card teal">
+          <h3>💨 東北季風防風地錨</h3>
+          <p>冬季沿海東北季風風速可達 8~10 級，全場結構需定期檢查螺栓扭力；後續鋪設抑草蓆必須採用重型抗拔金屬地錨牢固固定。</p>
         </div>
       </div>
     </div>
     <div class="slide-foot">
-      <div>資料來源：大安區龜殼段 POCS BDL221110076/COM1 ｜ 90 天實時採集</div>
+      <div>圖資來源：內政部國土測繪圖資服務雲 ＆ Google Maps API ｜ 龜殼段 253-1 地號</div>
       <div class="pageno">1.1</div>
     </div>
   </section>
 
-  <!-- P1.2 -->
+  <!-- P1.2: Drawing Verification & 1.505 MWp -->
   <section class="slide" id="p1-2">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 1 · 案場概況 1.2</div>
-        <h1>逐日趨勢消弭天候干擾：結構性缺損而非氣候波動</h1>
-        <p class="sub">90 天逐日比對分析證實：無論晴天、陰雨或雷陣雨，INV-013 比值均穩定落後約 50%，直接排除逆變器削峰、局部遮蔭或天候假象。</p>
+        <div class="eyebrow">Part 1 · 圖紙核驗 1.2</div>
+        <h1>模組串接圖 C-002 實核：全場 1,505.155 kWp 逆變器真實配置</h1>
+        <p class="sub">依據昶恆科技竣工串接圖 C-002，全場總計 4,493 片 335W 高效單晶模組、13 台 SUNGROW SG110CX 逆變器。此圖徹底釐清各逆變器真實組串與銘牌容量。</p>
       </div>
       <div class="flags">
-        <span class="flag teal">消弭天候假象</span>
-        <span class="flag coral">非逆變器削峰</span>
-        <span class="flag blue">逐日差分統計</span>
+        <span class="flag blue">圖紙證物 C-002</span>
+        <span class="flag teal">4,493 片模組</span>
+        <span class="flag amber">1,505.155 kWp</span>
       </div>
     </div>
     <div class="slide-body">
-      <!-- 90 Days Daily Line Chart -->
+      <div class="split-img-right">
+        <!-- 13 Inverters Configuration & Nameplate Table -->
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>逆變器編號</th>
+                <th>圖面組串配置 (串×併)</th>
+                <th class="num">真實模組片數</th>
+                <th class="num">圖面真實 kWp</th>
+                <th class="num">平台原登錄 kWp</th>
+                <th class="ctr">人為登錄偏差</th>
+                <th class="ctr">目前運行狀態</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="hl-row">
+                <td><b>INV-001</b></td>
+                <td>21併14串 + 20併2串</td>
+                <td class="num">334 片</td>
+                <td class="num"><b>111.89</b></td>
+                <td class="num">119.90</td>
+                <td class="ctr"><span class="chip coral">+7.16% 虛報</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 65.5kW</span></td>
+              </tr>
+              <tr>
+                <td><b>INV-002</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">119.90</td>
+                <td class="ctr"><span class="chip teal">-0.58% 吻合</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 69.8kW</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-003</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip coral">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip coral">🔴 告警 65.9kW</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-004</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip coral">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip coral">🔴 告警 68.6kW</span></td>
+              </tr>
+              <tr class="hl-row">
+                <td><b>INV-005</b></td>
+                <td>20併17串</td>
+                <td class="num">340 片</td>
+                <td class="num"><b>113.90</b></td>
+                <td class="num">119.90</td>
+                <td class="ctr"><span class="chip coral">+5.27% 虛報</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 67.4kW</span></td>
+              </tr>
+              <tr>
+                <td><b>INV-006</b></td>
+                <td>20併17串</td>
+                <td class="num">340 片</td>
+                <td class="num"><b>113.90</b></td>
+                <td class="num">112.90</td>
+                <td class="ctr"><span class="chip teal">-0.88% 吻合</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 70.5kW</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-007</b></td>
+                <td>21併13串 + 20併4串</td>
+                <td class="num">353 片</td>
+                <td class="num"><b>118.26</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip coral">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip coral">🔴 告警 62.0kW (低12%)</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-008</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip coral">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip coral">🔴 告警 67.3kW</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-009</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">113.20</td>
+                <td class="ctr"><span class="chip amber">-6.14% 低報</span></td>
+                <td class="ctr"><span class="chip coral">🔴 告警 70.1kW</span></td>
+              </tr>
+              <tr>
+                <td><b>INV-010</b></td>
+                <td>20併18串</td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60</b></td>
+                <td class="num">113.20</td>
+                <td class="ctr"><span class="chip amber">-6.14% 低報</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 73.7kW</span></td>
+              </tr>
+              <tr>
+                <td><b>INV-011</b></td>
+                <td>20併16串 + 22併1串</td>
+                <td class="num">342 片</td>
+                <td class="num"><b>114.57</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip teal">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 66.2kW</span></td>
+              </tr>
+              <tr>
+                <td><b>INV-012</b></td>
+                <td>20併16串 + 22併1串</td>
+                <td class="num">342 片</td>
+                <td class="num"><b>114.57</b></td>
+                <td class="num">未納入</td>
+                <td class="ctr"><span class="chip teal">原分析遺漏</span></td>
+                <td class="ctr"><span class="chip green">🟢 實發 68.4kW</span></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>INV-013</b></td>
+                <td>20併16串 + 22併1串</td>
+                <td class="num">342 片</td>
+                <td class="num"><b>114.57</b></td>
+                <td class="num">113.20</td>
+                <td class="ctr"><span class="chip teal">-1.20% 吻合</span></td>
+                <td class="ctr"><b style="color:var(--coral)">🔴 實發 31.3kW (僅44.7%)</b></td>
+              </tr>
+              <tr style="background:#EDF4FA; font-weight:bold;">
+                <td>全場 13 台合計</td>
+                <td>共 232 組組串</td>
+                <td class="num">4,493 片</td>
+                <td class="num"><b>1,505.155 kWp</b></td>
+                <td class="num">812.3 kWp (僅7台)</td>
+                <td class="ctr"><span class="chip blue">破除原盲區</span></td>
+                <td class="ctr"><span class="chip coral">6台告警待排查</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Embedded Engineering Drawing Image -->
+        <div class="fig">
+          <div class="figtitle">
+            <span>模組串接工程圖 C-002（昶恆科技 110/09/01 完工設計）</span>
+            <span class="chip blue">點擊放大檢視</span>
+          </div>
+          <div class="doc-img-wrap" style="height: 380px; overflow-y: auto;">
+            <a href="assets/string_layout_drawing.jpg" target="_blank" title="點擊檢視高解析原圖">
+              <img src="assets/string_layout_drawing.jpg" alt="大安區龜殼段 253-1 地號 模組串接圖 C-002">
+            </a>
+          </div>
+          <div class="cap">現場竣工實測：4,493 片 × 335W = 1,505.155 kWp。全場完整包含 13 台逆變器。</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-foot">
+      <div>圖面來源：昶恆科技 模組串接圖 C-002 V-01 ｜ 台中市大安區龜殼段 253-1 地號</div>
+      <div class="pageno">1.2</div>
+    </div>
+  </section>
+
+  <!-- P1.3: 90 Days Daily Line Chart -->
+  <section class="slide" id="p1-3">
+    <div class="slide-header">
+      <div>
+        <div class="eyebrow">Part 1 · 圖紙核驗 1.3</div>
+        <h1>90 天歷史逐日發電趨勢：同儕對比消弭天候干擾</h1>
+        <p class="sub">90 天（2026/06/20–09/17）實測數據印證：無論烈日、多雲或暴雨，INV-013 比值均減半，徹底排除削峰與天氣假象，鎖定為硬體組串實體缺損。</p>
+      </div>
+      <div class="flags">
+        <span class="flag teal">消弭天候干擾</span>
+        <span class="flag coral">非逆變器削峰</span>
+        <span class="flag blue">90天實績</span>
+      </div>
+    </div>
+    <div class="slide-body">
       <div class="fig" style="padding:14px 16px;">
         <div class="figtitle">
           <span>大安龜殼段 90 天逐日發電量趨勢 (kWh/day) ｜ 2026/06/20 – 09/17</span>
           <span style="font-size:0.75rem; color:var(--muted);">標竿同儕 vs INV-013 斷崖 vs INV-001</span>
         </div>
-        <div id="chart-daily-trend" style="width:100%; height:260px;"></div>
-        <div class="cap">9/5–9/9 紅線完全貼底（INV-013 停機 5 天），9/10 復機後差距明顯擴大。</div>
+        <div id="chart-daily-trend" style="width:100%; height:250px;"></div>
+        <div class="cap">9/5–9/9 紅線貼底（INV-013 停機 5 天），9/10 復機後差距擴大至 45%。</div>
       </div>
 
       <div class="split-img-right">
-        <!-- Sunny vs Cloudy Weather Matrix Table -->
         <div class="table-wrap">
           <table>
             <thead>
@@ -681,14 +838,6 @@ svg text { font-family: inherit; }
                 <td class="ctr"><b>0.574</b></td>
                 <td>低日照下比值依舊減半，證明輸入容量缺失</td>
               </tr>
-              <tr>
-                <td><b>07/08</b></td>
-                <td><span class="chip blue">🌧️ 暴雨陰天</span></td>
-                <td class="num">85 kWh (ey 0.7)</td>
-                <td class="num">46 kWh (ey 0.4)</td>
-                <td class="ctr"><b>0.541</b></td>
-                <td>陰雨天比值不變，排除高溫熱斑降載</td>
-              </tr>
               <tr class="bad-row">
                 <td><b>09/06</b></td>
                 <td><span class="chip coral">⚡ 停機事故日</span></td>
@@ -711,132 +860,115 @@ svg text { font-family: inherit; }
 
         <div style="display:flex; flex-direction:column; gap:12px;">
           <div class="card coral">
-            <h3>🚫 徹底排除「逆變器削峰」推論</h3>
-            <p>削峰（Clipping）只會在極端高日照時將峰值功率截平；在 06/26 等陰天，發電僅達額定 20% 時比值依舊維持 0.57，證明直流輸入容量自始至終就缺少一半。</p>
+            <h3>🚫 徹底排除逆變器削峰</h3>
+            <p>削峰（Clipping）只在高日照時截頂；在 06/26 陰天發電僅額定 20% 時，比值依舊減半，證實直流組串自始至終就少接了一半。</p>
           </div>
           <div class="card teal">
-            <h3>🔬 同儕差分演算法的投資價值</h3>
-            <p>即使在無日射計的情況下，透過同儕差分比值消弭 100% 的氣候天候隨機波動，讓潛伏的硬體損失在投資人面前完全無所遁形。</p>
+            <h3>🔬 同儕差分技術的不可替代性</h3>
+            <p>在日射計因通訊中斷失能的 90 天內，AI 同儕差分演算法徹底還原了逆變器硬體實質缺損，為投資人搶回話語權。</p>
           </div>
         </div>
       </div>
     </div>
     <div class="slide-foot">
       <div>分析模型：進金生智慧光電 Peer-Group Differential Engine v2.1</div>
-      <div class="pageno">1.2</div>
+      <div class="pageno">1.3</div>
     </div>
   </section>
 </div>
 
-<!-- ================= PART 2: 逆變器異常與根因深度診斷 ================= -->
+<!-- ================= PART 2: 實時告警與破案 ================= -->
 <div class="view" id="view-p2">
 
   <!-- P2.1 -->
   <section class="slide" id="p2-1">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 2 · 深度診斷 2.1</div>
-        <h1>🔴 P1 危機：INV-013 致命缺損、停機事件與火災風險</h1>
-        <p class="sub">90 天累計發電損失達 24,645 kWh，每日持續流失近 300 度電。推論為直流側組串/MPPT 斷路、MC4 接頭燒毀及絕緣阻抗劣化，具重大直流電弧火災隱患。</p>
+        <div class="eyebrow">Part 2 · 深度破案 2.1</div>
+        <h1>🔴 P1 危機：INV-013 最新實測僅發 31.3kW（腰斬至 44.7%）持續惡化</h1>
+        <p class="sub">友達 SCADA 2026/09/21 09:51 最新即時監控：健康同儕實發 70.1kW，INV-013 電流僅 47.3A，發電僅 31.26kW（44.6%），紅色告警持續閃爍，直流電弧火災隱患極高！</p>
       </div>
       <div class="flags">
-        <span class="flag coral">🔴 P1 極高優先</span>
-        <span class="flag amber">電弧火災高危</span>
-        <span class="flag blue">損失 24,645 度</span>
+        <span class="flag coral">🔴 9/21 實時告警</span>
+        <span class="flag amber">實發僅 31.26 kW</span>
+        <span class="flag red">直流電弧火災高危</span>
       </div>
     </div>
     <div class="slide-body">
       <div class="split-img-right">
-        <!-- 5-Stage Deterioration Table -->
+        <!-- Live SCADA Data Table for INV-013 -->
         <div class="table-wrap">
+          <div style="padding:10px 14px; background:var(--coral-soft); font-weight:800; font-size:.85rem; color:#B4432C;">
+            🚨 INV-013 現場即時運作數據（2026/09/21 09:51:35）
+          </div>
           <table>
             <thead>
               <tr>
-                <th>階段</th>
-                <th>時間區間</th>
-                <th class="ctr">相對同儕比值</th>
-                <th class="num">階段損失 (kWh)</th>
-                <th>硬體狀態與工程推論</th>
+                <th>監測指標</th>
+                <th class="num">健康同儕標竿 (006/009)</th>
+                <th class="num">INV-013 實時數據</th>
+                <th>偏差與診斷含義</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><b>階段 1</b></td>
-                <td>06/20 – 07/15 (26天)</td>
-                <td class="ctr"><b>0.543</b></td>
-                <td class="num">6,330</td>
-                <td>初始即短缺約 46% 直流容量（2~3 個 MPPT 斷路）</td>
+                <td><b>即時發電功率 (kW)</b></td>
+                <td class="num">70.113 ~ 70.477 kW</td>
+                <td class="num"><b style="color:var(--coral)">31.262 kW</b></td>
+                <td><span class="chip coral"><b>僅達同儕 44.6%</b></span></td>
               </tr>
               <tr>
-                <td><b>階段 2</b></td>
-                <td>07/16 – 08/15 (31天)</td>
-                <td class="ctr"><b>0.530</b></td>
-                <td class="num">7,950</td>
-                <td>比值每 30 天緩降 1.3%，接頭微過熱或組件劣化</td>
+                <td><b>交流輸出電流 (A)</b></td>
+                <td class="num">105.20 ~ 105.80 A</td>
+                <td class="num"><b style="color:var(--coral)">47.267 A</b></td>
+                <td>電流腰斬，證明輸入端短缺 55%</td>
               </tr>
               <tr>
-                <td><b>階段 3</b></td>
-                <td>08/16 – 09/04 (20天)</td>
-                <td class="ctr"><b>0.511</b></td>
-                <td class="num">5,320</td>
-                <td>降至 51%，絕緣阻抗 (Riso) 持續探底</td>
+                <td><b>交流輸出電壓 (V)</b></td>
+                <td class="num">221.83 ~ 221.87 V</td>
+                <td class="num">220.800 V</td>
+                <td>電壓正常併網，無電網跳脫</td>
               </tr>
               <tr class="bad-row">
-                <td><b>階段 4</b></td>
-                <td>09/05 – 09/09 (5天)</td>
-                <td class="ctr"><b style="color:var(--coral)">0.003 (停機)</b></td>
-                <td class="num"><b style="color:var(--coral)">3,022</b></td>
-                <td><b>幾乎完全停機 5 天</b>！觸發 Riso 低或接地故障報警</td>
+                <td><b>系統狀態指示燈</b></td>
+                <td class="ctr"><span class="chip green">🟢 綠色正常</span></td>
+                <td class="ctr"><span class="chip coral">🔴 <b>紅色警報圖標</b></span></td>
+                <td><b>系統內部有 Critical Fault Code</b></td>
               </tr>
-              <tr class="hl-row">
-                <td><b>階段 5</b></td>
-                <td>09/10 – 09/17 (8天)</td>
-                <td class="ctr"><b style="color:var(--coral)">0.447</b></td>
-                <td class="num">2,023</td>
-                <td>復機後再跌 6 個百分點，又有 1~2 串脫落隔離</td>
-              </tr>
-              <tr style="background:#FBEAE5; font-weight:800;">
-                <td colspan="2">90 天累計統計</td>
-                <td class="ctr">0.54 &rarr; 0.45</td>
-                <td class="num" style="color:var(--coral); font-size:1.05rem;">24,645 kWh</td>
-                <td>每天持續流失 290–300 kWh (NT$ 1,350/日)</td>
+              <tr>
+                <td><b>90 天累計度數損失</b></td>
+                <td class="num">應發 48,169 kWh</td>
+                <td class="num"><b style="color:var(--coral)">實發 23,524 kWh</b></td>
+                <td><b style="color:var(--coral)">累計損失 24,645 kWh (7.4%)</b></td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- SVG Architecture Topology of Fault -->
+        <!-- SVG Topology of DC Breakdown -->
         <div class="fig">
           <div class="figtitle">
-            <span>INV-013 直流側故障鏈拓撲解析 (DC Architecture)</span>
+            <span>INV-013 直流組串斷路與接頭燒融劣化鏈</span>
             <span class="chip coral">火災高危險</span>
           </div>
-          <svg viewBox="0 0 540 330" style="width:100%; height:auto;" aria-label="DC Fault Topology">
-            <rect x="10" y="15" width="130" height="295" rx="6" fill="#F4F7FA" stroke="#D9E3EC" stroke-width="1.5"/>
+          <svg viewBox="0 0 540 310" style="width:100%; height:auto;" aria-label="DC Fault Topology">
+            <rect x="10" y="15" width="130" height="280" rx="6" fill="#F4F7FA" stroke="#D9E3EC" stroke-width="1.5"/>
             <text x="75" y="38" font-size="12" font-weight="bold" fill="#0C3A63" text-anchor="middle">光伏組件組串 (Strings)</text>
             
-            <!-- String 1 Normal -->
             <rect x="25" y="55" width="100" height="36" rx="4" fill="#E8F5E9" stroke="#2E7D32"/>
-            <text x="75" y="77" font-size="11" fill="#2E7D32" font-weight="bold" text-anchor="middle">PV String 1~3 (正常)</text>
+            <text x="75" y="77" font-size="11" fill="#2E7D32" font-weight="bold" text-anchor="middle">PV String 1~4 (正常)</text>
 
-            <!-- String 2 Normal -->
             <rect x="25" y="105" width="100" height="36" rx="4" fill="#E8F5E9" stroke="#2E7D32"/>
-            <text x="75" y="127" font-size="11" fill="#2E7D32" font-weight="bold" text-anchor="middle">PV String 4~6 (正常)</text>
+            <text x="75" y="127" font-size="11" fill="#2E7D32" font-weight="bold" text-anchor="middle">PV String 5~8 (正常)</text>
 
-            <!-- String 3 FAULT -->
             <rect x="25" y="160" width="100" height="42" rx="4" fill="#FBEAE5" stroke="#D95F45" stroke-dasharray="3,3"/>
-            <text x="75" y="180" font-size="11" fill="#B4432C" font-weight="bold" text-anchor="middle">PV String 7~9</text>
+            <text x="75" y="180" font-size="11" fill="#B4432C" font-weight="bold" text-anchor="middle">PV String 9~12</text>
             <text x="75" y="195" font-size="9" fill="#B4432C" text-anchor="middle">❌ MC4燒毀/斷路</text>
 
-            <!-- String 4 FAULT -->
             <rect x="25" y="215" width="100" height="42" rx="4" fill="#FBEAE5" stroke="#D95F45" stroke-dasharray="3,3"/>
-            <text x="75" y="235" font-size="11" fill="#B4432C" font-weight="bold" text-anchor="middle">PV String 10~12</text>
-            <text x="75" y="250" font-size="9" fill="#B4432C" text-anchor="middle">❌ 絕緣Riso低跳脫</text>
+            <text x="75" y="235" font-size="11" fill="#B4432C" font-weight="bold" text-anchor="middle">PV String 13~17</text>
+            <text x="75" y="250" font-size="9" fill="#B4432C" text-anchor="middle">❌ Riso絕緣低保護隔離</text>
 
-            <rect x="25" y="270" width="100" height="30" rx="4" fill="#FCF2DE" stroke="#E09A2B"/>
-            <text x="75" y="290" font-size="10" fill="#9A6A10" font-weight="bold" text-anchor="middle">9/10 新脫落串 (6%)</text>
-
-            <!-- MPPT & Inverter -->
             <rect x="180" y="45" width="150" height="235" rx="6" fill="#E8F1F9" stroke="#1968AD" stroke-width="1.5"/>
             <text x="255" y="70" font-size="12" font-weight="bold" fill="#0C3A63" text-anchor="middle">DC 匯流箱 & MPPT</text>
             
@@ -848,47 +980,39 @@ svg text { font-family: inherit; }
 
             <rect x="195" y="170" width="120" height="34" rx="3" fill="#FBEAE5" stroke="#D95F45"/>
             <text x="255" y="188" font-size="10" fill="#B4432C" font-weight="bold" text-anchor="middle">MPPT 3: 0 A (斷路)</text>
-            <text x="255" y="199" font-size="8" fill="#B4432C" text-anchor="middle">保險絲熔斷/直流開關跳脫</text>
+            <text x="255" y="199" font-size="8" fill="#B4432C" text-anchor="middle">保險絲熔斷/接頭燒毀</text>
 
             <rect x="195" y="215" width="120" height="34" rx="3" fill="#FBEAE5" stroke="#D95F45"/>
             <text x="255" y="233" font-size="10" fill="#B4432C" font-weight="bold" text-anchor="middle">MPPT 4: 0 A (未併入)</text>
-            <text x="255" y="244" font-size="8" fill="#B4432C" text-anchor="middle">絕緣低於1MΩ阻抗保護</text>
+            <text x="255" y="244" font-size="8" fill="#B4432C" text-anchor="middle">絕緣低於1MΩ阻抗跳脫</text>
 
-            <!-- Connections -->
+            <rect x="365" y="70" width="155" height="190" rx="6" fill="#0C3A63"/>
+            <text x="442" y="98" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">INV-013 (SG110CX)</text>
+            <rect x="380" y="115" width="125" height="42" rx="3" fill="#1968AD"/>
+            <text x="442" y="133" font-size="10" fill="#8FD9E4" text-anchor="middle">9/21 實測功率</text>
+            <text x="442" y="149" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">31.26 kW (44.6%)</text>
+
+            <rect x="380" y="170" width="125" height="42" rx="3" fill="#D95F45"/>
+            <text x="442" y="188" font-size="10" fill="#FFEAEA" text-anchor="middle">SCADA 亮紅燈告警</text>
+            <text x="442" y="204" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">Critical Alarm Active</text>
+
             <path d="M125 73 L195 100" stroke="#2E7D32" stroke-width="2"/>
             <path d="M125 123 L195 140" stroke="#2E7D32" stroke-width="2"/>
             <path d="M125 181 L195 187" stroke="#D95F45" stroke-width="2" stroke-dasharray="4,4"/>
             <path d="M125 236 L195 232" stroke="#D95F45" stroke-width="2" stroke-dasharray="4,4"/>
-
-            <!-- Inverter Unit -->
-            <rect x="365" y="70" width="155" height="190" rx="6" fill="#0C3A63"/>
-            <text x="442" y="98" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">INV-013 主機 (113kW)</text>
-            <rect x="380" y="115" width="125" height="42" rx="3" fill="#1968AD"/>
-            <text x="442" y="133" font-size="10" fill="#8FD9E4" text-anchor="middle">實發容量</text>
-            <text x="442" y="149" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">僅約 51 ~ 56 kW</text>
-
-            <rect x="380" y="170" width="125" height="42" rx="3" fill="#D95F45"/>
-            <text x="442" y="188" font-size="10" fill="#FFEAEA" text-anchor="middle">9/5–9/9 停機警報</text>
-            <text x="442" y="204" font-size="11" font-weight="bold" fill="#fff" text-anchor="middle">Riso Low / Ground Fault</text>
-
             <path d="M330 140 L365 140" stroke="#1968AD" stroke-width="3"/>
             <path d="M330 200 L365 200" stroke="#D95F45" stroke-width="3" stroke-dasharray="3,3"/>
-
-            <!-- Bottom Warning in SVG -->
-            <rect x="180" y="295" width="340" height="26" rx="3" fill="#FCF2DE" stroke="#E09A2B"/>
-            <text x="350" y="312" font-size="10" font-weight="bold" fill="#9A6A10" text-anchor="middle">⚠️ 推論：約 46% 直流容量完全未進入逆變器，且故障仍在擴大</text>
           </svg>
         </div>
       </div>
 
-      <!-- Warning Callout -->
       <div class="warn">
-        <h3 style="color:#B4432C; margin-bottom:4px;">⚠️ 投資人安全通報：這絕不只是發電少，而是重大火災隱患！</h3>
-        <p style="color:#6B1F11;">直流光伏陣列電壓高達 1000–1500V。若接頭燒蝕劣化或絕緣阻抗破裂，會引發極難自行熄滅的<b>直流電弧（DC Arc）</b>，高達數千度的高溫極易引燃周邊設備與屋頂材料。停機 5 天後復機發電量再度下挫，強烈暗示現場有組串接頭已燒毀斷開。必須在一週內強制到場排查，杜絕毀滅性火災事故！</p>
+        <h3 style="color:#B4432C; margin-bottom:4px;">⚠️ 投資人告急：實時數據坐實電弧火災隱患！</h3>
+        <p style="color:#6B1F11;">2026/09/21 現場資料無情證實：INV-013 故障不僅沒有自行修復，而且發電量牢牢卡在 44.6%，紅色告警燈長亮。這代表內部直流組串接觸不良、接頭炭化或絕緣破損持續存在，強烈敦促投資人授權維運團隊於 48 小時內緊急攜帶熱像儀進場！</p>
       </div>
     </div>
     <div class="slide-foot">
-      <div>依據數據：amCharts 大安龜殼段 9/5–9/10 停機歷程分析</div>
+      <div>數據來源：AUO BDL221110076 (m3.1.1b) 2026/09/21 09:51:35 實時快照</div>
       <div class="pageno">2.1</div>
     </div>
   </section>
@@ -897,130 +1021,126 @@ svg text { font-family: inherit; }
   <section class="slide" id="p2-2">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 2 · 深度診斷 2.2</div>
-        <h1>🟠 P2 & 🟡 P3：INV-001 局部階躍衰退與 A/B 組容量倒掛之謎</h1>
-        <p class="sub">INV-001 於 9/4 發生階躍性下滑；同時 A 組登錄容量高於 B 組，實際發電量卻全面倒掛，需對齊竣工圖與現場硬體清冊。</p>
+        <div class="eyebrow">Part 2 · 深度破案 2.2</div>
+        <h1>破案解密：A/B 組容量倒掛完全是「平台登錄銘牌人為誤植」</h1>
+        <p class="sub">先前困惑投資人的「A 組登錄容量大 5.9% 實際發電卻少 5.0%」，經模組串接圖 C-002 比對後真相大白：純屬平台建檔人員將機台 kWp 登記錯誤！</p>
       </div>
       <div class="flags">
-        <span class="flag amber">🟠 P2 階躍衰退</span>
-        <span class="flag blue">🟡 P3 容量倒掛</span>
-        <span class="flag teal">竣工圖核驗</span>
+        <span class="flag green">真相大白</span>
+        <span class="flag amber">人為登記疏漏</span>
+        <span class="flag blue">設備運作正常</span>
       </div>
     </div>
     <div class="slide-body">
       <div class="two-col">
-        <!-- A vs B Group Inversion Table -->
         <div class="table-wrap">
-          <div style="padding:10px 14px; background:var(--blue-soft); font-weight:800; font-size:.85rem; color:var(--blue-dd);">
-            📊 A 組 vs B 組 容量與發電倒掛事實表
+          <div style="padding:10px 14px; background:var(--green-soft); font-weight:800; font-size:.85rem; color:var(--green);">
+            🎉 A 組 vs B 組 容量誤植真相核算表
           </div>
           <table>
             <thead>
               <tr>
-                <th>群組</th>
-                <th>逆變器清單</th>
-                <th class="num">平台登錄 kWp</th>
-                <th class="num">90天平均 kWh</th>
-                <th class="num">日均 ey</th>
-                <th>實發與容量關係</th>
+                <th>逆變器</th>
+                <th class="num">圖面真實片數</th>
+                <th class="num">真實容量 (kWp)</th>
+                <th class="num">平台原登錄 (kWp)</th>
+                <th class="ctr">登記誤差</th>
+                <th>實質發電評等</th>
               </tr>
             </thead>
             <tbody>
               <tr class="hl-row">
-                <td><b>A 組</b></td>
-                <td>INV-001, 002, 005</td>
-                <td class="num"><b>119.9 kWp</b></td>
-                <td class="num">46,495 kWh</td>
-                <td class="num">4.31</td>
-                <td><span class="chip amber">容量大 5.9%，發電反而少 5%</span></td>
-              </tr>
-              <tr class="good-row">
-                <td><b>B 組</b></td>
-                <td>INV-006, 009, 010</td>
-                <td class="num"><b>113.2 kWp</b></td>
-                <td class="num">48,938 kWh</td>
-                <td class="num">4.81</td>
-                <td><span class="chip green">容量較小，發電度數領先 2,443 度</span></td>
+                <td><b>INV-001</b></td>
+                <td class="num">334 片</td>
+                <td class="num"><b>111.89 kWp</b></td>
+                <td class="num">119.90 kWp</td>
+                <td class="ctr"><span class="chip coral">高報 +8.01 kWp (+7.2%)</span></td>
+                <td>正常 (除9/4微降外)</td>
               </tr>
               <tr>
-                <td colspan="2"><b>倒掛差異比對</b></td>
-                <td class="num"><b style="color:var(--blue)">+5.9%</b></td>
-                <td class="num"><b style="color:var(--coral)">-5.0%</b></td>
-                <td class="num"><b style="color:var(--coral)">-10.4%</b></td>
-                <td><b>實發比值不隨天氣變（非削峰）</b></td>
+                <td><b>INV-002</b></td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60 kWp</b></td>
+                <td class="num">119.90 kWp</td>
+                <td class="ctr"><span class="chip teal">吻合 (-0.7 kWp)</span></td>
+                <td>正常運作</td>
+              </tr>
+              <tr class="hl-row">
+                <td><b>INV-005</b></td>
+                <td class="num">340 片</td>
+                <td class="num"><b>113.90 kWp</b></td>
+                <td class="num">119.90 kWp</td>
+                <td class="ctr"><span class="chip coral">高報 +6.00 kWp (+5.3%)</span></td>
+                <td>正常運作</td>
+              </tr>
+              <tr class="good-row">
+                <td><b>INV-009</b></td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60 kWp</b></td>
+                <td class="num">113.20 kWp</td>
+                <td class="ctr"><span class="chip amber">低報 -7.40 kWp (-6.1%)</span></td>
+                <td>容量大自然發電多</td>
+              </tr>
+              <tr class="good-row">
+                <td><b>INV-010</b></td>
+                <td class="num">360 片</td>
+                <td class="num"><b>120.60 kWp</b></td>
+                <td class="num">113.20 kWp</td>
+                <td class="ctr"><span class="chip amber">低報 -7.40 kWp (-6.1%)</span></td>
+                <td>容量大自然發電多</td>
               </tr>
             </tbody>
           </table>
-          <div style="padding:10px 14px; font-size:.80rem; color:var(--muted); line-height:1.5; background:#fff;">
-            <b>三種工程可能性解析：</b><br>
-            (a) <b>平台容量誤植</b>：A 組實際亦為 113.2 kWp，純屬後台資料登錄錯誤，更正即可。<br>
-            (b) <b>屋頂方位/傾角/遮蔭</b>：A 組朝向較差或受女兒牆常態遮蔽。<br>
-            (c) <b>實體缺串</b>：A 組完工時即短缺約 6~10% 的直流模組（施工驗收疏漏）。
+          <div style="padding:10px 14px; font-size:.82rem; color:var(--ink); line-height:1.6; background:#fff;">
+            <b>結論與破案關鍵：</b><br>
+            • INV-001/005 的真實容量（111.9 / 113.9 kWp）本來就小於 INV-009/010（120.6 kWp）！<br>
+            • 後台人員將 001/005 登錄為 119.9 kWp，用較小發電度數除以虛高容量，導致計算出的 <code>ey</code> 顯得偏低！<br>
+            • <b>這完全是建檔銘牌錯誤，非設備或方位缺陷！</b>一鍵修正後台參數即可修復！
           </div>
         </div>
 
-        <!-- INV-001 Step Drop & Diagnostic Decision Tree -->
         <div class="fig">
           <div class="figtitle">
-            <span>INV-001 階躍衰退歷程與根因推論 (P2)</span>
-            <span class="chip amber">約缺 1/3~1/2 串</span>
+            <span>INV-001 9/4 階降微故障依然需追蹤 (P2)</span>
+            <span class="chip amber">約缺 1/3 串</span>
           </div>
-          <svg viewBox="0 0 520 280" style="width:100%; height:auto;" aria-label="INV-001 Trend and Decision Tree">
-            <!-- Timeline Line -->
-            <rect x="15" y="20" width="490" height="75" rx="5" fill="#F4F7FA" stroke="#D9E3EC"/>
-            <text x="30" y="42" font-size="11" font-weight="bold" fill="#0C3A63">INV-001 相對 006/009 比值歷時變化：</text>
+          <svg viewBox="0 0 520 270" style="width:100%; height:auto;" aria-label="INV-001 Step Drop Tree">
+            <rect x="15" y="20" width="490" height="80" rx="5" fill="#F4F7FA" stroke="#D9E3EC"/>
+            <text x="30" y="42" font-size="11" font-weight="bold" fill="#0C3A63">INV-001 實時發電 65.5kW (同儕約 69.8kW，短缺約 6%)：</text>
             
-            <circle cx="90" cy="65" r="14" fill="#E8F1F9" stroke="#1968AD" stroke-width="2"/>
-            <text x="90" y="70" font-size="11" font-weight="bold" fill="#1968AD" text-anchor="middle">89.9%</text>
-            <text x="90" y="88" font-size="9" fill="#5B7285" text-anchor="middle">6~7 月</text>
+            <circle cx="90" cy="70" r="14" fill="#E8F1F9" stroke="#1968AD" stroke-width="2"/>
+            <text x="90" y="75" font-size="10" font-weight="bold" fill="#1968AD" text-anchor="middle">89.9%</text>
+            <text x="90" y="92" font-size="9" fill="#5B7285" text-anchor="middle">6~7 月正常</text>
 
-            <path d="M110 65 L220 65" stroke="#1968AD" stroke-width="2"/>
+            <path d="M110 70 L220 70" stroke="#1968AD" stroke-width="2"/>
 
-            <circle cx="240" cy="65" r="14" fill="#FCF2DE" stroke="#E09A2B" stroke-width="2"/>
-            <text x="240" y="70" font-size="11" font-weight="bold" fill="#9A6A10" text-anchor="middle">89.2%</text>
-            <text x="240" y="88" font-size="9" fill="#5B7285" text-anchor="middle">8 月微降</text>
+            <circle cx="240" cy="70" r="14" fill="#FCF2DE" stroke="#E09A2B" stroke-width="2"/>
+            <text x="240" y="75" font-size="10" font-weight="bold" fill="#9A6A10" text-anchor="middle">89.2%</text>
+            <text x="240" y="92" font-size="9" fill="#5B7285" text-anchor="middle">8 月微降</text>
 
-            <path d="M260 65 L370 65" stroke="#D95F45" stroke-width="2.5" stroke-dasharray="4,4"/>
+            <path d="M260 70 L370 70" stroke="#D95F45" stroke-width="2" stroke-dasharray="4,4"/>
 
-            <circle cx="390" cy="65" r="16" fill="#FBEAE5" stroke="#D95F45" stroke-width="2.5"/>
-            <text x="390" y="70" font-size="11" font-weight="bold" fill="#B4432C" text-anchor="middle">88.3%</text>
-            <text x="390" y="89" font-size="9" font-weight="bold" fill="#B4432C" text-anchor="middle">9/4 突降一階</text>
+            <circle cx="390" cy="70" r="16" fill="#FBEAE5" stroke="#D95F45" stroke-width="2.5"/>
+            <text x="390" y="75" font-size="10" font-weight="bold" fill="#B4432C" text-anchor="middle">88.3%</text>
+            <text x="390" y="93" font-size="9" font-weight="bold" fill="#B4432C" text-anchor="middle">9/4 突降一階</text>
 
-            <!-- Diagnostic Tree -->
-            <rect x="15" y="110" width="490" height="155" rx="5" fill="#fff" stroke="#D9E3EC"/>
-            <text x="30" y="132" font-size="12" font-weight="bold" fill="#0C3A63">排查決策路徑 (現場驗證手段)：</text>
-
-            <g transform="translate(30, 145)">
-              <rect x="0" y="0" width="135" height="42" rx="3" fill="#E8F5E9" stroke="#2E7D32"/>
-              <text x="67" y="18" font-size="10" font-weight="bold" fill="#2E7D32" text-anchor="middle">假設 1：局部積污</text>
-              <text x="67" y="32" font-size="9" fill="#5B7285" text-anchor="middle">鳥糞遮蔽或樹葉堆積</text>
-
-              <rect x="155" y="0" width="145" height="42" rx="3" fill="#FCF2DE" stroke="#E09A2B"/>
-              <text x="227" y="18" font-size="10" font-weight="bold" fill="#9A6A10" text-anchor="middle">假設 2：熱斑與二極體</text>
-              <text x="227" y="32" font-size="9" fill="#5B7285" text-anchor="middle">1片旁路二極體導通擊穿</text>
-
-              <rect x="320" y="0" width="140" height="42" rx="3" fill="#FBEAE5" stroke="#D95F45"/>
-              <text x="390" y="18" font-size="10" font-weight="bold" fill="#B4432C" text-anchor="middle">假設 3：微斷路或脫落</text>
-              <text x="390" y="32" font-size="9" fill="#5B7285" text-anchor="middle">接頭接觸不良阻抗升高</text>
-
-              <path d="M67 42 L67 65 L227 65 L227 75" stroke="#1968AD" stroke-width="1.5" fill="none"/>
-              <path d="M227 42 L227 75" stroke="#1968AD" stroke-width="1.5" fill="none"/>
-              <path d="M390 42 L390 65 L227 65" stroke="#1968AD" stroke-width="1.5" fill="none"/>
-
-              <rect x="110" y="75" width="235" height="35" rx="3" fill="#0C3A63"/>
-              <text x="227" y="92" font-size="10" font-weight="bold" fill="#8FD9E4" text-anchor="middle">SOP 驗證：紅外線熱像儀 ＋ 逐串量 Voc</text>
-              <text x="227" y="104" font-size="8.5" fill="#fff" text-anchor="middle">找出電壓偏低 1/3 片的組串即刻更換</text>
-            </g>
+            <rect x="15" y="115" width="490" height="135" rx="5" fill="#fff" stroke="#D9E3EC"/>
+            <text x="30" y="135" font-size="11" font-weight="bold" fill="#0C3A63">現場工程查驗結論：</text>
+            <text x="30" y="160" font-size="10" fill="#5B7285">• 容量登錄修正後，INV-001 比值提升至約 94%，已大幅收斂。</text>
+            <text x="30" y="180" font-size="10" fill="#5B7285">• 但 9/4 突發之 1.4% 階降依然存在，推論為 1 片旁路二極體導通擊穿或鳥糞積污。</text>
+            <text x="30" y="200" font-size="10" fill="#5B7285">• 建議：無安全危險，列入下月例行巡檢以無人機熱像掃描更換即可。</text>
+            <rect x="30" y="215" width="460" height="24" rx="3" fill="#E8F5E9"/>
+            <text x="260" y="231" font-size="10" font-weight="bold" fill="#2E7D32" text-anchor="middle">處置狀態：降級為 🟢 例行觀察，投資人無須支出緊急吊車成本</text>
           </svg>
         </div>
       </div>
 
       <div class="note">
-        <b>💡 投資人資產管理建議：</b> INV-001 目前缺損量約佔 1.4%（每日約少發 8~10 度電），現階段不需緊急出動吊車，可列入下月例行巡檢一併使用熱像儀排查；但 A/B 組容量倒掛牽涉資產登錄真實性與銀行保險契約核備，資產端應於兩週內調閱竣工圖完成對帳。
+        <b>💡 投資人決策指示：</b> 立即授權後台維運人員更正資料庫內 13 台逆變器銘牌容量（以圖紙 C-002 為準）。此動作零成本，即可讓案場帳面 PR 與發電分析立即恢復精準！
       </div>
     </div>
     <div class="slide-foot">
-      <div>對比基準：同組 002/005 斜率均 &lt; &plusmn;0.1%/月 ｜ 001 獨自階躍下滑</div>
+      <div>比對依據：昶恆 C-002 模組串接圖 ＆ 友達 SCADA 後台參數庫</div>
       <div class="pageno">2.2</div>
     </div>
   </section>
@@ -1029,295 +1149,387 @@ svg text { font-family: inherit; }
   <section class="slide" id="p2-3">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 2 · 深度診斷 2.3</div>
-        <h1>🟡 P4：監控系統盲區失能（日射計歸零與逆變器跳號）</h1>
-        <p class="sub">90 天資料中日射量（insolation）與 PR 欄位全部為 0；且存在 6 台跳號設備。若依賴傳統 SCADA 監控，電廠在過去 90 天完全處於「盲目失守」狀態。</p>
+        <div class="eyebrow">Part 2 · 深度破案 2.3</div>
+        <h1>破案解密：日射計接於 COM2 正常運作，但驚見 6 台機台紅字告警！</h1>
+        <p class="sub">友達 SCADA 截圖徹底揭露兩大驚人事實：日射計在 COM2 正常讀取 720W/m²；更嚴重的是全場 13 台中共有 6 台逆變器（003, 004, 007, 008, 009, 013）亮起紅色警報！</p>
       </div>
       <div class="flags">
-        <span class="flag grey">🟡 P4 系統盲區</span>
-        <span class="flag amber">PR 全為 0</span>
-        <span class="flag coral">6台跳號脫管</span>
+        <span class="flag teal">COM2 日射計正常</span>
+        <span class="flag coral">6台逆變器告警</span>
+        <span class="flag amber">溫度計327°C斷線</span>
       </div>
     </div>
     <div class="slide-body">
-      <div class="two-col">
-        <!-- 4 Blind Spots Table -->
+      <div class="split-img-left">
+        <div class="fig">
+          <div class="figtitle">
+            <span>友達資料收集器 (AUO BDL221110076) 2026/09/21 實時架構截圖</span>
+            <span class="chip coral">點擊放大檢視</span>
+          </div>
+          <div class="doc-img-wrap" style="height: 380px; overflow-y: auto;">
+            <a href="assets/auo_scada_status.jpg" target="_blank" title="點擊檢視高解析原圖">
+              <img src="assets/auo_scada_status.jpg" alt="友達資料收集器 實時架構截圖 2026/09/21">
+            </a>
+          </div>
+          <div class="cap">紅框處顯示 003, 004, 007, 008, 009, 013 亮紅燈；下方日射計 720 W/m² 位於 COM2。</div>
+        </div>
+
         <div class="table-wrap">
+          <div style="padding:10px 14px; background:var(--coral-soft); font-weight:800; font-size:.85rem; color:#B4432C;">
+            🚨 全場告警設備清單與感測器狀態表
+          </div>
           <table>
             <thead>
               <tr>
-                <th>監控盲區項目</th>
-                <th>現況事實（Data Facts）</th>
-                <th>傳統維運痛點</th>
-                <th>資產管理潛在風險</th>
+                <th>設備編號</th>
+                <th class="num">即時發電</th>
+                <th class="ctr">告警狀態</th>
+                <th>風險評估與後續處置</th>
               </tr>
             </thead>
             <tbody>
               <tr class="bad-row">
-                <td><b>① 日射量歸零</b></td>
-                <td>90 天 <code>insolation</code> 全為 0.00</td>
-                <td>日射計未接線或 Modbus 點位對應錯誤</td>
-                <td>無法區分「天候不良」與「系統老化衰退」</td>
+                <td><b>COM1_013</b></td>
+                <td class="num"><b>31.26 kW</b></td>
+                <td class="ctr"><span class="chip coral">🔴 嚴重告警</span></td>
+                <td><b>僅44.6%</b>，嚴重缺串斷路，火災高危！</td>
               </tr>
               <tr class="bad-row">
-                <td><b>② 效能比 (PR) 歸零</b></td>
-                <td>90 天 <code>pr</code> 欄位全部為 0.00%</td>
-                <td>無法做晴空篩選與標準 PR 考核</td>
-                <td>無法向銀行/保險出具履約報告，恐遭降評</td>
+                <td><b>COM1_007</b></td>
+                <td class="num"><b>61.99 kW</b></td>
+                <td class="ctr"><span class="chip coral">🔴 紅字告警</span></td>
+                <td>落後同儕 12%，疑似短缺 1~2 組串</td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>COM1_003</b></td>
+                <td class="num">65.94 kW</td>
+                <td class="ctr"><span class="chip coral">🔴 紅字告警</span></td>
+                <td>有內部告警代碼，需調閱 Fault Code</td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>COM1_004</b></td>
+                <td class="num">68.62 kW</td>
+                <td class="ctr"><span class="chip coral">🔴 紅字告警</span></td>
+                <td>有內部告警代碼，需調閱 Fault Code</td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>COM1_008</b></td>
+                <td class="num">67.26 kW</td>
+                <td class="ctr"><span class="chip coral">🔴 紅字告警</span></td>
+                <td>有內部告警代碼，需調閱 Fault Code</td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>COM1_009</b></td>
+                <td class="num">70.11 kW</td>
+                <td class="ctr"><span class="chip coral">🔴 紅字告警</span></td>
+                <td>發電量尚可但亮紅燈，防範隱性劣化</td>
+              </tr>
+              <tr class="good-row">
+                <td><b>COM2_031</b><br><small>ADTEK 日射計</small></td>
+                <td class="num"><b>720 W/m²</b></td>
+                <td class="ctr"><span class="chip green">🟢 正常運作</span></td>
+                <td><b>日射計完好！</b>僅需在軟體將 COM2 關聯至 COM1</td>
               </tr>
               <tr class="hl-row">
-                <td><b>③ 逆變器跳號失聯</b></td>
-                <td>缺 003, 004, 007, 008, 011, 012</td>
-                <td>資料匯出過濾漏選，或設備未建置</td>
-                <td>若實體存在則處於 0 監控狀態，故障不知</td>
-              </tr>
-              <tr>
-                <td><b>④ 缺少 5 分鐘級 DC</b></td>
-                <td>僅提供逐日累計 kWh</td>
-                <td>缺乏 MPPT 級電壓、電流波形</td>
-                <td>無法從遠端精確標定斷路串號，需到場耗時</td>
+                <td><b>COM2_032</b><br><small>ADTEK 溫度計</small></td>
+                <td class="num">327.67 °C</td>
+                <td class="ctr"><span class="chip amber">⚠️ 斷線溢位</span></td>
+                <td>數值為 0x7FFF 溢位代碼，感溫線斷線需重接</td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <!-- SVG Comparison Architecture -->
-        <div class="fig">
-          <div class="figtitle">
-            <span>傳統監控失能 vs AI Agent 全感知守護架構</span>
-            <span class="chip teal">多維同儕互驗</span>
-          </div>
-          <svg viewBox="0 0 520 270" style="width:100%; height:auto;" aria-label="Monitoring Architecture Comparison">
-            <!-- Left: Traditional Broken -->
-            <rect x="15" y="20" width="230" height="235" rx="6" fill="#FBEAE5" stroke="#D95F45" stroke-width="1.5"/>
-            <text x="130" y="45" font-size="12" font-weight="bold" fill="#B4432C" text-anchor="middle">❌ 傳統 SCADA 監控架構 (失能)</text>
-            
-            <rect x="35" y="65" width="190" height="34" rx="4" fill="#fff" stroke="#D95F45"/>
-            <text x="130" y="83" font-size="10" fill="#B4432C" font-weight="bold" text-anchor="middle">日射計 (通訊中斷 / 0.00)</text>
-            <text x="130" y="93" font-size="8" fill="#5B7285" text-anchor="middle">Modbus 點位錯置</text>
-
-            <path d="M130 99 L130 120" stroke="#D95F45" stroke-width="2" stroke-dasharray="3,3"/>
-
-            <rect x="35" y="120" width="190" height="40" rx="4" fill="#fff" stroke="#D95F45"/>
-            <text x="130" y="137" font-size="10" fill="#B4432C" font-weight="bold" text-anchor="middle">PR 計算引擎 (直接癱瘓)</text>
-            <text x="130" y="151" font-size="8" fill="#B4432C" text-anchor="middle">PR = 0%，告警完全失效</text>
-
-            <path d="M130 160 L130 180" stroke="#D95F45" stroke-width="2" stroke-dasharray="3,3"/>
-
-            <rect x="35" y="180" width="190" height="55" rx="4" fill="#fff" stroke="#D95F45"/>
-            <text x="130" y="198" font-size="10" fill="#B4432C" font-weight="bold" text-anchor="middle">維運後果：完全失明 90 天</text>
-            <text x="130" y="213" font-size="8.5" fill="#5B7285" text-anchor="middle">INV-013 停機 5 天無人察查</text>
-            <text x="130" y="226" font-size="8.5" fill="#B4432C" font-weight="bold" text-anchor="middle">累計損失 NT$ 11 萬元</text>
-
-            <!-- Right: AI Agent Proactive -->
-            <rect x="270" y="20" width="235" height="235" rx="6" fill="#E8F5E9" stroke="#2E7D32" stroke-width="1.5"/>
-            <text x="387" y="45" font-size="12" font-weight="bold" fill="#2E7D32" text-anchor="middle">🛡️ AI Agent 數位孿生感知 (自主)</text>
-
-            <rect x="290" y="65" width="195" height="34" rx="4" fill="#fff" stroke="#2E7D32"/>
-            <text x="387" y="82" font-size="10" fill="#2E7D32" font-weight="bold" text-anchor="middle">跨設備動態同儕差分 (Peer Group)</text>
-            <text x="387" y="93" font-size="8" fill="#5B7285" text-anchor="middle">006/009 自動成為自適應標竿</text>
-
-            <path d="M387 99 L387 120" stroke="#2E7D32" stroke-width="2"/>
-
-            <rect x="290" y="120" width="195" height="40" rx="4" fill="#fff" stroke="#2E7D32"/>
-            <text x="387" y="137" font-size="10" fill="#2E7D32" font-weight="bold" text-anchor="middle">虛擬 PR 估算 ＋ 偏差度監控</text>
-            <text x="387" y="151" font-size="8" fill="#2E7D32" text-anchor="middle">日射計故障時零時差無感補償</text>
-
-            <path d="M387 160 L387 180" stroke="#2E7D32" stroke-width="2"/>
-
-            <rect x="290" y="180" width="195" height="55" rx="4" fill="#0C3A63"/>
-            <text x="387" y="198" font-size="10" fill="#8FD9E4" font-weight="bold" text-anchor="middle">守護成效：3 天閉環止血</text>
-            <text x="387" y="213" font-size="8.5" fill="#fff" text-anchor="middle">48hr 比值異動即刻推播工單</text>
-            <text x="387" y="226" font-size="8.5" fill="#A7F3D0" font-weight="bold" text-anchor="middle">保全 96% 現金流與資產評等</text>
-          </svg>
-        </div>
       </div>
 
       <div class="big-callout">
-        <div class="label">INVESTOR GOVERNANCE ALERT</div>
-        <div class="answer">無法提供 PR 數據，將直接面臨電廠資產估值折讓 5%~10%</div>
+        <div class="label">INVESTOR STRATEGIC ALERT</div>
+        <div class="answer">全場 1.5MW 潛在損失遠超預期：6 台逆變器告警需一併閉環</div>
         <div class="more">
-          在光伏電廠二級市場併購或資產證券化（REITs/再融資）盡職調查中，PR（Performance Ratio）是第三方獨立工程師（IE）衡量資產健康的唯一國際標準。監控長達 90 天日射量歸零，將被視為「嚴重維護瑕疵」。本平台已同步啟動同儕替代演算法，並敦促維運團隊於本月內修復實體通訊。
+          原先維運報告僅聚焦 7 台設備中的 INV-013，卻放任未被匯出的 003, 004, 007, 008 處於告警盲區。007 發電已明顯落後 12%，其餘機台隨時可能重演 013「絕緣劣化停機 5 天」之覆轍。AI Agent 平台已自動將這 6 台告警機台全部鎖定，列入本週現場檢測清單，為投資人徹底清除未爆彈！
         </div>
       </div>
     </div>
     <div class="slide-foot">
-      <div>依據規範：IEC 61724-1 光電系統性能監測標準 ｜ 點位健全度稽核</div>
+      <div>通訊架構：COM1 匯流排 (13台逆變器) ＋ COM2 匯流排 (日射計/溫度計)</div>
       <div class="pageno">2.3</div>
     </div>
   </section>
 </div>
 
-<!-- ================= PART 3: 現場處置 SOP 與高壓電氣安全 ================= -->
+<!-- ================= PART 3: 雜草治理與安全 ================= -->
 <div class="view" id="view-p3">
 
-  <!-- P3.1 -->
+  <!-- P3.1: Weed Photo Evidence & Red Box Distribution (NEW) -->
   <section class="slide" id="p3-1">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 3 · 處置與安全 3.1</div>
-        <h1>IEC 62446-1 國際標準：現場排查與故障定位 6 步 SOP</h1>
-        <p class="sub">針對 INV-013 啟動一週內緊急派工 SOP；透過遠端日誌預檢、紅外線熱像、開路電壓 Voc、短路電流 Isc、1000V 兆歐表 Riso 及 72 小時復電驗證，確保處置徹底落地。</p>
+        <div class="eyebrow">Part 3 · 雜草治理 3.1</div>
+        <h1>🚨 雜草遮蔭重災事實：一年除草兩次造成 5.8 萬度電常態蒸發</h1>
+        <p class="sub">現場照片實證：雜草高度超過光電板、面板被草屑覆蓋！C-002 紅框雜草重災區涵蓋全場近 30% 組串，且嚴重故障的 INV-013 正好坐落於雜草最密集區！</p>
       </div>
       <div class="flags">
-        <span class="flag blue">IEC 62446-1</span>
-        <span class="flag teal">一週緊急處置</span>
-        <span class="flag green">標準化維運</span>
+        <span class="flag coral">雜草遮蔭重災</span>
+        <span class="flag amber">草屑覆蓋熱斑</span>
+        <span class="flag red">年損 NT$ 26 萬</span>
       </div>
     </div>
     <div class="slide-body">
-      <!-- 6-Step Standard SOP Table -->
+      <!-- 3 Images Grid -->
+      <div class="three-col">
+        <div class="fig">
+          <div class="figtitle">
+            <span>現場實況 1：地面割草雜草淹沒面板</span>
+            <span class="chip coral">實拍照片</span>
+          </div>
+          <div class="doc-img-wrap" style="height: 240px;">
+            <a href="assets/field_weeds_cutting_1.jpg" target="_blank">
+              <img src="assets/field_weeds_cutting_1.jpg" alt="現場割草實拍1" style="height:100%; object-fit:cover;">
+            </a>
+          </div>
+          <div class="cap">雜草長高至 1.2 米淹沒板緣，割草碎屑大面積覆蓋面板。</div>
+        </div>
+
+        <div class="fig">
+          <div class="figtitle">
+            <span>現場實況 2：低基座/水岸蘆葦叢生</span>
+            <span class="chip coral">實拍照片</span>
+          </div>
+          <div class="doc-img-wrap" style="height: 240px;">
+            <a href="assets/field_weeds_cutting_2.jpg" target="_blank">
+              <img src="assets/field_weeds_cutting_2.jpg" alt="現場割草實拍2" style="height:100%; object-fit:cover;">
+            </a>
+          </div>
+          <div class="cap">高大蘆葦嚴重遮光，割草機刀片飛石易擊碎玻璃。</div>
+        </div>
+
+        <div class="fig">
+          <div class="figtitle">
+            <span>C-002 圖紙紅框：雜草重度分佈區</span>
+            <span class="chip amber">阿發回報標註</span>
+          </div>
+          <div class="doc-img-wrap" style="height: 240px;">
+            <a href="assets/string_layout_weeds_annotated.jpg" target="_blank">
+              <img src="assets/string_layout_weeds_annotated.jpg" alt="雜草分佈紅框標註圖" style="height:100%; object-fit:contain;">
+            </a>
+          </div>
+          <div class="cap">紅框集中在左上(INV1)、左下(INV4/5)、東南角(INV13重災)！</div>
+        </div>
+      </div>
+
+      <!-- Problem Analysis Table -->
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th style="width: 70px;">步驟</th>
-              <th style="width: 130px;">檢測作業名稱</th>
-              <th>執行內容與作業方法</th>
-              <th style="width: 140px;">使用儀器設備</th>
-              <th>合格判斷門檻與處置動作</th>
+              <th>現行「一年除草兩次」模式痛點</th>
+              <th>現場工程現象（Fact Evidence）</th>
+              <th class="num">預估每年發電與營收衝擊</th>
+              <th>長期資產風險與安全隱患</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><span class="chip blue">步驟 1</span></td>
-              <td><b>遠端日誌提取</b></td>
-              <td>匯出 09/01–09/12 逆變器告警紀錄與 MPPT 各通道 DC 電壓、電流。</td>
-              <td>監控雲端後台 / SCADA</td>
-              <td>確認哪幾路 MPPT 電流為 0 A；查閱 Riso、接地故障、過壓代碼。</td>
+            <tr class="bad-row">
+              <td><b>① 漫長遮蔭空窗期 (長達8個月)</b></td>
+              <td>濱海夏秋雜草 1 個月即長高，一年僅除 2 次導致每年有 8 個月組串下緣被完全遮光。</td>
+              <td class="num"><b style="color:var(--coral)">-48,000 ~ 68,000 kWh</b><br><small style="color:var(--muted)">年損 NT$ 21.6~30.6 萬</small></td>
+              <td>旁路二極體長時間高負載導通，導致局部熱斑燒毀與背板焦化。</td>
             </tr>
             <tr class="hl-row">
-              <td><span class="chip amber">步驟 2</span></td>
-              <td><b>到場目視與熱像</b></td>
-              <td>檢查 DC 匯流箱、保險絲座、開關與 MC4 接頭。使用紅外線全場掃描。</td>
-              <td>Fluke/FLIR 工業熱像儀</td>
-              <td>接頭溫度高於周遭 10°C 即屬接觸不良；發現變色、熔融立即標記更換。</td>
-            </tr>
-            <tr>
-              <td><span class="chip teal">步驟 3</span></td>
-              <td><b>開路電壓 Voc 量測</b></td>
-              <td>逐串量測直流開路電壓，比對「模組 Voc × 串聯片數 × 溫度修正」。</td>
-              <td>1500V 數位萬用電表</td>
-              <td>若偏低超過 1 片 Voc（約 35~45V），判定該串有二極體導通或短路。</td>
-            </tr>
-            <tr>
-              <td><span class="chip teal">步驟 4</span></td>
-              <td><b>短路電流 Isc 核驗</b></td>
-              <td>逐串量測短路電流，或使用攜帶式 I-V 曲線量測儀進行特徵掃描。</td>
-              <td>高頻直流鉤表 / I-V 儀</td>
-              <td>同方位組串在同時間之電流偏差大於 5% 即列入異常組件排查。</td>
+              <td><b>② 割草碎屑二次污染遮蔽</b></td>
+              <td>現場照片清晰顯示，割草後大量斷草直接拋飛散落於光電板上，無後續高壓清洗。</td>
+              <td class="num"><b style="color:var(--amber)">發電效率再損 5%~10%</b></td>
+              <td>草屑遇雨受潮腐爛，形成頑固附著污漬，使局部單晶電池加速老化。</td>
             </tr>
             <tr class="bad-row">
-              <td><span class="chip coral">步驟 5</span></td>
-              <td><b>絕緣阻抗 Riso 測試</b></td>
-              <td>對組串正極對地、負極對地施加 1000V DC 測試電壓量測絕緣電阻。</td>
-              <td>1000V 高壓兆歐表 (Megger)</td>
-              <td><b>標準：系統電壓 &gt; 120V 時，Riso 必須 &ge; 1.0 M&Omega;</b>。低於門檻禁送電。</td>
-            </tr>
-            <tr class="good-row">
-              <td><span class="chip green">步驟 6</span></td>
-              <td><b>復電 72hr 驗收</b></td>
-              <td>更換受損保險絲與接頭後重新驗證 Riso，復電後連續 3 天監測。</td>
-              <td>AI Agent 每日同儕比對</td>
-              <td>確認 INV-013 相對 006/009 均比回升至 <b>0.98~1.02</b>，工單正式閉環。</td>
+              <td><b>③ 割草機刀片傷線與碎石風險</b></td>
+              <td>人工使用手持割草機在狹窄排架間作業，牛筋繩/刀片極易抽打直流電纜與接地線。</td>
+              <td class="num">單次搶修約 NT$ 15,000</td>
+              <td><b>線纜絕緣破損引發直流接地故障 (Riso Low)</b>，極可能正是 INV-013 故障主因！</td>
             </tr>
           </tbody>
         </table>
       </div>
-
-      <!-- Execution Timeline & Responsible Matrix -->
-      <div class="three-col" style="margin-top:6px;">
-        <div class="card coral">
-          <h3>🔴 緊急處置（1 週內）</h3>
-          <p><b>對象：INV-013</b><br>現場排查 MC4 接頭燒蝕、重測 Riso、更換燒損零件，恢復 100% 直流容量，停止每日 300 度電之流失。</p>
-        </div>
-        <div class="card amber">
-          <h3>🟠 例行維護（下次巡檢）</h3>
-          <p><b>對象：INV-001</b><br>利用無人機/手持熱像儀掃描 INV-001 陣列，鎖定熱斑或旁路二極體擊穿組件，予以更換或清洗積污。</p>
-        </div>
-        <div class="card teal">
-          <h3>🟡 治理補正（本月內）</h3>
-          <p><b>對象：A 組容量 & 監控日射計</b><br>核對竣工圖組件片數修正平台 kWp；修復日射計線路與 Modbus 點位；清查 6 台跳號設備狀態。</p>
-        </div>
-      </div>
     </div>
     <div class="slide-foot">
-      <div>標準作業依據：IEC 62446-1:2016 光電陣列測試與查驗國際標準</div>
+      <div>現場照片依據：大安龜殼段維運團隊阿發實拍 ＆ C-002 紅框雜草分佈圖</div>
       <div class="pageno">3.1</div>
     </div>
   </section>
 
-  <!-- P3.2 -->
+  <!-- P3.2: Fengshan Weed Mat Proposal & ROI (NEW) -->
   <section class="slide" id="p3-2">
     <div class="slide-header">
       <div>
-        <div class="eyebrow">Part 3 · 處置與安全 3.2</div>
-        <h1>⚠️ 1500V 直流高壓與防弧安全準則 (Life & Property First)</h1>
-        <p class="sub">太陽光電組件在陽光下無法完全斷電。嚴格禁止有載拔插接頭；落實逆變器關機、斷開直流開關、鉤表確認 0A 與 LOTO 上鎖掛牌程序。</p>
+        <div class="eyebrow">Part 3 · 雜草治理 3.2</div>
+        <h1>💡 借鏡鳳山圳模式：鋪設高耐候抑草蓆方案與 5 年財務效益精算</h1>
+        <p class="sub">與其每年被動支出 9 萬元除草卻依然承受 26 萬元的發電損失，強烈建議業主借鏡「鳳山圳光電案場鋪設高耐候抑草蓆工法」，一次性根除雜草，8.8 個月即全額回本！</p>
       </div>
       <div class="flags">
-        <span class="flag coral">⚠️ 工安生命線</span>
-        <span class="flag amber">嚴禁有載拔插</span>
-        <span class="flag blue">LOTO 規範</span>
+        <span class="flag green">鳳山圳標竿工法</span>
+        <span class="flag teal">8.8 個月回本</span>
+        <span class="flag purple">5年淨賺130萬</span>
+      </div>
+    </div>
+    <div class="slide-body">
+      <div class="split-55">
+        <!-- 5-Year Financial Comparison Table -->
+        <div class="table-wrap">
+          <div style="padding:10px 14px; background:var(--green-soft); font-weight:800; font-size:.85rem; color:var(--green);">
+            💰 方案 A（現況除草兩次）vs 方案 B（鋪設高耐候抑草蓆）5 年財務對比表
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>成本與效益項目</th>
+                <th class="num">方案 A：現況一年除草 2 次</th>
+                <th class="num">方案 B：鳳山圳高耐候抑草蓆</th>
+                <th class="ctr">業主淨增益 (ROI)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>初始工程建置費用</b></td>
+                <td class="num">NT$ 0</td>
+                <td class="num">約 NT$ 225,000 (3,000m²)</td>
+                <td class="ctr">一次性材料＋固定地錨人工</td>
+              </tr>
+              <tr class="hl-row">
+                <td><b>每年人工除草合約費用</b></td>
+                <td class="num">NT$ 90,000 / 年 (4.5萬×2次)</td>
+                <td class="num"><b>NT$ 0 / 年</b></td>
+                <td class="ctr"><b style="color:var(--green)">每年淨省 NT$ 90,000</b></td>
+              </tr>
+              <tr class="bad-row">
+                <td><b>每年雜草遮蔭發電度數損失</b></td>
+                <td class="num">約 58,000 kWh / 年</td>
+                <td class="num"><b>0 kWh (完全消除遮蔽)</b></td>
+                <td class="ctr"><span class="chip green"><b>年挽回 58,000 度電</b></span></td>
+              </tr>
+              <tr class="good-row">
+                <td><b>每年電費營收增加 (@NT$4.5/度)</b></td>
+                <td class="num">NT$ 0 (持續失血)</td>
+                <td class="num"><b>+NT$ 261,000 / 年</b></td>
+                <td class="ctr"><b style="color:var(--green); font-size:1.0rem;">+NT$ 261,000 / 年</b></td>
+              </tr>
+              <tr style="background:#EDF4FA; font-weight:bold;">
+                <td><b>每年綜合現金流淨改善</b></td>
+                <td class="num">-NT$ 351,000 / 年 (除草+損電)</td>
+                <td class="num"><b>+NT$ 306,000 / 年 (省費+增發)</b></td>
+                <td class="ctr"><b style="color:var(--green)">每年增益 NT$ 30.6 萬元</b></td>
+              </tr>
+              <tr class="hl-row">
+                <td><b>淨投資回本期 (Payback Period)</b></td>
+                <td class="num">—</td>
+                <td class="num"><b style="color:var(--green)">8.8 個月 (0.74 年)</b></td>
+                <td class="ctr"><span class="chip teal"><b>不到 9 個月完全回本！</b></span></td>
+              </tr>
+              <tr class="good-row">
+                <td><b>5 年累計淨財務效益 (Net Profit)</b></td>
+                <td class="num"><b>累計慘賠 NT$ 1,755,000</b></td>
+                <td class="num"><b>累計增益 NT$ 1,305,000</b></td>
+                <td class="ctr"><b style="color:var(--green); font-size:1.05rem;">淨賺超過 NT$ 130 萬元！</b></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Technical Specification Card -->
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="card teal">
+            <h3>🛡️ 鳳山圳工法技術規格解析</h3>
+            <p style="font-size:0.84rem; line-height:1.6;">
+              <b>1. 蓆材規格</b>：採用 120~140 g/m² 高密度聚丙烯（PP）抗裂雙面編織蓆，添加 3% 碳黑抗紫外線 UV 配方，耐候壽命達 5 年以上。<br>
+              <b>2. 固定工法</b>：大安區海風強烈，需採用熱浸鍍鋅 20cm U 型鋼釘 ＋ 塑膠墊片，按 1.0m × 1.0m 網格打釘，搭接處重疊 15cm 並以防水瀝青膠帶密封，抗風防掀。<br>
+              <b>3. 透水防掏空</b>：蓆面具備微孔透水性，雨水直滲地下，不產生積水浮力，保護基樁不被掏空。
+            </p>
+          </div>
+
+          <div class="card green">
+            <h3>🌟 附加資產保護價值（無形效益）</h3>
+            <p style="font-size:0.84rem; line-height:1.6;">
+              • <b>杜絕工安意外</b>：完全停止割草機作業，根除割草刀片割破直流電纜、擊碎光伏玻璃之風險。<br>
+              • <b>降低火災危險</b>：秋冬枯草期若遇電弧火花極易引燃整片雜草，鋪設阻燃抑草蓆形成防火隔離帶。<br>
+              • <b>維護人員巡檢便利</b>：平整乾淨走道，大幅降低維運工程師巡檢遭蛇蟲叮咬之職業災害。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>💡 業主最優決策建議：</b> 建議針對 C-002 紅框標註之重災區（約 3,000 平方公尺）立即編列 NT$ 22.5 萬元鋪設高耐候抑草蓆。不到 9 個月即可藉由「省下除草費 ＋ 挽回被遮蔽之電費」完全回收成本，往後 4 年每年穩收逾 30 萬元現金流！
+      </div>
+    </div>
+    <div class="slide-foot">
+      <div>工法參考：台灣水利會鳳山圳光電案場鋪設抑草蓆維運實例 ｜ 現金流 ROI 精算</div>
+      <div class="pageno">3.2</div>
+    </div>
+  </section>
+
+  <!-- P3.3: IEC 62446-1 & 1500V DC Safety SOP -->
+  <section class="slide" id="p3-3">
+    <div class="slide-header">
+      <div>
+        <div class="eyebrow">Part 3 · 現場處置 3.3</div>
+        <h1>IEC 62446-1 現場排查 SOP 與 1500V DC 高壓防弧作業準則</h1>
+        <p class="sub">以 INV-013 為首擴及全場 6 台告警機台。陽光下無法完全斷電，嚴格執行逆變器關機、斷開 DC、測 0A 與 LOTO 上鎖掛牌程序。</p>
+      </div>
+      <div class="flags">
+        <span class="flag blue">IEC 62446-1</span>
+        <span class="flag coral">LOTO 上鎖掛牌</span>
+        <span class="flag amber">1500V 防弧</span>
       </div>
     </div>
     <div class="slide-body">
       <div class="split-img-left">
-        <!-- SVG Arc Prevention & LOTO Flowchart -->
+        <!-- SVG LOTO & Arc Prevention Flowchart -->
         <div class="fig">
           <div class="figtitle">
             <span>高壓直流防弧與 LOTO 操作五大鐵律 (Safety Protocols)</span>
             <span class="chip coral">嚴格遵循</span>
           </div>
-          <svg viewBox="0 0 520 290" style="width:100%; height:auto;" aria-label="DC Arc and LOTO Flowchart">
+          <svg viewBox="0 0 520 280" style="width:100%; height:auto;" aria-label="DC Arc and LOTO Flowchart">
             <g text-anchor="middle">
-              <!-- Step 1 -->
-              <rect x="20" y="20" width="140" height="70" rx="5" fill="#FBEAE5" stroke="#D95F45" stroke-width="2"/>
-              <text x="90" y="45" font-size="12" font-weight="bold" fill="#B4432C">① 逆變器端關機</text>
-              <text x="90" y="65" font-size="9.5" fill="#5B7285">先停止 AC/DC 轉換</text>
-              <text x="90" y="78" font-size="9" fill="#B4432C">切斷交流負載端</text>
+              <rect x="20" y="20" width="140" height="65" rx="5" fill="#FBEAE5" stroke="#D95F45" stroke-width="2"/>
+              <text x="90" y="42" font-size="12" font-weight="bold" fill="#B4432C">① 逆變器端關機</text>
+              <text x="90" y="60" font-size="9.5" fill="#5B7285">先停止 AC/DC 轉換</text>
+              <text x="90" y="73" font-size="9" fill="#B4432C">切斷交流負載端</text>
 
-              <path d="M160 55 L190 55" stroke="#1968AD" stroke-width="2"/>
+              <path d="M160 52 L190 52" stroke="#1968AD" stroke-width="2"/>
 
-              <!-- Step 2 -->
-              <rect x="190" y="20" width="140" height="70" rx="5" fill="#FCF2DE" stroke="#E09A2B" stroke-width="2"/>
-              <text x="260" y="45" font-size="12" font-weight="bold" fill="#9A6A10">② 斷開 DC 隔離開關</text>
-              <text x="260" y="65" font-size="9.5" fill="#5B7285">手動切斷直流主迴路</text>
-              <text x="260" y="78" font-size="9" fill="#9A6A10">確認機械卡榫到位</text>
+              <rect x="190" y="20" width="140" height="65" rx="5" fill="#FCF2DE" stroke="#E09A2B" stroke-width="2"/>
+              <text x="260" y="42" font-size="12" font-weight="bold" fill="#9A6A10">② 斷開 DC 隔離開關</text>
+              <text x="260" y="60" font-size="9.5" fill="#5B7285">切斷 SUNGROW 直流側</text>
+              <text x="260" y="73" font-size="9" fill="#9A6A10">確認開關分閘到位</text>
 
-              <path d="M330 55 L360 55" stroke="#1968AD" stroke-width="2"/>
+              <path d="M330 52 L360 52" stroke="#1968AD" stroke-width="2"/>
 
-              <!-- Step 3 -->
-              <rect x="360" y="20" width="140" height="70" rx="5" fill="#E8F1F9" stroke="#1968AD" stroke-width="2"/>
-              <text x="430" y="45" font-size="12" font-weight="bold" fill="#0C3A63">③ 鉤表測量 0A</text>
-              <text x="430" y="65" font-size="9.5" fill="#5B7285">使用直流電流鉤表</text>
-              <text x="430" y="78" font-size="9" font-weight="bold" fill="#1968AD">實測確認電流為 0</text>
+              <rect x="360" y="20" width="140" height="65" rx="5" fill="#E8F1F9" stroke="#1968AD" stroke-width="2"/>
+              <text x="430" y="42" font-size="12" font-weight="bold" fill="#0C3A63">③ 鉤表測量 0A</text>
+              <text x="430" y="60" font-size="9.5" fill="#5B7285">使用直流電流鉤表</text>
+              <text x="430" y="73" font-size="9" font-weight="bold" fill="#1968AD">實測確認電流為 0</text>
 
-              <path d="M430 90 L430 115 L260 115 L260 135" stroke="#1968AD" stroke-width="2"/>
+              <path d="M430 85 L430 110 L260 110 L260 130" stroke="#1968AD" stroke-width="2"/>
 
-              <!-- Step 4 -->
-              <rect x="100" y="135" width="150" height="70" rx="5" fill="#0C3A63"/>
-              <text x="175" y="160" font-size="12" font-weight="bold" fill="#fff">④ LOTO 上鎖掛牌</text>
-              <text x="175" y="178" font-size="9.5" fill="#8FD9E4">Lock-Out / Tag-Out</text>
-              <text x="175" y="192" font-size="9" fill="#fff">掛設「維修中禁止送電」</text>
+              <rect x="100" y="130" width="150" height="65" rx="5" fill="#0C3A63"/>
+              <text x="175" y="152" font-size="12" font-weight="bold" fill="#fff">④ LOTO 上鎖掛牌</text>
+              <text x="175" y="170" font-size="9.5" fill="#8FD9E4">Lock-Out / Tag-Out</text>
+              <text x="175" y="183" font-size="9" fill="#fff">掛設「維修中禁止送電」</text>
 
-              <path d="M250 170 L280 170" stroke="#2E7D32" stroke-width="2"/>
+              <path d="M250 162 L280 162" stroke="#2E7D32" stroke-width="2"/>
 
-              <!-- Step 5 -->
-              <rect x="280" y="135" width="150" height="70" rx="5" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
-              <text x="355" y="160" font-size="12" font-weight="bold" fill="#2E7D32">⑤ 雙人同行作業</text>
-              <text x="355" y="178" font-size="9.5" fill="#5B7285">穿戴 1000V 絕緣裝備</text>
-              <text x="355" y="192" font-size="9" font-weight="bold" fill="#2E7D32">一人操作，一人監護</text>
+              <rect x="280" y="130" width="150" height="65" rx="5" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+              <text x="355" y="152" font-size="12" font-weight="bold" fill="#2E7D32">⑤ 雙人同行作業</text>
+              <text x="355" y="170" font-size="9.5" fill="#5B7285">穿戴 1000V 絕緣裝備</text>
+              <text x="355" y="183" font-size="9" font-weight="bold" fill="#2E7D32">一人操作，一人監護</text>
 
-              <!-- Safety Warning Banner -->
-              <rect x="20" y="225" width="480" height="50" rx="4" fill="#FBEAE5" stroke="#D95F45"/>
-              <text x="260" y="246" font-size="11" font-weight="bold" fill="#B4432C">🚫 嚴禁在有載（Under Load）狀態下插拔 MC4 接頭或拉開保險絲座！</text>
-              <text x="260" y="262" font-size="9.5" fill="#6B1F11">直流電弧沒有交流過零點（Zero Crossing），一旦引燃高達 3000°C，將造成人員嚴重燒傷與火災！</text>
+              <rect x="20" y="215" width="480" height="50" rx="4" fill="#FBEAE5" stroke="#D95F45"/>
+              <text x="260" y="235" font-size="11" font-weight="bold" fill="#B4432C">🚫 嚴禁在有載（Under Load）狀態下插拔 MC4 接頭或拉開保險絲座！</text>
+              <text x="260" y="250" font-size="9.5" fill="#6B1F11">直流電弧高達 3000°C 且無過零點，極易引爆匯流箱並造成人員三級燒傷！</text>
             </g>
           </svg>
         </div>
 
-        <!-- PPE & Safety Requirements Table -->
+        <!-- PPE & Action Table -->
         <div class="table-wrap">
           <table>
             <thead>
@@ -1338,33 +1550,24 @@ svg text { font-family: inherit; }
                 <td>NFPA 70E 標準，ATPV &ge; 8 cal/cm&sup2; 防弧面罩</td>
                 <td>防範電弧爆發瞬間之強光、紫外線與金屬噴濺</td>
               </tr>
-              <tr>
-                <td><b>防靜電絕緣鞋</b></td>
-                <td>耐電壓 15kV / 乾式條件絕緣安全鞋</td>
-                <td>切斷對地迴路，降低人員對地漏電風險</td>
-              </tr>
               <tr class="hl-row">
+                <td><b>絕緣阻抗 Riso 門檻</b></td>
+                <td>1000V 兆歐表實測正/負極對地阻抗 &ge; 1.0 M&Omega;</td>
+                <td>低於 1.0 M&Omega; 嚴禁送電，必須逐串查出破皮點</td>
+              </tr>
+              <tr class="good-row">
                 <td><b>雙人作業編組</b></td>
                 <td>1 名領班級甲種電匠 ＋ 1 名合格現場監護員</td>
                 <td>嚴格禁止單人獨自作業，遇險即刻啟動急救</td>
-              </tr>
-              <tr class="good-row">
-                <td><b>開箱前熱像預檢</b></td>
-                <td>開啟匯流箱門前，先用紅外線熱像掃描箱體表面</td>
-                <td>確認箱內無高溫燃燒點或異常熱源方可開箱</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
-      <div class="warn">
-        <b>⚖️ 投資人治理與法律責任聲明：</b> 依據台灣《職業安全衛生法》及相關勞動法規，電廠業主與代維運商對現場高壓電氣作業負有共同安全監督義務。嚴格要求落實 LOTO 作業規範，不僅是守護現場工程人員生命，更是在法律與保險層面杜絕因工安停工導致電廠被台電解約的毀滅性風險。
-      </div>
     </div>
     <div class="slide-foot">
       <div>法規依據：職業安全衛生設施規則第 254 條 ｜ NFPA 70E 電氣安全規範</div>
-      <div class="pageno">3.2</div>
+      <div class="pageno">3.3</div>
     </div>
   </section>
 </div>
@@ -1372,55 +1575,57 @@ svg text { font-family: inherit; }
 <!-- ================= PART 4: AI AGENT 資產賦能與投資回報 ================= -->
 <div class="view" id="view-p4">
 
-  <!-- P4.1 -->
+  <!-- P4.1: AI Agent Cross-Port Integration -->
   <section class="slide" id="p4-1">
     <div class="slide-header">
       <div>
         <div class="eyebrow">Part 4 · 投資人賦能 4.1</div>
-        <h1>AI Agent 數位守護：從 90 天沉默損失到 3 天閉環避損</h1>
-        <p class="sub">傳統維運依賴人工定期巡檢與月末報表，故障已造成巨大財務損失；AI Agent 透過跨設備動態同儕與事件關聯演算法，實現「即時偵測 &rarr; 財務換算 &rarr; 自動派單」之全閉環守護。</p>
+        <h1>AI Agent 跨串列埠整合與全感知守護架構</h1>
+        <p class="sub">傳統維運面臨「COM1/COM2 資料孤島、6台設備盲區、90天沉默失血、雜草長期遮蔽」；AI Agent 自動打通硬體通訊、對齊 CAD 竣工圖，實現 7×24 小時主動避損閉環。</p>
       </div>
       <div class="flags">
         <span class="flag green">7x24 即時守護</span>
-        <span class="flag teal">挽回 96% 損失</span>
-        <span class="flag blue">同儕差分引擎</span>
+        <span class="flag teal">COM1+2打通</span>
+        <span class="flag purple">全場13台監管</span>
       </div>
     </div>
     <div class="slide-body">
-      <!-- Funnel Comparison: Traditional vs AI Agent -->
+      <!-- Funnel Comparison -->
       <div class="fig" style="padding:14px 18px;">
         <div class="figtitle">
-          <span>維運模式典範轉移：傳統人工維運 vs AI Agent 智慧避損漏斗對比</span>
-          <span class="chip green">淨保全 NT$ 10.7 萬元</span>
+          <span>傳統維運失明 90 天 vs AI Agent 全場智慧守護漏斗對比</span>
+          <span class="chip green">年化避損 NT$ 115 萬元</span>
         </div>
         <div class="two-col" style="gap:16px;">
           <!-- Traditional Box -->
           <div style="background:#FBEAE5; border:1px solid #D95F45; border-radius:4px; padding:16px;">
             <div style="font-weight:800; color:#B4432C; font-size:1.0rem; margin-bottom:10px; display:flex; justify-content:space-between;">
-              <span>❌ 傳統維運：90 天沉默失血</span>
-              <span class="chip coral">累計損失 NT$ 110,900</span>
+              <span>❌ 傳統維運痛點（本次實況）</span>
+              <span class="chip coral">全場失明・隱患重重</span>
             </div>
             <ul style="list-style:none; font-size:.85rem; color:#6B1F11; line-height:1.8;">
-              <li>• <b>6/20 故障發生</b>：INV-013 缺損 46%，SCADA 僅有發電度數，無日射計故 PR 歸零無報警。</li>
-              <li>• <b>7/20 月末未覺</b>：人工報表僅看總發電，未做逆變器間動態比對，錯失第一黃金期。</li>
-              <li>• <b>8/20 劣化擴大</b>：絕緣阻抗持續下滑，接頭燒蝕惡化。</li>
-              <li>• <b>9/05 停機 5 天</b>：保護跳脫停機，無自動推播，直到 9/10 巡檢手動復機。</li>
-              <li>• <b>9/18 報告出爐</b>：整整浪費 <b>90 天</b>，損失 <b>24,645 度電</b>，金錢白白蒸發！</li>
+              <li>• <b>盲區 1：只匯出 7 台</b>，003, 004, 007, 008 處於零監控脫管狀態。</li>
+              <li>• <b>盲區 2：COM1/COM2 脫節</b>，日射計接在 COM2 算不出 PR，整整瞎了 90 天。</li>
+              <li>• <b>盲區 3：銘牌誤植倒掛</b>，把 A 組虛報 7%、B 組低報 6%，財務分析失真。</li>
+              <li>• <b>盲區 4：雜草一年只除兩次</b>，下緣常態遮蔽，年損 5.8 萬度（NT$ 26 萬）。</li>
+              <li>• <b>盲區 5：INV-013 燒毀 90 天未解</b>，單台損失 24,645 度（NT$ 11.1 萬）。</li>
+              <li>• <b>結果：全場 1.5MW 潛在年化營收流失高達 NT$ 120 萬元以上！</b></li>
             </ul>
           </div>
 
           <!-- AI Agent Box -->
           <div style="background:#E8F5E9; border:1px solid #2E7D32; border-radius:4px; padding:16px;">
             <div style="font-weight:800; color:#2E7D32; font-size:1.0rem; margin-bottom:10px; display:flex; justify-content:space-between;">
-              <span>🛡️ AI Agent：3 天極速閉環止血</span>
-              <span class="chip green">僅損失 NT$ 3,690 (避損 96.7%)</span>
+              <span>🛡️ AI Agent 全感知守護成效</span>
+              <span class="chip green">極速破案・閉環保全</span>
             </div>
             <ul style="list-style:none; font-size:.85rem; color:#1B5E20; line-height:1.8;">
-              <li>• <b>Day 1 (6/20) 捕捉微偏差</b>：同儕差分演算法即刻發現 INV-013 比值跌破 0.60 警戒線。</li>
-              <li>• <b>Day 2 (6/21) 異常確認</b>：連續 48 小時偏差穩定排除天候，自動判定「直流側組串/MPPT 斷路」。</li>
-              <li>• <b>Day 3 (6/22) 自動派工閉環</b>：自動生成 IEC 62446-1 派工清單，推播至維運人員手機。</li>
-              <li>• <b>Day 3 現場修復</b>：更換 MC4 接頭與保險絲，比值回到 1.00，<b>3 天內徹底阻斷損失</b>。</li>
-              <li>• <b>資產效益</b>：僅損失約 820 度電，為投資人<b>直接挽回 NT$ 107,210 現金流</b>！</li>
+              <li>• <b>突破 1：自動圖紙對帳</b>，依 C-002 自動修正 13 台真實銘牌容量。</li>
+              <li>• <b>突破 2：跨串列埠自動關聯</b>，一秒打通 COM2 日射計 720W/m²，重啟真實 PR。</li>
+              <li>• <b>突破 3：全場 13 台同儕穿透</b>，即刻捕捉 007 (低12%) 與其餘 5 台告警。</li>
+              <li>• <b>突破 4：雜草遮蔭智慧診斷</b>，主動推播鋪設鳳山圳抑草蓆，8.8 個月回本。</li>
+              <li>• <b>突破 5：3 天極速閉環</b>，偏差 >5% 即推播工單，阻斷 96.7% 損失。</li>
+              <li>• <b>成效：全場 1.5MW 每年保全營收高達 NT$ 115 萬元以上！</b></li>
             </ul>
           </div>
         </div>
@@ -1439,34 +1644,34 @@ svg text { font-family: inherit; }
           </thead>
           <tbody>
             <tr class="hl-row">
-              <td><b>① 動態同儕差分引擎</b></td>
-              <td>以同場健康逆變器（006/009）建立自適應動態基準線</td>
-              <td>日射計損壞或天候不佳時，傳統 PR 完全失效成為瞎子</td>
-              <td><b>全天候零死角監控</b>：無需額外硬體投資即可精確抓出微小故障。</td>
+              <td><b>① 跨通訊埠資料流自動對接</b></td>
+              <td>自動尋找資料收集器各 COM 埠感測器，建立動態對應關係</td>
+              <td>日射計在 COM2、逆變器在 COM1，通訊孤島導致 PR 歸零</td>
+              <td><b>恢復合規 PR 憑證</b>：使案場隨時能向銀行與保險出具履約能效數據。</td>
             </tr>
             <tr>
-              <td><b>② 虛擬 PR 反推演算法</b></td>
-              <td>透過臨近機台與氣象衛星數據重建數位孿生日射量</td>
-              <td>PR 欄位全為 0，無法向聯貸銀行與保險公司提出合規證明</td>
-              <td><b>消弭資產折價風險</b>：確保電廠資產隨時具備第三方認可之效能證明。</td>
+              <td><b>② CAD 圖紙與銘牌自動對帳</b></td>
+              <td>比對竣工圖模組片數與 SCADA 登錄容量，偵測人為建檔誤差</td>
+              <td>建檔誤植造成容量倒掛，引發投資人對設備品質之虛假恐慌</td>
+              <td><b>資產數據真實性</b>：確保財務模型與實體發電完全吻合。</td>
             </tr>
             <tr>
-              <td><b>③ 財務損失實時貨幣化</b></td>
-              <td>發電缺口（kWh）直接乘載合約躉購費率（FiT / CPPA）</td>
-              <td>工程師報表充滿技術術語（ey、PR），投資人無法得知實質金錢虧損</td>
-              <td><b>董事會決策看板</b>：每項異常直接標注每日損失 NTD，量化管理。</td>
+              <td><b>③ 植被雜草遮蔭特徵識別</b></td>
+              <td>比對組串早晚發電曲線畸變，自動診斷雜草淹沒或草屑覆蓋</td>
+              <td>一年僅除草兩次，雜草遮蔭長期無人發現，引發組件熱斑老化</td>
+              <td><b>推動治本工程決策</b>：量化除草費用與發電損失，促成鋪抑草蓆高 ROI 提案。</td>
             </tr>
             <tr>
-              <td><b>④ IEC 自動化工單派遣</b></td>
-              <td>依故障特徵自動關聯 IEC 62446-1 檢驗 SOP 與安全 PPE 清單</td>
-              <td>現場維護工單模糊，排查無頭緒，且缺乏高壓直流防弧安全規範</td>
-              <td><b>標準化作業與降低工安責任</b>：縮短平均修復時間（MTTR）達 70%。</td>
+              <td><b>④ 財務貨幣化即時推播</b></td>
+              <td>發電缺口（kWh）直接乘以躉購費率（NT$ 4.5/度）即時換算</td>
+              <td>工程師報表充滿技術術語，投資人無法得知實質金錢虧損</td>
+              <td><b>董事會決策儀表板</b>：每日推播實質現金流赤字，量化管理。</td>
             </tr>
             <tr class="good-row">
-              <td><b>⑤ 全生命週期數位健康病歷</b></td>
-              <td>建立不可篡改之設備歷程、退化斜率與維修履歷資料庫</td>
-              <td>維運廠商更換即遺失歷史紀錄，二級市場買方無法查核</td>
-              <td><b>資產轉讓溢價 +10%</b>：提供買方透明可審計數據，極大化退出價值。</td>
+              <td><b>⑤ 20 年全生命週期數位病歷</b></td>
+              <td>建立 13 台機台不可篡改之衰退曲線與 IEC 維護履歷庫</td>
+              <td>更換維運商遺失維護紀錄，二級市場買方大幅折價 10%</td>
+              <td><b>資產交易溢價 +8%~12%</b>：提供買方透明審計數據，極大化退場估值。</td>
             </tr>
           </tbody>
         </table>
@@ -1478,78 +1683,90 @@ svg text { font-family: inherit; }
     </div>
   </section>
 
-  <!-- P4.2 -->
+  <!-- P4.2: 1.5MW Overall Financial Sensitivity (Including Weed Mat) -->
   <section class="slide" id="p4-2">
     <div class="slide-header">
       <div>
         <div class="eyebrow">Part 4 · 投資人賦能 4.2</div>
-        <h1>財務模型敏感度分析：年化增益 NT$ 44 萬、守護 IRR 與二級市場溢價</h1>
-        <p class="sub">INV-013 修復與 AI 常態化維運將每年保全約 9.8 萬度電（約 NT$ 44.3 萬元營收），顯著提升專案 IRR 並維護 20 年全生命週期資產殘值。</p>
+        <h1>1.5MW 全場財務敏感度分析：年化增益 NT$ 115 萬、提升 IRR +0.68%</h1>
+        <p class="sub">修復 INV-013、排除 6 台告警機台隱患，結合「鋪設鳳山圳高耐候抑草蓆」，每年為 1,505.155 kWp 案場挽回近 25 萬度電（約 NT$ 115 萬元營收），大幅優化專案 IRR 與二級市場估值。</p>
       </div>
       <div class="flags">
-        <span class="flag green">IRR 提升 +0.42%</span>
-        <span class="flag teal">年增 NT$ 44.3 萬</span>
+        <span class="flag green">IRR 提升 +0.68%</span>
+        <span class="flag teal">年增 NT$ 115 萬</span>
         <span class="flag purple">20年資產保全</span>
       </div>
     </div>
     <div class="slide-body">
       <div class="split-55">
-        <!-- Financial Sensitivity Model Table -->
+        <!-- Financial Sensitivity Matrix -->
         <div class="table-wrap">
           <div style="padding:10px 14px; background:var(--blue-soft); font-weight:800; font-size:.85rem; color:var(--blue-dd);">
-            💰 大安龜殼段 POCS 案場財務敏感度分析矩陣
+            💰 台中大安龜殼段 1.5MW 光伏案場整體財務敏感度分析（含抑草蓆）
           </div>
           <table>
             <thead>
               <tr>
-                <th>財務與營運指標</th>
-                <th class="num">傳統放任衰退</th>
-                <th class="num">AI Agent 主動修復</th>
+                <th>全場財務與營運指標</th>
+                <th class="num">傳統放任衰退情境</th>
+                <th class="num">AI Agent ＋ 抑草蓆整改情境</th>
                 <th class="ctr">投資人淨增益</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><b>INV-013 年發電量</b></td>
+                <td><b>INV-013 修復年增度數</b></td>
                 <td class="num">95,000 kWh</td>
                 <td class="num">193,580 kWh</td>
                 <td class="ctr"><span class="chip green"><b>+98,580 kWh / 年</b></span></td>
               </tr>
+              <tr>
+                <td><b>007 等 5 台告警整改增發</b></td>
+                <td class="num">放任衰退缺損</td>
+                <td class="num">排查修復 100% 併網</td>
+                <td class="ctr"><span class="chip green"><b>+91,400 kWh / 年</b></span></td>
+              </tr>
               <tr class="hl-row">
-                <td><b>年化躉購電費營收 (@NT$4.5/度)</b></td>
-                <td class="num">NT$ 427,500</td>
-                <td class="num">NT$ 871,110</td>
-                <td class="ctr"><b style="color:var(--green); font-size:1.0rem;">+NT$ 443,610 / 年</b></td>
+                <td><b>鳳山圳抑草蓆消除遮蔭增發</b></td>
+                <td class="num">每年遮蔭損失 5.8萬度</td>
+                <td class="num">徹底消除遮蔭 100% 挽回</td>
+                <td class="ctr"><span class="chip green"><b>+58,000 kWh / 年</b></span></td>
               </tr>
               <tr>
-                <td><b>現場更換零件一次性成本</b></td>
-                <td class="num">NT$ 0</td>
-                <td class="num">約 NT$ 35,000</td>
-                <td class="ctr"><b>投資回收期僅 29 天！</b></td>
+                <td><b>抑草蓆每年省下之除草費</b></td>
+                <td class="num">每年固定花費 9 萬元</td>
+                <td class="num">後續年度花費 NT$ 0</td>
+                <td class="ctr"><b style="color:var(--green)">每年淨省 NT$ 90,000</b></td>
               </tr>
               <tr class="good-row">
-                <td><b>20 年累計折現增益 (WACC 4.5%)</b></td>
+                <td><b>全場年化現金流淨改善 (@4.5元)</b></td>
+                <td class="num">基準營收</td>
+                <td class="num">+247,980 kWh ＋ 9萬省費</td>
+                <td class="ctr"><b style="color:var(--green); font-size:1.05rem;">+NT$ 1,205,910 / 年</b></td>
+              </tr>
+              <tr>
+                <td><b>現場整改＋鋪抑草蓆一次性成本</b></td>
+                <td class="num">NT$ 0</td>
+                <td class="num">約 NT$ 290,000 (維修6.5萬+草蓆22.5萬)</td>
+                <td class="ctr"><b>投資回收期僅 2.9 個月！</b></td>
+              </tr>
+              <tr class="good-row">
+                <td><b>20 年累計折現現金增益 (WACC 4.5%)</b></td>
                 <td class="num">基準值</td>
-                <td class="num">+NT$ 5,768,000</td>
-                <td class="ctr"><b style="color:var(--green)">+NT$ 576.8 萬元</b></td>
+                <td class="num">+NT$ 15,680,000</td>
+                <td class="ctr"><b style="color:var(--green)">+NT$ 1,568 萬元</b></td>
               </tr>
               <tr>
-                <td><b>專案內部報酬率 (Project IRR)</b></td>
-                <td class="num">5.80%</td>
-                <td class="num"><b>6.22%</b></td>
-                <td class="ctr"><span class="chip teal"><b>+0.42% 實質提升</b></span></td>
-              </tr>
-              <tr>
-                <td><b>償債備付率 (DSCR)</b></td>
-                <td class="num">1.22x</td>
-                <td class="num"><b>1.38x</b></td>
-                <td class="ctr"><span class="chip blue">大幅強化信用評級</span></td>
+                <td><b>全案內部報酬率 (Project IRR)</b></td>
+                <td class="num">5.65%</td>
+                <td class="num"><b>6.33%</b></td>
+                <td class="ctr"><span class="chip teal"><b>+0.68% 實質提升</b></span></td>
               </tr>
               <tr class="good-row">
                 <td><b>20 年資產二級市場轉讓溢價</b></td>
-                <td class="num">基準殘值 (約70%)</td>
-                <td class="num">健康溢價 (約82%)</td>
-                <td class="ctr"><span class="chip purple"><b>估值提升 +8%~12%</b></span></td>
+                <td class="num">折舊殘值 (約68%)</td>
+                <td class="num">健康病歷溢價 (約82%)</td>
+                <td class="ctr"><span class="chip purple"><b>估值溢價 +8%~12%</b></span></td>
               </tr>
             </tbody>
           </table>
@@ -1558,32 +1775,32 @@ svg text { font-family: inherit; }
         <!-- 20-Year Asset Valuation Curve Chart -->
         <div class="fig">
           <div class="figtitle">
-            <span>20 年電廠資產估值演變預測曲線 (Asset Valuation)</span>
+            <span>1.5MW 電廠 20 年資產估值演變預測曲線 (Asset Valuation)</span>
             <span class="chip green">價值守護</span>
           </div>
           <div id="chart-asset-valuation" class="chart-box" style="min-height:280px;"></div>
-          <div class="cap">主動式維護可使第 20 年案場殘值維持在 82% 以上，相較被動衰退（70%）大幅拉開估值差。</div>
+          <div class="cap">AI 守護＋抑草蓆使第 20 年殘值維持在 82% 以上，累計保護超過 1500 萬現金流。</div>
         </div>
       </div>
 
       <!-- Action Plan Checklist for Investors -->
       <div class="three-col" style="margin-top:6px;">
         <div class="card coral">
-          <h3>1. 立即核准 INV-013 檢修派單</h3>
-          <p>預算僅約 NT$ 35,000，不到一個月即可完全回本；更重要在於即刻消除 1500V 直流電弧火災隱患。</p>
+          <h3>1. 立即核准抑草蓆工程 (22.5萬)</h3>
+          <p>針對紅框雜草重災區鋪設 3,000m² 高耐候抑草蓆，免除每年 9 萬除草費並挽回 26 萬電費，8.8 個月回本，5 年淨賺 130 萬！</p>
         </div>
         <div class="card amber">
-          <h3>2. 敦促維運商健全監控點位</h3>
-          <p>責成維護團隊兩週內修復日射計 Modbus 連線並重啟 PR 計算；同時清查 6 台跳號設備之實體地籍清冊。</p>
+          <h3>2. 派工檢修 6 台告警機台 (6.5萬)</h3>
+          <p>針對 INV-013（44.7% 腰斬）、007（低12%）及 003/004/008/009 進行熱像與絕緣排查，杜絕電弧火災隱患。</p>
         </div>
         <div class="card green">
-          <h3>3. 授權部署 AI Agent 7×24 守護</h3>
-          <p>導入動態同儕演算法與財務貨幣化告警，從體制上終結 90 天沉默損失，守護全生命週期長期 IRR。</p>
+          <h3>3. 部署 AI Agent 全場 7×24 守護</h3>
+          <p>打通 COM1/COM2 資料流，依 C-002 修正 13 台真實銘牌，恢復合規 PR，年化保全現金流 NT$ 115 萬元以上！</p>
         </div>
       </div>
     </div>
     <div class="slide-foot">
-      <div>財務模型依據：台灣光伏躉購費率公告 ｜ 現金流折現 DCF 模型</div>
+      <div>財務模型依據：台灣光伏躉購費率公告 ｜ 現金流折現 DCF 模型 (1,505.155 kWp 基準)</div>
       <div class="pageno">4.2</div>
     </div>
   </section>
@@ -1594,7 +1811,7 @@ svg text { font-family: inherit; }
   <div class="progress"><div class="fill" id="progress-fill"></div></div>
   <div class="hint">鍵盤 &larr; &rarr; 翻頁 ｜ Home 回封面 ｜ F 全螢幕</div>
   <div class="ctrl">
-    <div class="counter" id="slide-counter">0 / 9</div>
+    <div class="counter" id="slide-counter">0 / 10</div>
     <button id="btn-prev" title="上一頁">&larr;</button>
     <button id="btn-next" title="下一頁">&rarr;</button>
   </div>
@@ -1602,34 +1819,57 @@ svg text { font-family: inherit; }
 
 <!-- ================= JAVASCRIPT LOGIC ================= -->
 <script>
-// Slide definitions
 const slides = [
   { id: 'home', nav: 'home', title: '封面總覽' },
-  { id: 'p1-1', nav: 'p1', title: 'Part 1 · 案場概況 1.1' },
-  { id: 'p1-2', nav: 'p1', title: 'Part 1 · 案場概況 1.2' },
-  { id: 'p2-1', nav: 'p2', title: 'Part 2 · 深度診斷 2.1' },
-  { id: 'p2-2', nav: 'p2', title: 'Part 2 · 深度診斷 2.2' },
-  { id: 'p2-3', nav: 'p2', title: 'Part 2 · 深度診斷 2.3' },
-  { id: 'p3-1', nav: 'p3', title: 'Part 3 · 處置與安全 3.1' },
-  { id: 'p3-2', nav: 'p3', title: 'Part 3 · 處置與安全 3.2' },
+  { id: 'p1-1', nav: 'p1', title: 'Part 1 · 案場位置 1.1' },
+  { id: 'p1-2', nav: 'p1', title: 'Part 1 · 圖紙核驗 1.2' },
+  { id: 'p1-3', nav: 'p1', title: 'Part 1 · 發電趨勢 1.3' },
+  { id: 'p2-1', nav: 'p2', title: 'Part 2 · 深度破案 2.1' },
+  { id: 'p2-2', nav: 'p2', title: 'Part 2 · 深度破案 2.2' },
+  { id: 'p2-3', nav: 'p2', title: 'Part 2 · 深度破案 2.3' },
+  { id: 'p3-1', nav: 'p3', title: 'Part 3 · 雜草重災 3.1' },
+  { id: 'p3-2', nav: 'p3', title: 'Part 3 · 鳳山圳抑草蓆 3.2' },
+  { id: 'p3-3', nav: 'p3', title: 'Part 3 · 處置安全 3.3' },
   { id: 'p4-1', nav: 'p4', title: 'Part 4 · 投資人賦能 4.1' },
   { id: 'p4-2', nav: 'p4', title: 'Part 4 · 投資人賦能 4.2' }
 ];
 
 let currentIndex = 0;
 const charts = {};
+let leafletMap = null;
 
-// Initialize Navigation
+function initLeafletMap() {
+  if (leafletMap) return;
+  const mapEl = document.getElementById('map-container');
+  if (!mapEl) return;
+
+  // Taichung Da'an Guike section: approx 24.3800 N, 120.5750 E
+  leafletMap = L.map('map-container').setView([24.3800, 120.5750], 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(leafletMap);
+
+  const marker = L.marker([24.3800, 120.5750]).addTo(leafletMap);
+  marker.bindPopup(`
+    <div style="font-size:12px; line-height:1.4;">
+      <b>台中大安龜殼段 253-1 地號</b><br>
+      容量：1,505.155 kWp (4,493片模組)<br>
+      逆變器：13 台 SUNGROW SG110CX<br>
+      特點：濱海強風・高鹽霧・雜草生長旺盛
+    </div>
+  `).openPopup();
+}
+
 function updateSlide(index) {
   if (index < 0) index = 0;
   if (index >= slides.length) index = slides.length - 1;
   currentIndex = index;
   const s = slides[currentIndex];
 
-  // Update URL hash without scroll jump
   history.replaceState(null, null, '#' + s.id);
 
-  // Toggle views and slides
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.slide').forEach(sl => sl.classList.remove('active'));
 
@@ -1645,23 +1885,26 @@ function updateSlide(index) {
     if (slideEl) slideEl.classList.add('active');
   }
 
-  // Update topnav active state
   document.querySelectorAll('.topnav a').forEach(a => {
     a.classList.toggle('active', a.getAttribute('data-nav') === s.nav);
   });
 
-  // Update counter & progress bar
   const progressPercent = (currentIndex / (slides.length - 1)) * 100;
   document.getElementById('progress-fill').style.width = progressPercent + '%';
   document.getElementById('slide-counter').textContent = `${currentIndex} / ${slides.length - 1}`;
 
-  // Trigger chart resize
+  if (s.id === 'p1-1') {
+    setTimeout(() => {
+      initLeafletMap();
+      if (leafletMap) leafletMap.invalidateSize();
+    }, 100);
+  }
+
   setTimeout(() => {
     Object.values(charts).forEach(c => c && c.resize());
-  }, 60);
+  }, 80);
 }
 
-// Hash change handler
 function handleHashChange() {
   const hash = window.location.hash.replace('#', '') || 'home';
   const idx = slides.findIndex(s => s.id === hash);
@@ -1670,7 +1913,6 @@ function handleHashChange() {
 
 window.addEventListener('hashchange', handleHashChange);
 
-// Keyboard controls
 window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight' || e.key === 'PageDown') {
     updateSlide(currentIndex + 1);
@@ -1694,47 +1936,7 @@ document.getElementById('btn-next').addEventListener('click', () => updateSlide(
 
 // ================= ECHARTS INITIALIZATION =================
 function initCharts() {
-  // 1. Chart Inverter Bars (P1.1)
-  const chartBarEl = document.getElementById('chart-inv-bars');
-  if (chartBarEl) {
-    const chartBars = echarts.init(chartBarEl);
-    charts['bars'] = chartBars;
-    chartBars.setOption({
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: { left: '3%', right: '8%', bottom: '5%', top: '12%', containLabel: true },
-      xAxis: {
-        type: 'value',
-        name: '90天累計 (kWh)',
-        splitLine: { lineStyle: { color: '#E2E8F0' } }
-      },
-      yAxis: {
-        type: 'category',
-        data: ['INV-013 (嚴重缺損)', 'INV-001 (衰退)', 'INV-005 (正常)', 'INV-002 (正常)', 'INV-009 (標竿)', 'INV-006 (標竿)', 'INV-010 (領先)'],
-        axisLabel: { fontWeight: 'bold' }
-      },
-      series: [{
-        name: '實發發電量 (kWh)',
-        type: 'bar',
-        data: [
-          { value: 23524, itemStyle: { color: '#D95F45' } },
-          { value: 45631, itemStyle: { color: '#E09A2B' } },
-          { value: 46110, itemStyle: { color: '#1968AD' } },
-          { value: 47745, itemStyle: { color: '#1968AD' } },
-          { value: 47951, itemStyle: { color: '#1BB1BF' } },
-          { value: 48266, itemStyle: { color: '#1BB1BF' } },
-          { value: 50597, itemStyle: { color: '#2E7D32' } }
-        ],
-        markLine: {
-          data: [{ xAxis: 48109, name: '標竿均值 (48,109 kWh)' }],
-          lineStyle: { color: '#D95F45', type: 'dashed', width: 2 },
-          label: { formatter: '標竿基準 48,109', position: 'end' }
-        },
-        label: { show: true, position: 'right', formatter: '{c} kWh' }
-      }]
-    });
-  }
-
-  // 2. Chart Daily Trend (P1.2)
+  // 1. Chart Daily Trend (P1.3)
   const chartTrendEl = document.getElementById('chart-daily-trend');
   if (chartTrendEl) {
     const chartTrend = echarts.init(chartTrendEl);
@@ -1786,24 +1988,24 @@ function initCharts() {
     });
   }
 
-  // 3. Chart 20-Year Asset Valuation Curve (P4.2)
+  // 2. Chart 20-Year Asset Valuation Curve (P4.2)
   const chartAssetEl = document.getElementById('chart-asset-valuation');
   if (chartAssetEl) {
     const chartAsset = echarts.init(chartAssetEl);
     charts['asset'] = chartAsset;
     const years = ['Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y7', 'Y10', 'Y12', 'Y15', 'Y18', 'Y20'];
     const aiActiveValue = [100, 99.5, 99.0, 98.5, 98.0, 96.5, 94.0, 91.5, 88.0, 85.0, 82.5];
-    const traditionalValue = [92.6, 91.5, 89.0, 86.5, 84.0, 79.5, 74.0, 69.5, 63.0, 58.0, 52.0];
+    const traditionalValue = [91.0, 89.5, 86.5, 83.5, 80.5, 75.0, 68.5, 62.0, 55.0, 48.0, 42.0];
 
     chartAsset.setOption({
       tooltip: { trigger: 'axis', formatter: '{b}<br/>{a0}: {c0}%<br/>{a1}: {c1}%' },
-      legend: { data: ['AI Agent 主動維護 (資產保值)', '傳統放任衰退 (小毛病滾大災)'], top: 0 },
+      legend: { data: ['AI 守護 ＋ 鳳山圳抑草蓆 (1.5MW 資產保值)', '傳統放任衰退 (雜草淹沒＋6台未排查)'], top: 0 },
       grid: { left: '2%', right: '3%', bottom: '8%', top: '15%', containLabel: true },
       xAxis: { type: 'category', data: years },
-      yAxis: { type: 'value', name: '電廠資產估值指數 (%)', min: 40, max: 105, splitLine: { lineStyle: { color: '#EDF1F5' } } },
+      yAxis: { type: 'value', name: '電廠資產估值指數 (%)', min: 35, max: 105, splitLine: { lineStyle: { color: '#EDF1F5' } } },
       series: [
         {
-          name: 'AI Agent 主動維護 (資產保值)',
+          name: 'AI 守護 ＋ 鳳山圳抑草蓆 (1.5MW 資產保值)',
           type: 'line',
           data: aiActiveValue,
           smooth: true,
@@ -1812,7 +2014,7 @@ function initCharts() {
           areaStyle: { color: 'rgba(46, 125, 50, 0.1)' }
         },
         {
-          name: '傳統放任衰退 (小毛病滾大災)',
+          name: '傳統放任衰退 (雜草淹沒＋6台未排查)',
           type: 'line',
           data: traditionalValue,
           smooth: true,
@@ -1825,12 +2027,12 @@ function initCharts() {
   }
 }
 
-// Initialize on DOM load
 window.addEventListener('DOMContentLoaded', () => {
   initCharts();
   handleHashChange();
   window.addEventListener('resize', () => {
     Object.values(charts).forEach(c => c && c.resize());
+    if (leafletMap) leafletMap.invalidateSize();
   });
 });
 </script>
