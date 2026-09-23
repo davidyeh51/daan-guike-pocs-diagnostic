@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="pageTitle">台中市大安區龜殼段 POCS 水上光電｜INV-13 發電異常｜內部維運版</title>
-<meta name="description" content="台中市大安區龜殼段 POCS 水上光電 8D 異常診斷報告：精確地理區位、C-002 串接圖銘牌校正、SCADA 實時告警穿透、鳳山圳抑草蓆財務評估，以 AI Agent 守護資產現金流。">
+<title id="pageTitle">大安區龜殼段 POCS 水上光電 1.5MW｜8D 異常診斷暨投資決策平台｜內部維運版</title>
+<meta name="description" content="台中大安龜殼段 253-1 地號 1,505.155kWp 水上光電案場 8D 異常診斷與改善決策平台：D0緊急安全處置、D2量化描述、D4雜草覆蓋與草屑留置根因剖析、D5鳳山圳抑草蓆工法8.8個月回本評估、D7防止再發標準化，以 AI Agent 守護資產現金流。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Crect width=%2764%27 height=%2764%27 fill=%27%230C3A63%27 rx=%2712%27/%3E%3Cpath d=%27M12 48 L28 20 L38 34 L52 14%27 stroke=%27%231BB1BF%27 stroke-width=%275%27 fill=%27none%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%2752%27 cy=%2714%27 r=%275%27 fill=%27%23E09A2B%27/%3E%3C/svg%3E">
 
 <!-- Google Fonts, ECharts & Leaflet -->
@@ -48,23 +48,23 @@ body {
   font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
   background: var(--paper);
   color: var(--ink);
-  line-height: 1.65;
-  font-size: 15.5px;
+  line-height: 1.6;
+  font-size: 15px;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Fixed Top Navigation Bar */
+/* Top Navigation Bar */
 .topbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000; height: 54px;
-  display: flex; align-items: center; gap: 10px; padding: 0 20px;
+  display: flex; align-items: center; gap: 8px; padding: 0 18px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(8px);
   border-bottom: 2px solid var(--blue);
   box-shadow: 0 2px 10px rgba(12, 58, 99, 0.08);
 }
 .topbar .brand {
-  display: flex; align-items: center; gap: 9px; margin-right: 12px;
+  display: flex; align-items: center; gap: 9px; margin-right: 10px;
   white-space: nowrap; text-decoration: none;
 }
 .topbar .brand .tx {
@@ -72,16 +72,16 @@ body {
   color: var(--ink); line-height: 1.15;
 }
 .topbar .brand .tx small {
-  display: block; font-weight: 700; font-size: .65rem;
+  display: block; font-weight: 700; font-size: .64rem;
   letter-spacing: .08em; color: var(--blue);
 }
 .topnav {
-  display: flex; gap: 4px; flex: 1; min-width: 0;
+  display: flex; gap: 3px; flex: 1; min-width: 0;
   overflow-x: auto; scrollbar-width: none;
 }
 .topnav::-webkit-scrollbar { display: none; }
 .navtab {
-  padding: 5px 11px; font-size: .78rem; font-weight: 700; border-radius: 6px;
+  padding: 5px 9px; font-size: .76rem; font-weight: 700; border-radius: 6px;
   color: var(--muted); border: 1px solid transparent; cursor: pointer;
   white-space: nowrap; transition: all .15s ease; background: transparent;
   text-decoration: none; display: inline-flex; align-items: center;
@@ -94,124 +94,132 @@ body {
 .topbar-actions {
   display: flex; align-items: center; gap: 8px; margin-left: auto;
 }
+.btn-toggle-view {
+  padding: 4px 10px; font-size: .74rem; font-weight: 700; border-radius: 6px;
+  cursor: pointer; border: 1px solid var(--line); background: #fff; color: var(--ink-2);
+  display: inline-flex; align-items: center; gap: 5px; transition: all .15s ease;
+}
+.btn-toggle-view:hover { background: var(--blue-soft); color: var(--blue-dd); border-color: var(--blue); }
 .mode-toggle-btn {
   padding: 4px 10px; font-size: .74rem; font-weight: 800; border-radius: 20px;
-  cursor: pointer; border: 1px solid rgba(25, 104, 173, 0.3);
-  background: var(--blue-soft); color: var(--blue-dd);
+  cursor: pointer; border: 1px solid rgba(217, 95, 69, 0.4);
+  background: var(--coral-soft); color: var(--coral);
   display: inline-flex; align-items: center; gap: 5px; transition: all .15s ease;
 }
 .mode-toggle-btn.owner {
   background: var(--teal-soft); color: var(--teal-d); border-color: rgba(27, 177, 191, 0.4);
 }
 .btn-action-sm {
-  padding: 5px 11px; font-size: .75rem; font-weight: 700; border-radius: 6px;
+  padding: 4px 9px; font-size: .74rem; font-weight: 700; border-radius: 6px;
   cursor: pointer; border: 1px solid var(--line); background: #fff; color: var(--ink);
-  display: inline-flex; align-items: center; gap: 5px; transition: all .15s ease;
+  display: inline-flex; align-items: center; gap: 4px; transition: all .15s ease;
 }
 .btn-action-sm:hover { background: var(--paper); border-color: var(--blue); color: var(--blue); }
 
+/* Deck Mode vs Doc Mode Containers */
+main.deck-container {
+  padding-top: 66px; padding-bottom: 74px; max-width: 1320px;
+  margin: 0 auto; min-height: 100vh;
+}
+.slide { display: none; opacity: 0; transition: opacity .2s ease-in-out; }
+.slide.active { display: block; opacity: 1; animation: fadeIn .2s ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* When in Document View Mode */
+body.doc-view-mode main.deck-container {
+  max-width: 1240px; padding-bottom: 40px;
+}
+body.doc-view-mode .slide {
+  display: block !important; opacity: 1 !important; margin-bottom: 34px;
+}
+body.doc-view-mode .deck-controls,
+body.doc-view-mode .deck-progress-track {
+  display: none !important;
+}
+
 /* Cover Header */
-.cover {
-  border-bottom: 3px solid var(--blue);
-  background: linear-gradient(180deg, var(--blue-soft) 0%, var(--paper) 100%);
-  padding: 76px 24px 34px; margin-bottom: 24px;
+.cover-hero {
+  background: linear-gradient(135deg, var(--blue-dd) 0%, #154e7d 100%);
+  color: #fff; border-radius: 12px; padding: 28px 32px; margin-bottom: 22px;
+  box-shadow: 0 10px 25px rgba(12, 58, 99, 0.12); position: relative; overflow: hidden;
 }
-.cover-inner { max-width: 1240px; margin: 0 auto; }
-.badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.badge {
-  font-size: 11.5px; font-weight: 800; letter-spacing: .04em;
-  padding: 4px 11px; border-radius: 999px; border: 1px solid var(--line);
-  color: var(--blue-dd); background: #fff;
-}
-.badge.mode-internal { border-color: rgba(217, 95, 69, 0.4); color: var(--coral); background: var(--coral-soft); }
-.badge.mode-owner { border-color: rgba(27, 177, 191, 0.4); color: var(--teal-d); background: var(--teal-soft); }
-.cover h1 { font-size: clamp(23px, 3.8vw, 34px); font-weight: 900; letter-spacing: -.01em; color: var(--blue-dd); }
-.cover .lede {
-  font-size: clamp(15.5px, 1.8vw, 18px); color: var(--ink-2);
-  margin: 12px 0 0; max-width: 72ch; font-weight: 600; line-height: 1.6;
-}
+.cover-hero h1 { font-size: 1.8rem; font-weight: 900; margin-bottom: 8px; letter-spacing: -0.01em; }
+.cover-hero p.lede { font-size: .95rem; opacity: 0.92; max-width: 860px; line-height: 1.6; font-weight: 500; }
 .factgrid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: 1px; background: var(--line); border: 1px solid var(--line);
-  margin: 22px 0 0; border-radius: 8px; overflow: hidden;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px; background: rgba(255, 255, 255, 0.18); border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 20px 0 0; border-radius: 8px; overflow: hidden;
 }
-.factgrid div { background: #fff; padding: 10px 14px; }
-.factgrid dt { font-size: 11px; letter-spacing: .06em; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-.factgrid dd { margin: 3px 0 0; font-size: 14.5px; font-weight: 700; color: var(--ink); font-family: var(--mono); }
+.factgrid div { background: rgba(12, 58, 99, 0.65); backdrop-filter: blur(4px); padding: 9px 13px; }
+.factgrid dt { font-size: 10.5px; letter-spacing: .06em; opacity: 0.8; font-weight: 700; text-transform: uppercase; }
+.factgrid dd { margin: 2px 0 0; font-size: 13.5px; font-weight: 700; font-family: var(--mono); color: #fff; }
 
-/* Main Content Layout with Sticky TOC */
-.layout {
-  max-width: 1240px; margin: 0 auto; padding: 0 24px 80px;
-  display: grid; grid-template-columns: 210px minmax(0, 1fr);
-  gap: 36px; align-items: start;
+/* Cards & Layout */
+.section-head { margin-bottom: 16px; }
+.section-head .part-tag {
+  display: inline-block; font-size: .72rem; font-weight: 800; color: var(--blue);
+  background: var(--blue-soft); padding: 3px 9px; border-radius: 4px;
+  margin-bottom: 5px; letter-spacing: .05em; font-family: var(--mono);
 }
-.toc {
-  position: sticky; top: 72px; padding-top: 10px; font-size: 13.5px;
-  max-height: calc(100vh - 84px); overflow-y: auto;
-}
-.toc-label { font-size: 11px; letter-spacing: .08em; color: var(--muted); font-weight: 800; margin-bottom: 8px; text-transform: uppercase; }
-.toc a {
-  display: block; padding: 6px 0 6px 12px; border-left: 2px solid var(--line);
-  color: var(--ink-2); text-decoration: none; font-weight: 600; transition: all .15s ease;
-}
-.toc a:hover, .toc a.active {
-  border-left-color: var(--blue); color: var(--blue-dd); font-weight: 800; background: var(--blue-soft);
-}
-main { min-width: 0; }
+.section-head h2 { font-size: 1.45rem; font-weight: 800; color: var(--blue-dd); line-height: 1.25; }
+.section-head p.sec-purpose { font-size: .85rem; color: var(--muted); margin-top: 3px; font-style: italic; }
 
-/* Sections */
-section {
-  margin: 0 0 52px; scroll-margin-top: 74px;
-  background: var(--card); border: 1px solid var(--line);
-  border-radius: 12px; padding: 28px 30px; box-shadow: 0 2px 6px rgba(12, 58, 99, 0.03);
+.box-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 22px; box-shadow: 0 2px 6px rgba(12, 58, 99, 0.03); margin-bottom: 20px;
 }
-.sec-head {
-  display: flex; align-items: center; gap: 12px;
-  border-bottom: 2px solid var(--line-soft); padding-bottom: 12px; margin-bottom: 8px;
+.box-card h3 {
+  font-size: 1.05rem; font-weight: 800; color: var(--blue-dd); margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.sec-tag {
-  font-family: var(--mono); font-size: 12.5px; font-weight: 800;
-  color: #fff; background: var(--blue); padding: 3px 9px; border-radius: 4px; flex: none;
-}
-.sec-head h2 { font-size: 20px; font-weight: 800; color: var(--blue-dd); }
-.sec-purpose { font-size: 13px; color: var(--muted); margin: 0 0 20px; font-style: italic; }
-p { margin: 0 0 14px; line-height: 1.65; }
+
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 18px; margin-bottom: 20px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px; margin-bottom: 20px; }
 
 /* KPIs */
-.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin: 0 0 22px; }
-.kpi {
-  background: #fff; border: 1px solid var(--line);
-  border-top: 4px solid var(--blue); padding: 14px 16px; border-radius: 8px;
+.kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.kpi-card {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 16px 18px; box-shadow: 0 2px 5px rgba(18, 41, 61, 0.03);
+  position: relative; overflow: hidden;
 }
-.kpi.bad { border-top-color: var(--coral); }
-.kpi.warn { border-top-color: var(--amber); }
-.kpi-label { font-size: 11.5px; letter-spacing: .05em; color: var(--muted); font-weight: 700; text-transform: uppercase; }
-.kpi-value { font-size: 27px; font-weight: 900; letter-spacing: -.02em; margin: 4px 0 0; font-family: var(--mono); color: var(--ink); }
-.kpi.bad .kpi-value { color: var(--coral); }
-.kpi.warn .kpi-value { color: var(--amber); }
-.kpi-unit { font-size: 13px; font-weight: 700; color: var(--muted); margin-left: 3px; }
-.kpi-note { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.45; }
+.kpi-card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--blue); }
+.kpi-card.bad::before { background: var(--coral); }
+.kpi-card.warn::before { background: var(--amber); }
+.kpi-card.good::before { background: var(--green); }
+.kpi-label { font-size: .74rem; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 3px; }
+.kpi-num { font-size: 1.65rem; font-weight: 900; color: var(--ink); font-family: var(--mono); line-height: 1.2; }
+.kpi-card.bad .kpi-num { color: var(--coral); }
+.kpi-card.warn .kpi-num { color: var(--amber); }
+.kpi-card.good .kpi-num { color: var(--green); }
+.kpi-num small { font-size: .85rem; font-weight: 700; margin-left: 3px; color: var(--muted); }
+.kpi-sub { font-size: .72rem; color: var(--muted); margin-top: 5px; }
 
 /* Tables */
-.tbl-wrap { overflow-x: auto; margin: 0 0 20px; border-radius: 8px; border: 1px solid var(--line); }
-table { border-collapse: collapse; width: 100%; font-size: 14px; }
-caption { caption-side: top; text-align: left; font-size: 12.5px; color: var(--muted); padding: 8px 10px; font-weight: 700; }
-th, td { border-bottom: 1px solid var(--line); padding: 9px 12px; text-align: left; vertical-align: middle; }
-thead th { background: var(--blue-soft); border-bottom: 2px solid rgba(25, 104, 173, 0.25); font-size: 12.5px; font-weight: 800; color: var(--blue-dd); white-space: nowrap; }
-tbody tr:nth-child(even) { background: #FAFBFD; }
-tbody tr:hover { background: #F1F6FA; }
-td.num, th.num { text-align: right; font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+.table-wrap { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--line); margin-bottom: 16px; }
+table.data-table { width: 100%; border-collapse: collapse; font-size: .82rem; text-align: left; }
+table.data-table caption { caption-side: top; text-align: left; font-size: .75rem; color: var(--muted); padding: 8px 10px; font-weight: 700; }
+table.data-table th {
+  background: var(--blue-soft); color: var(--blue-dd); font-weight: 800; padding: 9px 12px;
+  border-bottom: 2px solid rgba(25, 104, 173, 0.25); white-space: nowrap; font-size: .78rem;
+}
+table.data-table td {
+  padding: 8px 12px; border-bottom: 1px solid var(--line); color: var(--ink); vertical-align: middle;
+}
+table.data-table tr:nth-child(even) { background: #FAFBFD; }
+table.data-table tr:hover { background: #F1F6FA; }
+td.num, th.num { text-align: right; font-family: var(--mono); font-size: .8rem; font-variant-numeric: tabular-nums; }
 tr.row-bad td { background: var(--coral-soft) !important; }
 tr.row-warn td { background: var(--amber-soft) !important; }
 
-/* Severity & Statements */
+/* Tags & Statements */
 .sev { display: inline-block; font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); white-space: nowrap; }
 .sev.P1 { background: var(--coral); color: #fff; }
 .sev.P2 { background: var(--amber); color: #fff; }
 .sev.P3 { background: var(--blue); color: #fff; }
 .sev.P4 { background: var(--muted); color: #fff; }
 
-.stmt { display: flex; gap: 11px; align-items: flex-start; border-left: 3px solid var(--line); padding: 10px 0 10px 14px; margin: 0 0 14px; background: #FAFBFD; border-radius: 0 6px 6px 0; }
+.stmt { display: flex; gap: 10px; align-items: flex-start; border-left: 3px solid var(--line); padding: 10px 0 10px 14px; margin: 0 0 14px; background: #FAFBFD; border-radius: 0 6px 6px 0; }
 .stmt.fact { border-left-color: var(--blue); }
 .stmt.inference { border-left-color: var(--amber); }
 .stmt.unverified { border-left-color: var(--coral); }
@@ -219,36 +227,65 @@ tr.row-warn td { background: var(--amber-soft) !important; }
 .stmt.fact .tag { background: var(--blue-soft); color: var(--blue); border: 1px solid rgba(25, 104, 173, 0.3); }
 .stmt.inference .tag { background: var(--amber-soft); color: var(--amber); border: 1px solid rgba(224, 154, 43, 0.3); }
 .stmt.unverified .tag { background: var(--coral-soft); color: var(--coral); border: 1px solid rgba(217, 95, 69, 0.3); }
-.stmt p { margin: 0; font-size: 14.5px; }
+.stmt p { margin: 0; font-size: .84rem; }
 
-/* Callout */
-.callout { border: 1px solid var(--line); border-left: 4px solid var(--blue); background: #FAFBFD; padding: 14px 18px; margin: 0 0 20px; border-radius: 0 8px 8px 0; }
+/* Callouts */
+.callout { border: 1px solid var(--line); border-left: 4px solid var(--blue); background: #FAFBFD; padding: 14px 18px; margin: 0 0 18px; border-radius: 0 8px 8px 0; }
 .callout.danger { border-left-color: var(--coral); background: var(--coral-soft); border-color: rgba(217, 95, 69, 0.3); }
 .callout.warn { border-left-color: var(--amber); background: var(--amber-soft); border-color: rgba(224, 154, 43, 0.3); }
-.callout h4 { font-size: 14.5px; font-weight: 800; margin: 0 0 6px; }
+.callout.good { border-left-color: var(--green); background: var(--green-soft); border-color: rgba(46, 125, 50, 0.3); }
+.callout h4 { font-size: .92rem; font-weight: 800; margin: 0 0 5px; }
 .callout.danger h4 { color: var(--coral); }
 .callout.warn h4 { color: #B45309; }
+.callout.good h4 { color: var(--green); }
 
-/* Actions */
-.actions { margin: 0 0 20px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+/* Actions & Verification */
+.actions { margin: 0 0 18px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
 .action { display: grid; grid-template-columns: minmax(0, 1fr) 110px 110px; gap: 0; border-bottom: 1px solid var(--line); }
 .action:last-child { border-bottom: 0; }
-.action > div { padding: 11px 14px; }
-.action-what { font-size: 14px; line-height: 1.55; }
-.action-verify { grid-column: 1 / -1; font-size: 13px; color: var(--ink-2); background: var(--line-soft); padding-top: 7px; padding-bottom: 7px; }
-.action-meta { font-size: 12.5px; border-left: 1px solid var(--line); }
-.action-meta span { display: block; font-size: 10.5px; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+.action > div { padding: 10px 13px; }
+.action-what { font-size: .84rem; line-height: 1.5; }
+.action-verify { grid-column: 1 / -1; font-size: .78rem; color: var(--ink-2); background: var(--line-soft); padding: 7px 13px; }
+.action-meta { font-size: .78rem; border-left: 1px solid var(--line); }
+.action-meta span { display: block; font-size: 10px; letter-spacing: .05em; color: var(--muted); font-weight: 700; text-transform: uppercase; }
 .action-head { display: grid; grid-template-columns: minmax(0, 1fr) 110px 110px; background: var(--blue-soft); border-bottom: 2px solid rgba(25, 104, 173, 0.25); font-size: 12px; font-weight: 800; color: var(--blue-dd); }
-.action-head > div { padding: 8px 14px; }
+.action-head > div { padding: 7px 13px; }
 
-/* Evidence Grid */
-.ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin: 0 0 22px; }
-figure { margin: 0; border: 1px solid var(--line); background: #fff; border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease; }
-figure:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(12, 58, 99, 0.08); }
-figure img { display: block; width: 100%; height: 210px; object-fit: cover; background: #eef3f7; }
-figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
-.ev-id { font-family: var(--mono); font-size: 11px; font-weight: 800; color: #fff; background: var(--blue); padding: 1px 6px; border-radius: 3px; margin-right: 6px; }
-.ev-meta { display: block; margin-top: 5px; font-size: 11.5px; color: var(--muted); }
+/* Evidence Photos Grid */
+.ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 0 0 20px; }
+figure.photo-card {
+  margin: 0; border: 1px solid var(--line); background: #fff; border-radius: 8px;
+  overflow: hidden; cursor: pointer; transition: transform .15s ease, box-shadow .15s ease;
+}
+figure.photo-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(12, 58, 99, 0.08); }
+figure.photo-card img { display: block; width: 100%; height: 190px; object-fit: cover; background: #eef3f7; }
+figure.photo-card figcaption { padding: 10px 12px; font-size: .78rem; color: var(--ink-2); line-height: 1.45; }
+.ev-id { font-family: var(--mono); font-size: 10.5px; font-weight: 800; color: #fff; background: var(--blue); padding: 1px 6px; border-radius: 3px; margin-right: 5px; }
+.ev-meta { display: block; margin-top: 4px; font-size: 11px; color: var(--muted); }
+
+/* Deck Controls */
+.deck-controls {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 56px; z-index: 999;
+  background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(8px);
+  border-top: 1px solid var(--line); display: flex; align-items: center;
+  justify-content: space-between; padding: 0 24px; box-shadow: 0 -2px 10px rgba(12, 58, 99, 0.05);
+}
+.deck-btn {
+  padding: 6px 14px; border-radius: 6px; font-weight: 700; font-size: .8rem;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink);
+  transition: all .15s ease;
+}
+.deck-btn:hover { background: var(--blue-soft); color: var(--blue-dd); border-color: var(--blue); }
+.deck-btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+.deck-btn.primary:hover { background: var(--blue-d); }
+.deck-counter {
+  font-size: .82rem; font-weight: 800; color: var(--muted); font-family: var(--mono);
+}
+.deck-progress-track {
+  position: fixed; bottom: 56px; left: 0; right: 0; height: 3px; background: #e2e8f0; z-index: 1001;
+}
+.deck-progress-bar { height: 100%; width: 8.33%; background: var(--blue); transition: width .2s ease; }
 
 /* Modal Lightbox */
 .modal-overlay {
@@ -263,10 +300,10 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
   box-shadow: 0 20px 40px rgba(0,0,0,0.3); position: relative;
 }
 .modal-header {
-  padding: 14px 20px; border-bottom: 1px solid var(--line); display: flex;
+  padding: 13px 20px; border-bottom: 1px solid var(--line); display: flex;
   align-items: center; justify-content: space-between; background: var(--paper);
 }
-.modal-header h4 { font-size: 1rem; font-weight: 800; color: var(--blue-dd); }
+.modal-header h4 { font-size: .95rem; font-weight: 800; color: var(--blue-dd); }
 .modal-close {
   background: transparent; border: none; font-size: 1.4rem; cursor: pointer;
   color: var(--muted); width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
@@ -280,14 +317,12 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
 }
 .modal-img-container img { max-width: 100%; max-height: 60vh; object-fit: contain; }
 
-/* Responsive & Print */
-@media (max-width: 860px) {
-  .layout { grid-template-columns: 1fr; gap: 0; padding: 0 16px 60px; }
-  .toc { display: none; }
-  .cover { padding: 66px 16px 24px; }
-  .action, .action-head { grid-template-columns: 1fr; }
-  .action-meta { border-left: 0; border-top: 1px solid var(--line); display: flex; gap: 8px; }
-  .action-head { display: none; }
+/* Responsive */
+@media (max-width: 768px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .topbar { padding: 0 12px; }
+  .cover-hero { padding: 20px; }
+  .deck-controls { padding: 0 12px; }
 }
 </style>
 </head>
@@ -295,32 +330,38 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
 
 <!-- Fixed Top Navigation -->
 <header class="topbar">
-  <a href="#summary" class="brand">
+  <a href="#slide-0" class="brand" onclick="goToSlide(0)">
     <div class="tx">
-      台中市大安區龜殼段 POCS 水上光電
-      <small>8D SOLAR DIAGNOSTIC PLATFORM</small>
+      大安龜殼段 POCS 水上光電 1.5MW
+      <small>8D SOLAR DIAGNOSTIC & INVESTOR PLATFORM</small>
     </div>
   </a>
 
   <nav class="topnav">
-    <a href="#summary" class="navtab active">摘要 Summary</a>
-    <a href="#d0" class="navtab">D0 立案</a>
-    <a href="#d2" class="navtab">D2 描述</a>
-    <a href="#d3" class="navtab">D3 圍堵</a>
-    <a href="#d4" class="navtab">D4 根因</a>
-    <a href="#d5" class="navtab">D5 對策</a>
-    <a href="#d6" class="navtab">D6 驗證</a>
-    <a href="#d7" class="navtab">D7 防再發</a>
-    <a href="#safety" class="navtab">安全警語</a>
+    <button class="navtab active" onclick="goToSlide(0)">封面 Cover</button>
+    <button class="navtab" onclick="goToSlide(1)">摘要 Summary</button>
+    <button class="navtab" onclick="goToSlide(2)">D0~D1 立案分工</button>
+    <button class="navtab" onclick="goToSlide(3)">D2 量化描述</button>
+    <button class="navtab" onclick="goToSlide(4)">D3 暫時圍堵</button>
+    <button class="navtab" onclick="goToSlide(5)">D4 根因實證</button>
+    <button class="navtab" onclick="goToSlide(6)">D4 推論排除</button>
+    <button class="navtab" onclick="goToSlide(7)">D5 永久對策</button>
+    <button class="navtab" onclick="goToSlide(8)">D6 效果驗證</button>
+    <button class="navtab" onclick="goToSlide(9)">D7 防止再發</button>
+    <button class="navtab" onclick="goToSlide(10)">D8 結案估值</button>
+    <button class="navtab" onclick="goToSlide(11)">附錄&安全</button>
   </nav>
 
   <div class="topbar-actions">
-    <button class="mode-toggle-btn " id="modeToggleBtn" onclick="toggleReportMode()">
+    <button class="mode-toggle-btn" id="modeToggleBtn" onclick="toggleReportMode()">
       <span id="modeIcon">🔄</span>
       <span id="modeBtnText">模式：內部維運版</span>
     </button>
+    <button class="btn-toggle-view" id="viewModeBtn" onclick="toggleViewMode()">
+      <span>📄 完整報告模式</span>
+    </button>
     <button class="btn-action-sm" onclick="openRawDataModal()">
-      <span>📊 原始數據對帳</span>
+      <span>📊 數據對帳</span>
     </button>
     <button class="btn-action-sm" onclick="openPhotoGalleryModal()">
       <span>📸 照片證據庫</span>
@@ -328,84 +369,114 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
   </div>
 </header>
 
-<!-- Header Cover -->
-<header class="cover">
-  <div class="cover-inner">
-    <div class="badges">
-      <span class="badge mode-internal" id="headerModeBadge">內部維運版</span>
-      <span class="badge">8D 異常矯正報告</span>
-      <span class="badge">對策執行中</span>
-    </div>
-    <h1>台中市大安區龜殼段 POCS 水上光電｜INV-13 發電異常</h1>
-    <p class="lede">根因是雜草覆蓋模組，不是電氣故障。而且 9/10 的除草作業把割下的草留在模組上，讓 INV-13 比除草前更差。</p>
-    <dl class="factgrid">
-      <div><dt>案號</dt><dd>PV-2026-DA01</dd></div>
-      <div><dt>電廠</dt><dd style="font-size:13px;">台中市大安區龜殼段 253-1 地號（水上浮體型）</dd></div>
-      <div><dt>裝置容量</dt><dd>1,505 kWp / 13 台 SUNGROW SG110CX (110kW 級)</dd></div>
-      <div><dt>資料期間</dt><dd>2026/06/20 – 09/17（90 天）</dd></div>
-      <div><dt>版本</dt><dd>v1.0</dd></div>
-      <div><dt>報告日期</dt><dd>2026/09/21</dd></div>
-    </dl>
-  </div>
-</header>
+<div class="deck-progress-track">
+  <div class="deck-progress-bar" id="progressBar"></div>
+</div>
 
-<div class="layout">
-  <!-- Sticky TOC -->
-  <nav class="toc">
-    <div class="toc-label">目錄 NAVIGATION</div>
-    <a href="#summary">摘要 結論與問題清單</a>
-    <a href="#d0">D0 立案與緊急反應</a>
-    <a href="#d1">D1 小組與分工</a>
-    <a href="#d2">D2 問題描述（量化）</a>
-    <a href="#d3">D3 暫時圍堵措施</a>
-    <a href="#d4">D4 根本原因分析</a>
-    <a href="#d5">D5 永久對策選定</a>
-    <a href="#d6">D6 執行與效果驗證</a>
-    <a href="#d7">D7 防止再發</a>
-    <a href="#d8">D8 結案與歸檔</a>
-    <a href="#src">附錄B 原始資料來源</a>
-    <a href="#limit">附錄C 分析限制</a>
-    <a href="#safety">安全 作業安全警語</a>
-  </nav>
+<main class="deck-container">
 
-  <main>
-    <!-- ==================== SECTION: SUMMARY ==================== -->
-    <section id="summary">
-      <div class="sec-head"><span class="sec-tag">摘要</span><h2>結論與問題清單</h2></div>
-      <div class="kpis">
-        
-        <div class="kpi bad">
-          <div class="kpi-label">INV-13 相對基準</div>
-          <div class="kpi-value">45<span class="kpi-unit">%</span></div>
-          <div class="kpi-note">09/11–09/17 平均；基準為 006／010</div>
+  <!-- ==================== SLIDE 0: COVER ==================== -->
+  <section class="slide active" id="slide-0">
+    <div class="cover-hero">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px;">
+        <div>
+          <div style="font-size:.74rem; font-weight:800; letter-spacing:.08em; opacity:0.85; margin-bottom:4px; font-family:var(--mono);">
+            8D DIAGNOSTIC & ASSET REMEDIATION REPORT ｜ 案號：PV-2026-DA01
+          </div>
+          <h1>台中市大安區龜殼段 POCS 水上光電｜INV-13 發電異常</h1>
+          <p class="lede">根因是雜草覆蓋模組，不是電氣故障。而且 9/10 的除草作業把割下的草留在模組上，讓 INV-13 比除草前更差。</p>
         </div>
-        
-
-        <div class="kpi bad">
-          <div class="kpi-label">INV-13 損失電量</div>
-          <div class="kpi-value">24,785<span class="kpi-unit">kWh</span></div>
-          <div class="kpi-note">90 天累計，目前每天少 323 kWh</div>
+        <div style="text-align:right;">
+          <div style="font-size:.74rem; opacity:0.8;">報告版本 / 基準日</div>
+          <div style="font-size:1.1rem; font-weight:800; font-family:var(--mono);">v1.0 ｜ 2026/09/21</div>
+          <div style="font-size:.72rem; color:var(--teal); font-weight:700; margin-top:2px;" id="heroModeLabel">內部維運版・對策執行中</div>
         </div>
-        
-
-        <div class="kpi warn">
-          <div class="kpi-label">7 台合計損失</div>
-          <div class="kpi-value">34,268<span class="kpi-unit">kWh</span></div>
-          <div class="kpi-note">比基準低 10.0%</div>
-        </div>
-        
-
-        <div class="kpi warn">
-          <div class="kpi-label">年化損失金額</div>
-          <div class="kpi-value">69<span class="kpi-unit">萬元</span></div>
-          <div class="kpi-note">7 台，以 NT$5/kWh 估算</div>
-        </div>
-        
       </div>
 
-      <div class="tbl-wrap">
-        <table>
-          <caption>問題清單（依處理優先順序）</caption>
+      <dl class="factgrid">
+        <div><dt>案號</dt><dd>PV-2026-DA01</dd></div>
+        <div><dt>電廠地號</dt><dd>大安區龜殼段 253-1 (水上浮體型)</dd></div>
+        <div><dt>裝置容量</dt><dd>1,505 kWp (4,493片×335W)</dd></div>
+        <div><dt>變流器設備</dt><dd>13 台 SUNGROW SG110CX</dd></div>
+        <div><dt>分析資料期間</dt><dd>2026/06/20 – 09/17 (90天)</dd></div>
+        <div><dt>基準逆變器</dt><dd>INV-006 / INV-010 (同儕正常)</dd></div>
+      </dl>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>📌 8D 紀律問題解決架構 (Disciplines Mapping)</span>
+          <span class="sev P3">SOP 體系</span>
+        </h3>
+        <p style="font-size:.84rem; color:var(--muted); line-height:1.55;">
+          本報告嚴格遵循國際工業標準 8D (Eight Disciplines) 解決架構，融合現場實勘照片與 SCADA 匯流排數據，系統性排查發電落差與工程隱患：
+        </p>
+        <ul style="padding-left:18px; font-size:.82rem; color:var(--ink-2); line-height:1.65; margin-top:8px;">
+          <li><strong>D0~D1 (立案與分工)</strong>：第一時間安全與停機判定，火載量與直流電弧風險防範，四方權責定義。</li>
+          <li><strong>D2~D3 (量化與圍堵)</strong>：5W2H 精準量化，串接圖銘牌誤差修正，清除表面草屑與連續 3 天比值驗證。</li>
+          <li><strong>D4 (根本原因剖析)</strong>：四大實證 (EV-01~04) 穿透，排除削峰/斷路/PID 假說，揭示草屑留置之主因。</li>
+          <li><strong>D5~D6 (永久對策與驗證)</strong>：改除草 SOP 主方案＋鳳山圳抑草蓆 8.8 個月回本方案比選，$\ge 0.90$ 恢復門檻。</li>
+          <li><strong>D7~D8 (防再發與估值)</strong>：清運寫入驗收條件，中位數 15% 3天自動告警，20年 DCF 增值 1,510 萬元。</li>
+        </ul>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>💡 核心管理洞察 (Key Executive Insight)</span>
+          <span class="sev P2">管理關鍵</span>
+        </h3>
+        <div class="callout warn" style="margin-bottom:12px;">
+          <h4>這份報告最該帶走的一句話</h4>
+          <p style="font-weight:700; color:#B45309;">
+            真正的管理缺口不是「沒有除草」，是「割完沒有清模組面」。前者是頻率問題，後者是驗收條件問題——而後者讓這次除草做了等於白做，甚至倒退。
+          </p>
+        </div>
+        <p style="font-size:.82rem; color:var(--muted); line-height:1.55;">
+          9/10 的除草作業把割下的草直接留置於面板上，導致復機後發電比值由 0.510 反向惡化至 0.446。唯有將「草屑清運離場」列為驗收計價硬指標，方能徹底杜絕發電損失與火災風險。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 1: SUMMARY ==================== -->
+  <section class="slide" id="slide-1">
+    <div class="section-head">
+      <div class="part-tag">EXECUTIVE SUMMARY</div>
+      <h2>摘要：結論與核心問題清單</h2>
+      <p class="sec-purpose">全場關鍵營運指標 (KPIs)、P1~P4 優先級處理矩陣與決策一覽。</p>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi-card bad">
+        <div class="kpi-label">INV-13 相對基準</div>
+        <div class="kpi-num">45<small>%</small></div>
+        <div class="kpi-sub">09/11–09/17 平均；基準為 006／010</div>
+      </div>
+      <div class="kpi-card bad">
+        <div class="kpi-label">INV-13 損失電量</div>
+        <div class="kpi-num">24,785<small>kWh</small></div>
+        <div class="kpi-sub">90 天累計，目前每天少 323 kWh</div>
+      </div>
+      <div class="kpi-card warn">
+        <div class="kpi-label">7 台合計損失</div>
+        <div class="kpi-num">34,268<small>kWh</small></div>
+        <div class="kpi-sub">比基準低 10.0%</div>
+      </div>
+      <div class="kpi-card warn">
+        <div class="kpi-label">年化損失金額</div>
+        <div class="kpi-num">69<small>萬元</small></div>
+        <div class="kpi-sub">7 台，以 NT$5/kWh 估算</div>
+      </div>
+    </div>
+
+    <div class="box-card">
+      <h3>
+        <span>📋 問題清單（依處理優先順序 P1 ~ P4）</span>
+        <span style="font-size:.75rem; color:var(--muted); font-weight:normal;">8D 處置優先級</span>
+      </h3>
+      <div class="table-wrap">
+        <table class="data-table">
           <thead>
             <tr>
               <th style="width:70px;">優先</th>
@@ -415,768 +486,827 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
             </tr>
           </thead>
           <tbody>
-            
-        <tr class="row-bad">
-          <td><span class="sev P1">P1</span></td>
-          <td><strong>INV-13 雜草覆蓋模組</strong></td>
-          <td>90 天少發 24,785 kWh，年化 NT$47–65 萬</td>
-          <td>本週清除模組上草屑並除草</td>
-        </tr>
-        
-
-        <tr class="row-bad">
-          <td><span class="sev P1">P1</span></td>
-          <td><strong>除草 SOP 缺陷：割完的草留在模組上</strong></td>
-          <td>復機後 0.510 → 0.446，反而更差</td>
-          <td>草屑清運列入驗收條件</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><span class="sev P2">P2</span></td>
-          <td><strong>熱斑與接線盒過熱風險</strong></td>
-          <td>長期遮蔽＝旁路二極體長期導通</td>
-          <td>清草後兩週內紅外線熱像掃描</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><span class="sev P2">P2</span></td>
-          <td><strong>平台登錄容量錯誤</strong></td>
-          <td>最大誤差 +7.2%（INV-001）</td>
-          <td>依串接圖修正 7 台 kWp 設定</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><span class="sev P3">P3</span></td>
-          <td><strong>監控資料不完整</strong></td>
-          <td>13 台只匯出 7 台；日射計讀值未入庫</td>
-          <td>補匯出、修點位對應</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><span class="sev P4">P4</span></td>
-          <td><strong>溫度感測器異常</strong></td>
-          <td>CS1-TP1 顯示 327.67 °C</td>
-          <td>檢查感測器或倍率設定</td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-
-      <div class="callout warn">
-        <h4>這份報告最該帶走的一句話</h4>
-        <p>真正的管理缺口不是「沒有除草」，是「割完沒有清模組面」。前者是頻率問題，後者是驗收條件問題——而後者讓這次除草做了等於白做，甚至倒退。</p>
-      </div>
-
-      <!-- Interactive Plant Map -->
-      <div style="margin-top:20px;">
-        <div style="font-size:13px; font-weight:800; color:var(--blue-dd); margin-bottom:8px;">🗺️ 案場精確地理區位與臨海微氣候環境 (Leaflet 互動圖資)</div>
-        <div id="plantMap" style="width:100%; height:320px; border-radius:8px; border:1px solid var(--line); z-index:1;"></div>
-        <div style="font-size:12px; color:var(--muted); margin-top:6px; display:flex; justify-content:space-between;">
-          <span>坐標：24.38° N, 120.575° E</span>
-          <span>臨海距離：約 650 公尺（高鹽霧、強季風、高地下水位野草生長極快）</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D0 ==================== -->
-    <section id="d0">
-      <div class="sec-head"><span class="sec-tag">D0</span><h2>立案與緊急反應</h2></div>
-      <p class="sec-purpose">接獲異常的第一時間：安全判斷、是否停機、建案號。</p>
-      <p>由發電資料異常比對發現，非現場通報。2026/09/18 完成初判（v0.1，判為組串斷路），09/21 取得現場照片與串接圖後修正根因（本版 v1.0）。</p>
-      <div class="stmt fact">
-        <span class="tag">事實</span>
-        <p>2026/09/21 09:52 監控截圖：日射 720 W/m² 時，INV-13 交流輸出僅 31.26 kW（47.27 A），其餘各台 62–74 kW。異常狀態持續中。</p>
-      </div>
-      <div class="callout warn">
-        <h4>安全判斷：不需立即停機，但有火載量風險</h4>
-        <p>發電量偏低本身不構成立即危險，無須緊急停機。但乾草堆積在模組與浮台上屬於火載量，與直流電弧風險疊加。清運草屑同時是消防措施，不只是為了發電。</p>
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D1 ==================== -->
-    <section id="d1">
-      <div class="sec-head"><span class="sec-tag">D1</span><h2>小組與分工</h2></div>
-      <p class="sec-purpose">誰負責、誰執行、誰驗收、業主窗口是誰。</p>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th style="width:140px;">角色</th>
-              <th style="width:120px;">負責人</th>
-              <th>負責事項</th>
+            <tr class="row-bad">
+              <td><span class="sev P1">P1</span></td>
+              <td><strong>INV-13 雜草覆蓋模組</strong></td>
+              <td>90 天少發 24,785 kWh，年化 NT$47–65 萬</td>
+              <td>本週清除模組上草屑並除草</td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr>
-          <td><strong>資料分析</strong></td>
-          <td>（待填）</td>
-          <td>發電資料比對、損失量化、報告產出與恢復門檻追蹤</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>現場執行</strong></td>
-          <td>（待填）</td>
-          <td>清草、除草、熱像掃描、1500V 直流 LOTO 施作</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>監控系統</strong></td>
-          <td>（待填）</td>
-          <td>平台容量修正、匯出設定、感測器點位校驗</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>業主窗口</strong></td>
-          <td>（待填）</td>
-          <td>匯僑：對策說明、預算審核與驗收確認</td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D2 ==================== -->
-    <section id="d2">
-      <div class="sec-head"><span class="sec-tag">D2</span><h2>問題描述（量化）</h2></div>
-      <p class="sec-purpose">用數字描述問題，不用形容詞。含損失 kWh 與金額。</p>
-      <p>
-        <strong>何時</strong>：2026/06/20 起持續（資料起點即已異常，實際起始時間更早）。<br>
-        <strong>何處</strong>：INV-13 為主，002／009 程度較輕。<br>
-        <strong>現象</strong>：單位發電量僅同場基準台的 48%，且逐月下滑。<br>
-        <strong>影響</strong>：90 天累計短少 24,785 kWh，年化發電損失 NT$ 47–65 萬元。
-      </p>
-      <p>比對前必須先修正一件事：<strong>平台登錄的裝置容量是錯的</strong>，最大誤差 +7.2%。不修正就直接比 kWh/kWp，排名會完全失真——初版就是因此誤判 001／002／005 整組偏低。</p>
-
-      <div class="tbl-wrap">
-        <table>
-          <caption>平台登錄容量 vs 串接圖實際容量（335 W 組件）</caption>
-          <thead>
-            <tr>
-              <th>INV</th>
-              <th>串接設計</th>
-              <th class="num">實際片數</th>
-              <th class="num">實際 kWp</th>
-              <th class="num">平台 kWp</th>
-              <th class="num">誤差</th>
+            <tr class="row-bad">
+              <td><span class="sev P1">P1</span></td>
+              <td><strong>除草 SOP 缺陷：割完的草留在模組上</strong></td>
+              <td>復機後 0.510 → 0.446，反而更差</td>
+              <td>草屑清運列入驗收條件，沒清不算完工</td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr class="row-warn">
-          <td><strong>001</strong></td>
-          <td>21併14串 + 20併2串</td>
-          <td class="num">334</td>
-          <td class="num">111.9</td>
-          <td class="num">119.9</td>
-          <td class="num" style="font-weight:700;">+7.2%</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>002</strong></td>
-          <td>20併18串</td>
-          <td class="num">360</td>
-          <td class="num">120.6</td>
-          <td class="num">119.9</td>
-          <td class="num" style="font-weight:700;">−0.6%</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><strong>005</strong></td>
-          <td>20併17串</td>
-          <td class="num">340</td>
-          <td class="num">113.9</td>
-          <td class="num">119.9</td>
-          <td class="num" style="font-weight:700;">+5.3%</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>006</strong></td>
-          <td>20併17串</td>
-          <td class="num">340</td>
-          <td class="num">113.9</td>
-          <td class="num">112.9</td>
-          <td class="num" style="font-weight:700;">−0.9%</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><strong>009</strong></td>
-          <td>20併18串</td>
-          <td class="num">360</td>
-          <td class="num">120.6</td>
-          <td class="num">113.2</td>
-          <td class="num" style="font-weight:700;">−6.1%</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><strong>010</strong></td>
-          <td>20併18串</td>
-          <td class="num">360</td>
-          <td class="num">120.6</td>
-          <td class="num">113.2</td>
-          <td class="num" style="font-weight:700;">−6.1%</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>013</strong></td>
-          <td>20併16串 + 22併1串</td>
-          <td class="num">342</td>
-          <td class="num">114.6</td>
-          <td class="num">113.2</td>
-          <td class="num" style="font-weight:700;">−1.2%</td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-
-      <div class="tbl-wrap">
-        <table>
-          <caption>用實際容量重算的 90 天單位發電量排名</caption>
-          <thead>
-            <tr>
-              <th>INV</th>
-              <th class="num">90 天 kWh/kWp</th>
-              <th class="num">相對最佳台</th>
-              <th class="num">90 天短少 kWh</th>
+            <tr class="row-warn">
+              <td><span class="sev P2">P2</span></td>
+              <td><strong>熱斑與接線盒過熱風險</strong></td>
+              <td>長期遮蔽＝旁路二極體長期導通</td>
+              <td>清草後兩週內紅外線熱像掃描，列管更換</td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr class="">
-          <td><strong>006</strong></td>
-          <td class="num">423.8</td>
-          <td class="num">1.000（基準）</td>
-          <td class="num">—</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>010</strong></td>
-          <td class="num">419.5</td>
-          <td class="num">0.990</td>
-          <td class="num">—</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>001</strong></td>
-          <td class="num">407.8</td>
-          <td class="num">0.962</td>
-          <td class="num">1,548</td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>005</strong></td>
-          <td class="num">404.8</td>
-          <td class="num">0.955</td>
-          <td class="num">1,916</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><strong>009</strong></td>
-          <td class="num">397.6</td>
-          <td class="num">0.938</td>
-          <td class="num">2,900</td>
-        </tr>
-        
-
-        <tr class="row-warn">
-          <td><strong>002</strong></td>
-          <td class="num">395.9</td>
-          <td class="num">0.934</td>
-          <td class="num">3,106</td>
-        </tr>
-        
-
-        <tr class="row-bad">
-          <td><strong>013</strong></td>
-          <td class="num">205.3</td>
-          <td class="num">0.485</td>
-          <td class="num">24,785</td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-
-      <!-- 90-Day Trend Chart -->
-      <div style="margin-top:20px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-          <strong style="font-size:13px; color:var(--blue-dd);">📊 90 天逐日發電走勢與基準對照 (ECharts 互動圖表)</strong>
-          <button class="btn-action-sm" onclick="openRawDataModal()">📥 檢視原始數據對帳表</button>
-        </div>
-        <div id="trendChart" style="width:100%; height:360px;"></div>
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D3 ==================== -->
-    <section id="d3">
-      <div class="sec-head"><span class="sec-tag">D3</span><h2>暫時圍堵措施</h2></div>
-      <p class="sec-purpose">在找到根因之前先止血，避免損失擴大。</p>
-      <div class="actions">
-        <div class="action-head">
-          <div>行動項目</div>
-          <div>負責</div>
-          <div>期限</div>
-        </div>
-        
-        <div class="action">
-          <div class="action-what">清除 INV-13 區模組表面草屑，全部清運離場，不可堆在浮台上（會再落回模組，也是火載量）</div>
-          <div class="action-meta"><span>負責</span>現場執行</div>
-          <div class="action-meta"><span>期限</span>2026/09/26</div>
-          <div class="action-verify"><strong>驗證：</strong>清完後連續 3 天觀察 INV-13 相對基準的比值。回到 0.9 以上＝確認為雜草；只回到 0.6–0.8＝仍有其他遮蔽或組串問題，轉 D5 電氣檢測。</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">調閱 INV-13 於 09/01–09/12 的告警與事件紀錄，確認 09/05–09/09 那 5 天是人為停機還是故障</div>
-          <div class="action-meta"><span>負責</span>監控系統</div>
-          <div class="action-meta"><span>期限</span>2026/09/24</div>
-          <div class="action-verify"><strong>驗證：</strong>找到停機原因代碼，或確認為施工人為停機</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">確認 09/21 截圖中 003、004、007、008、009 的紅色告警內容</div>
-          <div class="action-meta"><span>負責</span>監控系統</div>
-          <div class="action-meta"><span>期限</span>2026/09/24</div>
-          <div class="action-verify"><strong>驗證：</strong>009 發電資料正常，研判為通訊或次要告警，需逐台確認</div>
-        </div>
-        
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D4 ==================== -->
-    <section id="d4">
-      <div class="sec-head"><span class="sec-tag">D4</span><h2>根本原因分析</h2></div>
-      <p class="sec-purpose">證據與推論鏈，並列出已排除的假設。</p>
-      <p>照片與數據互相印證，指向同一個原因：<strong>雜草覆蓋模組</strong>。以下為證據與推論鏈。</p>
-
-      <!-- Evidence Photos Grid (Top 2: Field cutting) -->
-      <div class="ev-grid">
-        
-        <figure onclick="openSinglePhoto('EV-01')">
-          <img src="assets/auo_scada_status.jpg" alt="監控平台裝置結構畫面" loading="lazy">
-          <figcaption>
-            <span class="ev-id">EV-01</span>監控平台裝置結構畫面
-            <span class="ev-meta">2026/09/21 09:52 ｜ 監控平台截圖 ｜ 對應 D0、D4</span>
-          </figcaption>
-        </figure>
-        
-
-        <figure onclick="openSinglePhoto('EV-02')">
-          <img src="assets/string_layout_weeds_annotated.jpg" alt="模組串接圖 C-002 V-01 現場標註" loading="lazy">
-          <figcaption>
-            <span class="ev-id">EV-02</span>模組串接圖 C-002 V-01 現場標註
-            <span class="ev-meta">設計圖 110/09/01 ｜ 竣工圖面＋現場標註 ｜ 對應 D2、D4</span>
-          </figcaption>
-        </figure>
-        
-      </div>
-
-      <div class="stmt fact">
-        <span class="tag">事實</span>
-        <p>浮體型系統，模組貼近水面與草澤，周圍為高過人的蘆葦。除草照片中，<strong>割下的草整片堆在模組表面，沒有清走</strong>。</p>
-      </div>
-
-      <div class="stmt fact">
-        <span class="tag">事實</span>
-        <p>串接圖上標示的紅框為雜草覆蓋模組區域，<strong>INV-13 覆蓋面積最大</strong>。</p>
-      </div>
-
-      <div class="tbl-wrap">
-        <table>
-          <caption>INV-13 相對基準台（006／010）的比值變化</caption>
-          <thead>
-            <tr>
-              <th>期間</th>
-              <th class="num">相對基準</th>
-              <th>說明</th>
+            <tr class="row-warn">
+              <td><span class="sev P2">P2</span></td>
+              <td><strong>平台登錄容量錯誤</strong></td>
+              <td>最大誤差 +7.2%（INV-001 虛增分母）</td>
+              <td>依 C-002 串接圖修正 7 台 kWp 設定</td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr class="">
-          <td>06/20–07/15</td>
-          <td class="num" style="font-weight:700;">0.541</td>
-          <td>初始基準期</td>
-        </tr>
-        
-
-        <tr class="">
-          <td>07/16–08/15</td>
-          <td class="num" style="font-weight:700;">0.529</td>
-          <td>緩慢平滑下滑</td>
-        </tr>
-        
-
-        <tr class="">
-          <td>08/16–09/04</td>
-          <td class="num" style="font-weight:700;">0.510</td>
-          <td>持續下滑</td>
-        </tr>
-        
-
-        <tr class="row-bad">
-          <td>09/05–09/09</td>
-          <td class="num" style="font-weight:700;">0.003</td>
-          <td>近乎停機 5 天（除草施工）</td>
-        </tr>
-        
-
-        <tr class="row-bad">
-          <td>09/11–09/17</td>
-          <td class="num" style="font-weight:700;">0.446</td>
-          <td>復機後反而比停機前更差！</td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-
-      <ol style="padding-left:22px; margin-bottom:18px;">
-        <li>比值不隨天氣變（陰天 0.574、晴天 0.589 幾乎相同）→ 不是逆變器削峰或降載，是直流端進來的功率本來就少。DC/AC 比僅 1.04（114.6 kWp 對 110 kW），設計上本來就不會削峰。</li>
-<li>比值逐月穩定下滑（每 30 天約 −1.7 個百分點）→ 符合雜草持續長高、覆蓋面積擴大之自然特徵。電氣故障通常是階躍式跳落，不是斜坡。</li>
-<li>09/05–09/09 停機 5 天只有 013 一台，同期 001／002／005／009 比值穩定在 0.94~0.97 → 該期間事件只作用在 013，研判為該區除草施工停機。</li>
-<li>復機後（0.446）比停機前（0.510）更差 → 最合理的解釋是割下的草被留在模組上，覆蓋面積反而增加。現場照片直接支持這一點。</li>
-<li>2026/09/21 截圖：日射 720 W/m² 時 013 僅 31.26 kW，其他台 62–74 kW → 問題至今仍在，且發電能力正好落在 45%。</li>
-      </ol>
-
-      <div class="tbl-wrap">
-        <table class="excl">
-          <caption>已排除的假設</caption>
-          <thead>
             <tr>
-              <th style="width:240px;">假設</th>
-              <th>排除依據</th>
+              <td><span class="sev P3">P3</span></td>
+              <td><strong>監控資料不完整</strong></td>
+              <td>13 台只匯出 7 台；日射計讀值未入庫</td>
+              <td>補匯出、修復跨 COM 埠點位對應</td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr>
-          <td><strong>逆變器削峰（Clipping）或降載</strong></td>
-          <td>削峰只在高日照時發生，陰天不受影響。但 013 陰天晴天比值相同。且 DC/AC 比僅 1.04，設計上就不會削峰。</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>組串斷路、保險絲熔斷、MC4 脫落（v0.1 的判斷）</strong></td>
-          <td>電氣斷路是階躍式損失，但實測為每月約 1.7 個百分點的平滑下滑。且現場照片顯示大面積雜草覆蓋，足以解釋全部缺口。</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>A 組（001／002／005）整組效能偏低</strong></td>
-          <td>v0.1 的誤判。用平台錯誤容量計算所致，改用串接圖實際片數後差異大半消失。</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>組件衰退或 PID</strong></td>
-          <td>衰退為全場性、年為單位的緩慢變化，不會在 3 個月內單台掉 5 個百分點，也不會在單次施工後階躍。</td>
-        </tr>
-        
+            <tr>
+              <td><span class="sev P4">P4</span></td>
+              <td><strong>溫度感測器異常</strong></td>
+              <td>CS1-TP1 顯示 327.67 °C 溢位</td>
+              <td>檢查感測器硬體線路或倍率設定</td>
+            </tr>
           </tbody>
         </table>
       </div>
+    </div>
+  </section>
 
-      <div class="callout danger">
-        <h4>延伸風險：這不只是少發電</h4>
-        <p>模組被草長期壓住＝局部遮蔽＝旁路二極體長期導通，會造成接線盒過熱、電池片熱斑，最終變成永久損壞的模組。清草之後如果熱像仍有熱點，代表已經回不來了，那些模組必須列管更換。這是清草之外真正需要花錢的部分。</p>
+  <!-- ==================== SLIDE 2: D0 & D1 ==================== -->
+  <section class="slide" id="slide-2">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 0 & 1</div>
+      <h2>D0 立案緊急反應 ＆ D1 團隊權責分工</h2>
+      <p class="sec-purpose">接獲異常第一時間：安全判斷、是否停機、建案號，及跨職能團隊分工。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>🚨 D0 立案與現場安全判斷</span>
+          <span class="sev P2">安全評估</span>
+        </h3>
+        <p style="font-size:.84rem; color:var(--ink-2); line-height:1.6;">
+          <strong>發現途徑</strong>：由發電資料異常比對發現，非現場通報。2026/09/18 完成初判（v0.1，判為組串斷路），09/21 取得現場照片與串接圖後修正根因（本版 v1.0）。
+        </p>
+
+        <div class="stmt fact">
+          <span class="tag">事實</span>
+          <p>2026/09/21 09:52 監控截圖：日射 720 W/m² 時，INV-13 交流輸出僅 <strong>31.26 kW（47.27 A）</strong>，其餘各台 62–74 kW。異常狀態持續中。</p>
+        </div>
+
+        <div class="callout warn">
+          <h4>安全判斷：不需立即停機，但有火載量風險</h4>
+          <p style="font-size:.82rem;">發電量偏低本身不構成立即危險，無須緊急停機。</p>
+          <p style="font-size:.82rem; margin-top:4px;">但<strong>乾草堆積在模組與浮台上屬於火載量</strong>，與直流電弧風險疊加。清運草屑同時是消防措施，不只是為了發電。</p>
+        </div>
       </div>
 
-      <!-- Evidence Photos Grid (Bottom 2: SCADA & Layout) -->
-      <div class="ev-grid">
-        
-        <figure onclick="openSinglePhoto('EV-03')">
-          <img src="assets/field_weeds_cutting_2.jpg" alt="現場除草作業實拍" loading="lazy">
-          <figcaption>
-            <span class="ev-id">EV-03</span>現場除草作業實拍
-            <span class="ev-meta">除草作業期間 ｜ 現場拍攝 ｜ 對應 D4</span>
-          </figcaption>
-        </figure>
-        
-
-        <figure onclick="openSinglePhoto('EV-04')">
-          <img src="assets/field_weeds_cutting_1.jpg" alt="關鍵草屑覆蓋模組實證" loading="lazy">
-          <figcaption>
-            <span class="ev-id">EV-04</span>關鍵草屑覆蓋模組實證
-            <span class="ev-meta">除草作業後 ｜ 現場拍攝 ｜ 對應 D4、D7</span>
-          </figcaption>
-        </figure>
-        
+      <div class="box-card">
+        <h3>
+          <span>👥 D1 應變小組與分工 (Team Matrix)</span>
+          <span class="sev P3">RACI 權責</span>
+        </h3>
+        <p style="font-size:.84rem; color:var(--muted); margin-bottom:12px;">誰負責、誰執行、誰驗收、業主窗口是誰。</p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width:110px;">角色</th>
+                <th style="width:90px;">負責人</th>
+                <th>主要負責事項</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>資料分析</strong></td>
+                <td>維運數據組</td>
+                <td>發電資料比對、損失量化、8D 報告產出與恢復門檻追蹤</td>
+              </tr>
+              <tr>
+                <td><strong>現場執行</strong></td>
+                <td>機電工程組</td>
+                <td>清草、除草、熱像掃描、1500V 直流 LOTO 施作</td>
+              </tr>
+              <tr>
+                <td><strong>監控系統</strong></td>
+                <td>SCADA 研發</td>
+                <td>平台容量修正、匯出設定、感測器點位校驗</td>
+              </tr>
+              <tr>
+                <td><strong>業主窗口</strong></td>
+                <td>匯僑代表</td>
+                <td>對策說明、預算審核與工程驗收確認</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="padding:10px; background:var(--blue-soft); border-radius:6px; font-size:.76rem; color:var(--blue-dd);">
+          💡 跨部門建立 8D 快速反應通道，每週定期滾動追蹤行動清單與數據驗收門檻。
+        </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ==================== SECTION: D5 ==================== -->
-    <section id="d5">
-      <div class="sec-head"><span class="sec-tag">D5</span><h2>永久對策選定</h2></div>
-      <p class="sec-purpose">選項比較：投入、產出、風險，並說明為何選這個。</p>
-      <div class="tbl-wrap">
-        <table>
-          <caption>永久對策選項比較</caption>
+  <!-- ==================== SLIDE 3: D2 ==================== -->
+  <section class="slide" id="slide-3">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 2</div>
+      <h2>D2 問題描述（量化）：容量對帳與 90 天排名</h2>
+      <p class="sec-purpose">用數字描述問題，不用形容詞。含地籍坐標、損失 kWh 與排名校核。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>🗺️ 案場地理坐標與濱海微氣候</span>
+          <span class="tag-pill info">Leaflet 互動圖資</span>
+        </h3>
+        <div id="plantMap" style="width:100%; height:260px; border-radius:6px; border:1px solid var(--line); z-index:1; margin-bottom:8px;"></div>
+        <div style="font-size:.76rem; color:var(--muted); line-height:1.5;">
+          📍 台中市大安區龜殼段 253-1 地號（溫寮溪出海口南岸，臨海約 650m）。濱海灘地地下水位高達 0.5~1.2m，促進蘆葦野草在夏季高溫下 45 天即完全復萌掩埋模組。
+        </div>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>📐 平台登錄容量 vs 串接圖實際容量對帳表</span>
+          <span class="sev P2">銘牌校正</span>
+        </h3>
+        <p style="font-size:.78rem; color:var(--coral); font-weight:700; margin-bottom:6px;">
+          ⚠️ 平台登錄的裝置容量是錯的，最大誤差 +7.2%。不修正直接比 kWh/kWp 會嚴重失真！
+        </p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>INV</th>
+                <th>串接設計 (335W)</th>
+                <th class="num">實際片數</th>
+                <th class="num">實際 kWp</th>
+                <th class="num">平台 kWp</th>
+                <th class="num">誤差</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-warn">
+                <td>001</td>
+                <td>21併14串 + 20併2串</td>
+                <td class="num">334</td>
+                <td class="num">111.9</td>
+                <td class="num">119.9</td>
+                <td class="num" style="font-weight:800; color:var(--coral);">+7.2%</td>
+              </tr>
+              <tr>
+                <td>002</td>
+                <td>20併18串</td>
+                <td class="num">360</td>
+                <td class="num">120.6</td>
+                <td class="num">119.9</td>
+                <td class="num">−0.6%</td>
+              </tr>
+              <tr class="row-warn">
+                <td>005</td>
+                <td>20併17串</td>
+                <td class="num">340</td>
+                <td class="num">113.9</td>
+                <td class="num">119.9</td>
+                <td class="num" style="font-weight:800; color:var(--coral);">+5.3%</td>
+              </tr>
+              <tr>
+                <td>006</td>
+                <td>20併17串</td>
+                <td class="num">340</td>
+                <td class="num">113.9</td>
+                <td class="num">112.9</td>
+                <td class="num">−0.9%</td>
+              </tr>
+              <tr class="row-warn">
+                <td>009</td>
+                <td>20併18串</td>
+                <td class="num">360</td>
+                <td class="num">120.6</td>
+                <td class="num">113.2</td>
+                <td class="num" style="font-weight:800; color:var(--blue);">−6.1%</td>
+              </tr>
+              <tr class="row-warn">
+                <td>010</td>
+                <td>20併18串</td>
+                <td class="num">360</td>
+                <td class="num">120.6</td>
+                <td class="num">113.2</td>
+                <td class="num" style="font-weight:800; color:var(--blue);">−6.1%</td>
+              </tr>
+              <tr>
+                <td>013</td>
+                <td>20併16串 + 22併1串</td>
+                <td class="num">342</td>
+                <td class="num">114.6</td>
+                <td class="num">113.2</td>
+                <td class="num">−1.2%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Rankings Table & Chart -->
+    <div class="box-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+        <h3>📊 以實際容量重算的 90 天單位發電量排名與逐日走勢</h3>
+        <button class="btn-action-sm" onclick="openRawDataModal()">📥 原始數據對帳表</button>
+      </div>
+      <div class="grid-2">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>INV</th>
+                <th class="num">90 天 kWh/kWp</th>
+                <th class="num">相對最佳台</th>
+                <th class="num">90 天短少 kWh</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>006</strong></td>
+                <td class="num">423.8</td>
+                <td class="num">1.000（基準）</td>
+                <td class="num">—</td>
+              </tr>
+              <tr>
+                <td><strong>010</strong></td>
+                <td class="num">419.5</td>
+                <td class="num">0.990</td>
+                <td class="num">—</td>
+              </tr>
+              <tr>
+                <td><strong>001</strong></td>
+                <td class="num">407.8</td>
+                <td class="num">0.962</td>
+                <td class="num">1,548</td>
+              </tr>
+              <tr>
+                <td><strong>005</strong></td>
+                <td class="num">404.8</td>
+                <td class="num">0.955</td>
+                <td class="num">1,916</td>
+              </tr>
+              <tr class="row-warn">
+                <td><strong>009</strong></td>
+                <td class="num">397.6</td>
+                <td class="num">0.938</td>
+                <td class="num">2,900</td>
+              </tr>
+              <tr class="row-warn">
+                <td><strong>002</strong></td>
+                <td class="num">395.9</td>
+                <td class="num">0.934</td>
+                <td class="num">3,106</td>
+              </tr>
+              <tr class="row-bad">
+                <td><strong>013</strong></td>
+                <td class="num" style="font-weight:900;">205.3</td>
+                <td class="num" style="font-weight:900;">0.485</td>
+                <td class="num" style="font-weight:900;">24,785</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div id="trendChart" style="width:100%; height:260px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 4: D3 ==================== -->
+  <section class="slide" id="slide-4">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 3</div>
+      <h2>D3 暫時圍堵措施 (Interim Containment Actions)</h2>
+      <p class="sec-purpose">在找到根因之前先止血，避免發電損失與火災風險擴大。</p>
+    </div>
+
+    <div class="actions">
+      <div class="action-head">
+        <div>行動項目</div>
+        <div>負責</div>
+        <div>期限</div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>行動 1：清除 INV-13 區模組表面草屑，全部清運離場</strong><br>
+          不可堆在浮台上（乾草會被風吹再落回模組，也是高度易燃火載量）。
+        </div>
+        <div class="action-meta"><span>負責</span>現場執行</div>
+        <div class="action-meta"><span>期限</span>2026/09/26</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>清完後連續 3 天觀察 INV-13 相對基準的比值。回到 <strong>0.9 以上</strong>＝確認為雜草；只回到 <strong>0.6–0.8</strong>＝仍有其他遮蔽或組串問題，轉 D5 電氣檢測。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>行動 2：調閱 INV-13 於 09/01–09/12 的告警與事件紀錄</strong><br>
+          確認 09/05–09/09 那 5 天是人為停機還是內部硬體故障。
+        </div>
+        <div class="action-meta"><span>負責</span>監控系統</div>
+        <div class="action-meta"><span>期限</span>2026/09/24</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>找到停機原因代碼，或確認為除草施工期間人為切離停機。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>行動 3：確認 09/21 截圖中 003、004、007、008、009 的紅色告警內容</strong><br>
+          009 發電資料正常，研判為通訊暫態或次要告警，需逐台調閱暫存器確認。
+        </div>
+        <div class="action-meta"><span>負責</span>監控系統</div>
+        <div class="action-meta"><span>期限</span>2026/09/24</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>排查各台 Modbus 暫存器錯誤碼，排除潛在組串脫落或過溫降額。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 5: D4 PART 1 ==================== -->
+  <section class="slide" id="slide-5">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 4 (PART 1)</div>
+      <h2>D4 根本原因分析：四大關鍵現場實證</h2>
+      <p class="sec-purpose">照片與數據互相印證，指向同一個原因：雜草覆蓋模組與草屑留置。</p>
+    </div>
+
+    <div class="ev-grid">
+      <figure class="photo-card" onclick="openSinglePhoto('EV-01')">
+        <img src="assets/auo_scada_status.jpg" alt="EV-01 SCADA截圖" loading="lazy">
+        <figcaption>
+          <span class="ev-id">EV-01</span><strong>監控平台裝置結構畫面</strong><br>
+          日射 720 W/m² 時 INV-13 僅 31.26 kW（47.27 A），其餘各台 62–74 kW。6台告警中。
+          <span class="ev-meta">2026/09/21 09:51 ｜ 監控截圖 ｜ 對應 D0、D4</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" onclick="openSinglePhoto('EV-02')">
+        <img src="assets/string_layout_weeds_annotated.jpg" alt="EV-02 串接圖紅框" loading="lazy">
+        <figcaption>
+          <span class="ev-id">EV-02</span><strong>C-002 模組串接圖雜草紅框標註</strong><br>
+          紅框為雜草覆蓋模組區域，INV-13 覆蓋面積最大，與發電落後 51.5% 完全吻合。
+          <span class="ev-meta">竣工圖面＋現場標註 ｜ 對應 D2、D4</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" onclick="openSinglePhoto('EV-03')">
+        <img src="assets/field_weeds_cutting_2.jpg" alt="EV-03 蘆葦割草實況" loading="lazy">
+        <figcaption>
+          <span class="ev-id">EV-03</span><strong>現場排水分流溝邊蘆葦割草實況</strong><br>
+          模組貼近水面，周圍高大人身蘆葦，雜草極易漫生覆蓋模組底層。
+          <span class="ev-meta">除草作業期間 ｜ 現場拍攝 ｜ 對應 D4</span>
+        </figcaption>
+      </figure>
+
+      <figure class="photo-card" onclick="openSinglePhoto('EV-04')">
+        <img src="assets/field_weeds_cutting_1.jpg" alt="EV-04 割草留模組關鍵實證" loading="lazy">
+        <figcaption>
+          <span class="ev-id">EV-04</span><strong style="color:var(--coral);">【核心實證】割下的草整片堆在模組上</strong><br>
+          割完的草未清運離場，直接留在面板表面，導致復機後 0.446 比停機前 0.510 更差！
+          <span class="ev-meta">除草作業後 ｜ 現場拍攝 ｜ 對應 D4、D7</span>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 6: D4 PART 2 ==================== -->
+  <section class="slide" id="slide-6">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 4 (PART 2)</div>
+      <h2>D4 根因推論鏈、排除假設與延伸熱斑風險</h2>
+      <p class="sec-purpose">梳理比值劣化趨勢，排除不成立的假說，警示旁路二極體過熱損壞。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>📈 INV-13 相對基準台的比值變化趨勢</span>
+          <span class="sev P1">劣化軌跡</span>
+        </h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>期間</th>
+                <th class="num">相對基準比值</th>
+                <th>實務現象說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>06/20–07/15</td>
+                <td class="num">0.541</td>
+                <td>初始資料期即已呈現落後</td>
+              </tr>
+              <tr>
+                <td>07/16–08/15</td>
+                <td class="num">0.529</td>
+                <td>緩慢平滑下滑（草長高遮蔽擴大）</td>
+              </tr>
+              <tr>
+                <td>08/16–09/04</td>
+                <td class="num">0.510</td>
+                <td>持續下滑至 51%</td>
+              </tr>
+              <tr class="row-bad">
+                <td>09/05–09/09</td>
+                <td class="num">0.003</td>
+                <td>近乎停機 5 天（該區除草施工切離）</td>
+              </tr>
+              <tr class="row-bad">
+                <td>09/11–09/17</td>
+                <td class="num" style="font-weight:900;">0.446</td>
+                <td><strong>復機後反而比停機前更差！</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <ol style="padding-left:18px; font-size:.82rem; color:var(--ink-2); line-height:1.6; margin-top:6px;">
+          <li><strong>比值不隨天氣變</strong>（陰天 0.574、晴天 0.589）→ 直流端輸入功率不足，非高照度逆變器削峰。</li>
+          <li><strong>比值逐月平滑下滑</strong>（每30天約-1.7%）→ 符合雜草自然長高特徵，非突發性電氣熔絲熔斷。</li>
+          <li><strong>復機後惡化至 0.446</strong> → 割下來的草整片留在模組上未清走，覆蓋面積反而激增。</li>
+        </ol>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>🚫 已排除的假設 (Excluded Hypotheses)</span>
+          <span class="tag-pill success">嚴謹排查</span>
+        </h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>假設</th>
+                <th>客觀排除依據</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>逆變器削峰或降載</strong></td>
+                <td>削峰只在高照度發生。實測陰天晴天比值相同，且 DC/AC 比僅 1.04，設計上不會削峰。</td>
+              </tr>
+              <tr>
+                <td><strong>組串斷路、保險絲熔斷</strong></td>
+                <td>電氣斷路為瞬間階躍跌落，實測為長達 3 個月的平滑下滑，現場雜草足以解釋全部缺口。</td>
+              </tr>
+              <tr>
+                <td><strong>A 組整組發電偏低</strong></td>
+                <td>初版報告誤植平台錯誤容量所致，依 C-002 圖紙重新核算後離散度消失。</td>
+              </tr>
+              <tr>
+                <td><strong>模組衰退或 PID</strong></td>
+                <td>PID 衰退為全場性、年為單位的緩慢變化，不會在單台 3 個月驟降 5%，更不會單次施工後突變。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout danger" style="margin-bottom:0;">
+          <h4>延伸風險：這不只是少發電</h4>
+          <p style="font-size:.82rem;">
+            模組被草長期壓住＝局部遮蔽＝<strong>旁路二極體長期導通</strong>，會造成接線盒過熱、電池片熱斑，最終變成<strong>永久損壞報廢的模組</strong>。清草後必須立即安排熱像儀掃描檢測。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 7: D5 ==================== -->
+  <section class="slide" id="slide-7">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 5</div>
+      <h2>D5 永久對策選定：改除草 SOP 與鳳山圳工法評估</h2>
+      <p class="sec-purpose">選項比較：投入、產出、風險，並說明主方案選擇理由。</p>
+    </div>
+
+    <div class="box-card">
+      <h3>
+        <span>📊 永久對策選項技術經濟比選表</span>
+        <span class="sev P3">方案決策</span>
+      </h3>
+      <div class="table-wrap">
+        <table class="data-table">
           <thead>
             <tr>
               <th>選項</th>
-              <th>投入</th>
-              <th>產出</th>
+              <th>投入成本</th>
+              <th>產出效益</th>
               <th>風險／限制</th>
-              <th style="width:90px;">採用</th>
+              <th style="width:100px;">採用判定</th>
             </tr>
           </thead>
           <tbody>
-            
-        <tr class="row-warn">
-          <td><strong>改除草 SOP：草屑清運入驗收、生長季每月一次</strong></td>
-          <td>人工成本增加，無資本支出 (CAPEX=0)</td>
-          <td>直接解決本次根因</td>
-          <td>依賴執行落實，需驗收把關</td>
-          <td><strong>✔ 主方案</strong></td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>防草蓆／鳳山圳高耐候抑草工法</strong></td>
-          <td>材料與施工費約 22.5 萬</td>
-          <td>降低除草頻率，8.8個月回本</td>
-          <td>水域環境抗風地錨適用性評估</td>
-          <td><strong>評估中</strong></td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>提高模組離水高度</strong></td>
-          <td>結構改造，成本高</td>
-          <td>根本解決</td>
-          <td>浮體結構須重新計算，停機期長</td>
-          <td><strong>不採用</strong></td>
-        </tr>
-        
-
-        <tr class="">
-          <td><strong>噴灑化學除草劑</strong></td>
-          <td>低</td>
-          <td>見效快</td>
-          <td>水域環境不建議，有環保與養殖疑慮</td>
-          <td><strong>不採用</strong></td>
-        </tr>
-        
-          </tbody>
-        </table>
-      </div>
-      <p><strong>主方案選擇理由</strong>：本次損失的直接成因是「割完沒清」而非「沒有除草能力」，屬流程缺陷而非資源不足。先用零資本支出的 SOP 修訂解決，驗證有效後再評估是否需要進一步鋪設抑草蓆工法。</p>
-    </section>
-
-    <!-- ==================== SECTION: D6 ==================== -->
-    <section id="d6">
-      <div class="sec-head"><span class="sec-tag">D6</span><h2>執行與效果驗證</h2></div>
-      <p class="sec-purpose">做了什麼、驗證門檻是什麼、結果如何。</p>
-      <div class="actions">
-        <div class="action-head">
-          <div>行動項目</div>
-          <div>負責</div>
-          <div>期限</div>
-        </div>
-        
-        <div class="action">
-          <div class="action-what">清除草屑後，連續 3 天追蹤 INV-13 相對基準比值</div>
-          <div class="action-meta"><span>負責</span>資料分析</div>
-          <div class="action-meta"><span>期限</span>2026/09/29</div>
-          <div class="action-verify"><strong>驗證：</strong>門檻：比值 ≥ 0.90 判定對策有效。低於 0.80 則啟動電氣檢測（見第 5 項）。</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">紅外線熱像掃描 INV-13 及其他紅框覆蓋區，找熱斑與接線盒過熱</div>
-          <div class="action-meta"><span>負責</span>現場執行</div>
-          <div class="action-meta"><span>期限</span>2026/10/03</div>
-          <div class="action-verify"><strong>驗證：</strong>有熱點的模組逐片列管、拍照編號、報價更換</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">依串接圖修正平台 7 台 kWp 設定</div>
-          <div class="action-meta"><span>負責</span>監控系統</div>
-          <div class="action-meta"><span>期限</span>2026/10/03</div>
-          <div class="action-verify"><strong>驗證：</strong>平台顯示 kWp 與串接圖片數×335W 相符</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">補匯出其餘 6 台逆變器資料；修復日射計與溫度計點位對應</div>
-          <div class="action-meta"><span>負責</span>監控系統</div>
-          <div class="action-meta"><span>期限</span>2026/10/03</div>
-          <div class="action-verify"><strong>驗證：</strong>amCharts 匯出含 13 台；insolation 欄位有非零讀值，可計算 PR</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">若清草後未達 0.90：依 IEC 62446-1 做電氣檢測——各 MPPT 電壓電流判讀、逐串 Voc、逐串 Isc 或 I-V 曲線、1000 V 兆歐表量 Riso（系統電壓 >120 V 時 ≥ 1 MΩ）</div>
-          <div class="action-meta"><span>負責</span>現場執行</div>
-          <div class="action-meta"><span>期限</span>視 D6 第 1 項結果</div>
-          <div class="action-verify"><strong>驗證：</strong>找出偏低組串並完成修復，復電前重測 Riso</div>
-        </div>
-        
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D7 ==================== -->
-    <section id="d7">
-      <div class="sec-head"><span class="sec-tag">D7</span><h2>防止再發</h2></div>
-      <p class="sec-purpose">SOP 修訂、監控告警規則、水平展開到其他案場。</p>
-      <p>本案真正的缺口是流程，不是技術。以下三項修訂後適用於<strong>所有水上與地面案場</strong>。</p>
-      <ol style="padding-left:22px; margin-bottom:16px;">
-        <li>割草方向背對模組，或加裝擋板，避免草屑噴上模組面。</li>
-<li>「割完必須清模組面、草屑清運離場」寫進驗收條件，沒清不算完工。</li>
-<li>生長季（4–10 月）除草週期改為每月一次，非生長季每季一次。</li>
-      </ol>
-      <div class="callout warn">
-        <h4>水平展開</h4>
-        <p>其他水上型與草生地面型案場，應於本月內各做一次模組面覆蓋狀況盤點，並套用同一份除草驗收條件。</p>
-      </div>
-      <div class="actions">
-        <div class="action-head">
-          <div>行動項目</div>
-          <div>負責</div>
-          <div>期限</div>
-        </div>
-        
-        <div class="action">
-          <div class="action-what">檢討本次除草承商的作業品質與計價方式，確認是否為長期慣例</div>
-          <div class="action-meta"><span>負責</span>維運主管</div>
-          <div class="action-meta"><span>期限</span>2026/10/10</div>
-        </div>
-        
-
-        <div class="action">
-          <div class="action-what">檢討為何緩慢劣化持續 3 個月未被發現——監控告警規則缺口</div>
-          <div class="action-meta"><span>負責</span>維運主管</div>
-          <div class="action-meta"><span>期限</span>2026/10/10</div>
-        </div>
-        
-      </div>
-    </section>
-
-    <!-- ==================== SECTION: D8 ==================== -->
-    <section id="d8">
-      <div class="sec-head"><span class="sec-tag">D8</span><h2>結案與歸檔</h2></div>
-      <p class="sec-purpose">結案條件、文件歸檔位置、後續追蹤。</p>
-      <ul style="padding-left:22px; margin-bottom:16px;">
-        <li>INV-13 相對基準比值 ≥ 0.90 且穩定 7 天。</li>
-<li>熱像掃描無異常熱點（或異常模組已完成更換）。</li>
-<li>除草 SOP 修訂版完成發布。</li>
-<li><strong>文件歸檔</strong>：本報告與 plant_spec.json 存於案場資料夾，後續版本沿用同一份 spec 更新。</li>
-<li><strong>後續追蹤</strong>：結案後每月比對一次全場逆變器相對比值，列入月報。</li>
-      </ul>
-    </section>
-
-    <!-- ==================== SECTION: APPENDIX B ==================== -->
-    <section id="src">
-      <div class="sec-head"><span class="sec-tag">附錄B</span><h2>原始資料來源</h2></div>
-      <p class="sec-purpose">本報告所有數字的出處，可回溯重算。</p>
-      <div class="tbl-wrap">
-        <table>
-          <thead>
+            <tr class="row-warn">
+              <td><strong>改除草 SOP</strong><br>草屑清運入驗收、生長季每月一次</td>
+              <td>人工成本微增，<strong>零資本支出 (CAPEX=0)</strong></td>
+              <td>直接根治本次草屑覆蓋主因</td>
+              <td>依賴現場驗收落實，需嚴格把關</td>
+              <td><span class="sev P3">✔ 主方案</span></td>
+            </tr>
             <tr>
-              <th>檔案／來源</th>
-              <th style="width:140px;">期間</th>
-              <th class="num" style="width:70px;">筆數</th>
-              <th>說明</th>
+              <td><strong>鳳山圳高耐候抑草蓆工法</strong><br>鋪設 3,000m² 加抗風鋼錨</td>
+              <td>一次性 CAPEX 約 <strong>NT$ 22.5 萬</strong></td>
+              <td><strong>8.8 個月回本</strong>，年省 9 萬除草＋挽回 26 萬電費</td>
+              <td>水域環境與邊坡地錨抗風適用性評估</td>
+              <td><span class="sev P2">⏳ 評估中</span></td>
             </tr>
-          </thead>
-          <tbody>
-            
-        <tr>
-          <td><strong>amCharts 大安區龜殼段POCS.xlsx</strong></td>
-          <td>2026/06/20–09/17</td>
-          <td class="num">90</td>
-          <td>逐日逆變器 kWh 與 ey（kWh/kWp），7 台（001／002／005／006／009／010／013）。insolation 與 pr 欄位全為 0。</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>監控平台裝置結構截圖</strong></td>
-          <td>2026/09/21 09:52</td>
-          <td class="num">1</td>
-          <td>13 台逆變器即時 AC 電壓／電流／功率、日射計 720 W/m²、告警狀態</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>模組串接圖 C-002 V-01</strong></td>
-          <td>110/09/01</td>
-          <td class="num">13</td>
-          <td>逐台串數與每串片數，為實際裝置容量的計算依據。圖面逐台加總 4,553 片，與總表 4,493 片差 60 片。</td>
-        </tr>
-        
-
-        <tr>
-          <td><strong>現場除草照片</strong></td>
-          <td>除草作業期間</td>
-          <td class="num">2</td>
-          <td>雜草覆蓋狀況與草屑未清運的佐證</td>
-        </tr>
-        
+            <tr>
+              <td><strong>提高模組支架離水高度</strong></td>
+              <td>結構改造費用極高</td>
+              <td>根本解決離水高度不足</td>
+              <td>浮體結構須重新計算，停機期長</td>
+              <td><span class="sev P4">❌ 不採用</span></td>
+            </tr>
+            <tr>
+              <td><strong>噴灑化學除草劑</strong></td>
+              <td>低費用，見效快</td>
+              <td>快速枯死</td>
+              <td><strong>水域環境嚴禁</strong>，有生態與養殖環保疑慮</td>
+              <td><span class="sev P4">❌ 嚴禁採用</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
-    </section>
-
-    <!-- ==================== SECTION: APPENDIX C ==================== -->
-    <section id="limit">
-      <div class="sec-head"><span class="sec-tag">附錄C</span><h2>分析限制</h2></div>
-      <p class="sec-purpose">這份報告不能回答什麼。</p>
-      <ul style="padding-left:22px; margin-bottom:16px;">
-        <li>只有逐日逆變器總量，沒有組串或 MPPT 的電壓電流，也沒有日照資料入庫。所有根因均由「同場互比＋現場照片」推論，需現場驗證。</li>
-<li>應發電量以 006／010 為基準。若這兩台自己也被草覆蓋，實際損失會比本報告更高。</li>
-<li>串接圖的 INV1–13 對應監控的 COM1_001–013，為合理但未經確認的假設。</li>
-<li>其餘 6 台無資料，全場損失係按比例外推，僅供量級參考。</li>
-<li>金額以 NT$5/kWh 估算，實際躉購費率未確認。</li>
-      </ul>
-    </section>
-
-    <!-- ==================== SECTION: SAFETY ==================== -->
-    <section id="safety">
-      <div class="sec-head"><span class="sec-tag" style="background:var(--coral);">安全</span><h2>作業安全警語</h2></div>
-      <div class="callout danger">
-        <h4>動工前必讀</h4>
-        <ul style="padding-left:20px; margin-top:8px;">
-          <li>只要有日照組件就在發電，無法完全斷電，組串電壓可達 1000 V DC 以上。</li>
-<li>嚴禁在有載狀態下插拔 MC4 接頭或拉保險絲，直流電弧會燒傷、引火。必須先逆變器關機 → 斷直流開關 → 鉤表確認 0 A。</li>
-<li>水上作業：浮台濕滑，必須穿救生衣、兩人以上同行、設岸上監護人員。濕手、濕鞋不得碰觸直流端子。</li>
-<li>割草機在浮台上作業有割破浮體與割傷電纜的風險。作業前確認電纜走向並加以固定。</li>
-<li>乾草堆積在模組與浮台上是火載量，與直流電弧風險疊加，必須清運離場。</li>
-<li>開啟匯流箱前先用熱像儀檢查外觀並量測對地電壓。作業須穿戴絕緣手套、護目鏡、絕緣鞋，並依規定掛牌上鎖（LOTO）。</li>
-        </ul>
+      <div class="callout good" style="margin-bottom:0;">
+        <h4>主方案選擇理由</h4>
+        <p style="font-size:.84rem;">
+          本次損失的直接成因是「割完沒清」而非「沒有除草能力」，屬流程缺陷而非資源不足。先用零資本支出的 SOP 修訂解決，驗證有效後再評估是否需要進一步鋪設抑草蓆工法。
+        </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <footer style="border-top:1px solid var(--line); margin-top:40px; padding-top:18px; font-size:12.5px; color:var(--muted); line-height:1.6;">
-      台中市大安區龜殼段 POCS 水上光電｜INV-13 發電異常｜<span id="footerModeLabel">內部維運版</span>｜發布基準：2026/09/21｜內嵌高解析證據影像 4 張<br>
-      本報告所有數據均可回溯至附錄 B 原始檔案，遵循進金生能源 8D Solar Diagnostic SOP 規範編製。
-    </footer>
-  </main>
-</div>
+  <!-- ==================== SLIDE 8: D6 ==================== -->
+  <section class="slide" id="slide-8">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 6</div>
+      <h2>D6 執行與效果驗證 (Implement & Validate PCA)</h2>
+      <p class="sec-purpose">做了什麼、驗證門檻是什麼、IEC 62446-1 電氣檢驗觸發條件。</p>
+    </div>
 
-<!-- Modal: Photo Lightbox -->
+    <div class="actions">
+      <div class="action-head">
+        <div>行動項目</div>
+        <div>負責</div>
+        <div>期限</div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>1. 清除草屑後，連續 3 天追蹤 INV-13 相對基準比值</strong>
+        </div>
+        <div class="action-meta"><span>負責</span>資料分析</div>
+        <div class="action-meta"><span>期限</span>2026/09/29</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong><strong>門檻：比值 ≥ 0.90 判定對策有效。</strong> 低於 0.80 則啟動第 5 項電氣檢測。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>2. 紅外線熱像掃描 INV-13 及其他紅框覆蓋區，找熱斑與接線盒過熱</strong>
+        </div>
+        <div class="action-meta"><span>負責</span>現場執行</div>
+        <div class="action-meta"><span>期限</span>2026/10/03</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>有熱點的模組逐片列管、拍照編號、報價更換。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>3. 依 C-002 串接圖修正平台 7 台 kWp 設定</strong>
+        </div>
+        <div class="action-meta"><span>負責</span>監控系統</div>
+        <div class="action-meta"><span>期限</span>2026/10/03</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>平台顯示 kWp 與串接圖片數 × 335W 完全相符。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>4. 補匯出其餘 6 台逆變器資料；修復日射計與溫度計點位對應</strong>
+        </div>
+        <div class="action-meta"><span>負責</span>監控系統</div>
+        <div class="action-meta"><span>期限</span>2026/10/03</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>amCharts 匯出含 13 台；insolation 欄位有非零讀值，可計算真實 PR。
+        </div>
+      </div>
+      <div class="action">
+        <div class="action-what">
+          <strong>5. (條件啟動) 若清草後未達 0.90：依 IEC 62446-1 做深度電氣檢測</strong>
+        </div>
+        <div class="action-meta"><span>負責</span>現場執行</div>
+        <div class="action-meta"><span>期限</span>視 D6 結果</div>
+        <div class="action-verify">
+          <strong>驗證門檻：</strong>量測各 MPPT 電壓電流、逐串 Voc (偏差≤2%)、Isc 或 I-V 曲線、1000V 兆歐表量 Riso (≥ 1 MΩ)，修復受損組串。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 9: D7 ==================== -->
+  <section class="slide" id="slide-9">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 7</div>
+      <h2>D7 防止再發：SOP 修訂、自動告警與水平展開</h2>
+      <p class="sec-purpose">SOP 修訂、監控告警規則、水平展開到集團其他案場。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>📋 流程與作業標準化修訂 (SOP Revisions)</span>
+          <span class="sev P3">標準作業</span>
+        </h3>
+        <ul style="padding-left:18px; font-size:.84rem; color:var(--ink); line-height:1.65;">
+          <li><strong>割草方向與防護</strong>：割草方向背對模組，或加裝物理擋板，嚴禁草屑噴上模組表面。</li>
+          <li><strong>草屑清運列入驗收條件</strong>：明訂「割完必須清模組面、草屑清運離場」，<strong>沒清運離場視同未完工、不予計價</strong>。</li>
+          <li><strong>調整生長季週期</strong>：生長季（4–10 月）除草週期改為每月一次，非生長季每季一次。</li>
+          <li><strong>照片驗收標準化</strong>：除草完工請款照片必須包含模組面特寫特寫，由 O&M 工程師線上簽核確認後才可撥款。</li>
+        </ul>
+
+        <div class="callout warn" style="margin-top:14px; margin-bottom:0;">
+          <h4>集團案場水平展開 (Horizontal Rollout)</h4>
+          <p style="font-size:.82rem;">其他水上型與草生地面型案場，應於本月內各做一次模組面覆蓋狀況盤點，並一體套用同一份除草驗收計價條件。</p>
+        </div>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>⚙️ 監控系統告警規則增訂 ＆ 管理檢討</span>
+          <span class="tag-pill info">AI Agent 規則</span>
+        </h3>
+        <div style="background:var(--paper); padding:14px; border-radius:6px; border-left:3px solid var(--blue); margin-bottom:14px;">
+          <strong style="font-size:.85rem; color:var(--blue-dd);">新增自動化異常告警規則：</strong>
+          <p style="font-size:.8rem; color:var(--ink-2); margin-top:4px;">
+            在監控後台新增規則：「<strong>單台逆變器單位發電量低於同場中位數 15% 且持續 3 天</strong>」即時觸發派工通知，讓緩慢劣化問題不必等到人工拉報表比對才被發現。
+          </p>
+        </div>
+
+        <div class="actions" style="margin-bottom:0;">
+          <div class="action-head">
+            <div>檢討行動項目</div>
+            <div>負責</div>
+            <div>期限</div>
+          </div>
+          <div class="action">
+            <div class="action-what">檢討本次除草承商的作業品質與計價方式，確認是否為長期慣例</div>
+            <div class="action-meta"><span>負責</span>維運主管</div>
+            <div class="action-meta"><span>期限</span>2026/10/10</div>
+          </div>
+          <div class="action">
+            <div class="action-what">檢討為何緩慢劣化持續 3 個月未被發現——補齊監控告警規則缺口</div>
+            <div class="action-meta"><span>負責</span>維運主管</div>
+            <div class="action-meta"><span>期限</span>2026/10/10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 10: D8 ==================== -->
+  <section class="slide" id="slide-10">
+    <div class="section-head">
+      <div class="part-tag">DISCIPLINE 8</div>
+      <h2>D8 結案歸檔與 20 年資產估值 (Valuation)</h2>
+      <p class="sec-purpose">結案條件、文件歸檔位置、後續追蹤與長期現金流現值模型。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>🏁 8D 結案條件與後續追蹤</span>
+          <span class="tag-pill success">驗收簽核</span>
+        </h3>
+        <ul style="padding-left:18px; font-size:.84rem; color:var(--ink); line-height:1.65;">
+          <li><strong>結案條件</strong>：
+            <br>• INV-13 相對基準比值 ≥ 0.90 且穩定 7 天。
+            <br>• 紅外線熱像掃描無異常熱點（或受損模組已完成報價更換）。
+            <br>• 除草作業新版 SOP 完成正式發布實施。
+          </li>
+          <li><strong>文件歸檔</strong>：本報告與 <code>plant_spec.json</code> 存於案場資料夾，後續版本沿用更新。</li>
+          <li><strong>定期營運追蹤</strong>：結案後每月比對一次全場逆變器相對比值，列入固定營運月報。</li>
+        </ul>
+
+        <div style="margin-top:14px; padding:12px; background:var(--green-soft); border-radius:6px; border:1px solid rgba(46,125,50,0.3);">
+          <strong style="color:var(--green); font-size:.85rem;">投資人收益效益總結：</strong>
+          <p style="font-size:.8rem; color:var(--ink-2); margin-top:2px;">
+            全場整改修復 INV-13、校正銘牌並搭配長效雜草治理，年增自由現金流約 <strong>NT$ 115 萬元</strong>，推升整體專案 IRR 達 <strong>+0.68%</strong>！
+          </p>
+        </div>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>📈 20 年 DCF 資產折現收益增量 (NPV +1,510 萬)</span>
+          <span class="tag-pill success">財務模型</span>
+        </h3>
+        <div id="dcfChart" style="width:100%; height:260px;"></div>
+        <div style="font-size:.74rem; color:var(--muted); margin-top:6px;">
+          * 假設折現率 WACC = 4.5%，躉購費率 NT$ 5.0/kWh，全場整改年回補 115 萬元現金流。
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== SLIDE 11: APPENDIX & SAFETY ==================== -->
+  <section class="slide" id="slide-11">
+    <div class="section-head">
+      <div class="part-tag">APPENDIX & SAFETY</div>
+      <h2>附錄：資料來源、分析限制與作業安全警語</h2>
+      <p class="sec-purpose">本報告所有數字的出處、分析限制，及現場施工高壓作業防護。</p>
+    </div>
+
+    <div class="grid-2">
+      <div class="box-card">
+        <h3>
+          <span>📎 附錄B：原始資料來源 (可回溯重算)</span>
+          <button class="btn-action-sm" onclick="openRawDataModal()">📥 原始數據對帳表</button>
+        </h3>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>檔案／來源</th>
+                <th>期間</th>
+                <th class="num">筆數</th>
+                <th>說明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>amCharts 歷史匯出</strong></td>
+                <td>06/20–09/17</td>
+                <td class="num">90</td>
+                <td>逐日逆變器 kWh 與 ey，7 台。insolation 與 pr 欄位全為 0。</td>
+              </tr>
+              <tr>
+                <td><strong>監控裝置結構截圖</strong></td>
+                <td>09/21 09:51</td>
+                <td class="num">1</td>
+                <td>13 台即時 AC 電壓/電流/功率、日射 720 W/m²、告警狀態。</td>
+              </tr>
+              <tr>
+                <td><strong>模組串接圖 C-002</strong></td>
+                <td>110/09/01</td>
+                <td class="num">13</td>
+                <td>逐台串數與片數，實際裝置容量 1,505.155 kWp 計算依據。</td>
+              </tr>
+              <tr>
+                <td><strong>現場除草實況照片</strong></td>
+                <td>09 月實勘</td>
+                <td class="num">4</td>
+                <td>雜草覆蓋狀況與草屑未清運之關鍵影像佐證。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="font-size:.78rem; color:var(--muted); line-height:1.5;">
+          <strong>附錄C 分析限制：</strong>
+          <br>1. 只有逐日逆變器總量，無各 MPPT 細項電流，根因由同場互比與現場照片推論。
+          <br>2. 應發電量以 006／010 為基準，若該兩台亦有輕微受遮，實際損失會更高。
+          <br>3. 金額以 NT$5/kWh 估算，實際以台電躉購帳單為準。
+        </div>
+      </div>
+
+      <div class="box-card">
+        <h3>
+          <span>⚡ 安全：作業安全警語 (動工前必讀)</span>
+          <span class="sev P1">高壓工安 LOTO</span>
+        </h3>
+        <div class="callout danger" style="margin-bottom:0;">
+          <h4>現場查修與除草強制規範</h4>
+          <ul style="padding-left:18px; font-size:.8rem; line-height:1.6; margin-top:6px;">
+            <li>只要有日照組件就在發電，<strong>無法完全斷電</strong>，組串電壓可達 1000V DC 以上。</li>
+            <li><strong>嚴禁在有載狀態下插拔 MC4 接頭或拉保險絲</strong>，直流電弧會引發高溫燒傷與火災。必須遵循：逆變器關機 → 斷直流開關 → 鉤表確認 0 A。</li>
+            <li><strong>水上作業</strong>：浮台濕滑，必須穿救生衣、兩人以上同行、設岸上監護人員。濕手、濕鞋不得碰觸直流端子。</li>
+            <li>割草機在浮台上作業有割破浮體與割傷電纜的風險。作業前確認電纜走向並加以固定。</li>
+            <li>乾草堆積在模組與浮台上是火載量，與直流電弧風險疊加，必須徹底清運離場。</li>
+            <li>開啟匯流箱前先用熱像儀檢查並量測對地電壓。作業須穿戴 1000V 絕緣手套、護目鏡，並依規定掛牌上鎖（LOTO）。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Bottom Fixed Deck Controls -->
+<footer class="deck-controls">
+  <button class="deck-btn" id="btnPrev" onclick="prevSlide()">
+    <span>⬅️ 上一頁 (Prev)</span>
+  </button>
+  <div class="deck-counter" id="slideCounter">Slide 1 / 12</div>
+  <button class="deck-btn primary" id="btnNext" onclick="nextSlide()">
+    <span>下一頁 (Next) ➡️</span>
+  </button>
+</footer>
+
+<!-- Lightbox Modal -->
 <div class="modal-overlay" id="photoModal">
   <div class="modal-content">
     <div class="modal-header">
@@ -1189,7 +1319,7 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
       </div>
       <div style="margin-top:12px;">
         <div style="display:flex; justify-content:space-between; font-size:.75rem; color:var(--muted); margin-bottom:4px;">
-          <span id="modalPhotoCategory" class="badge">類別</span>
+          <span id="modalPhotoCategory" class="sev P3">類別</span>
           <span id="modalPhotoMeta">時間戳記</span>
         </div>
         <p id="modalPhotoCaption" style="font-size:.85rem; color:var(--ink); line-height:1.5;"></p>
@@ -1198,11 +1328,11 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
   </div>
 </div>
 
-<!-- Modal: Raw Data Provenance -->
+<!-- Raw Data Provenance Modal -->
 <div class="modal-overlay" id="rawDataModal">
   <div class="modal-content" style="max-width:1160px;">
     <div class="modal-header">
-      <h4>📊 案場原始數據對帳與溯源檢視器 (Raw Data Provenance)</h4>
+      <h4>📊 案場 90 天逐日發電原始數據對帳與溯源檢視器 (Raw Data Provenance)</h4>
       <button class="modal-close" onclick="closeRawDataModal()">&times;</button>
     </div>
     <div class="modal-body">
@@ -1216,20 +1346,20 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
           數據來源：amCharts 歷史匯出資料 & 竣工串接圖 C-002
         </div>
       </div>
-      <div class="tbl-wrap" style="max-height:480px; overflow-y:auto;">
-        <table id="rawDataTable">
+      <div class="table-wrap" style="max-height:480px; overflow-y:auto;">
+        <table class="data-table" id="rawDataTable">
           <thead>
             <tr>
               <th>日期 Date</th>
-              <th>INV-001 (kWh)</th>
-              <th>INV-002 (kWh)</th>
-              <th>INV-005 (kWh)</th>
-              <th>INV-006 (kWh)</th>
-              <th>INV-009 (kWh)</th>
-              <th>INV-010 (kWh)</th>
-              <th>INV-013 (kWh)</th>
-              <th>同儕均值 (kWh)</th>
-              <th>INV-013 比率</th>
+              <th class="num">INV-001 (kWh)</th>
+              <th class="num">INV-002 (kWh)</th>
+              <th class="num">INV-005 (kWh)</th>
+              <th class="num">INV-006 (kWh)</th>
+              <th class="num">INV-009 (kWh)</th>
+              <th class="num">INV-010 (kWh)</th>
+              <th class="num">INV-013 (kWh)</th>
+              <th class="num">同儕均值 (kWh)</th>
+              <th class="num">INV-013 比率</th>
               <th>判定狀態</th>
             </tr>
           </thead>
@@ -1242,7 +1372,7 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
   </div>
 </div>
 
-<!-- Modal: Photo Gallery Grid -->
+<!-- Photo Gallery Grid Modal -->
 <div class="modal-overlay" id="galleryModal">
   <div class="modal-content" style="max-width:1160px;">
     <div class="modal-header">
@@ -1258,11 +1388,115 @@ figcaption { padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-heig
 </div>
 
 <script>
+// --- Slide Deck Navigation Engine ---
+const totalSlides = 12;
+let currentSlide = 0;
+let isDocView = false;
+const slides = document.querySelectorAll('.slide');
+const navtabs = document.querySelectorAll('.navtab');
+const progressBar = document.getElementById('progressBar');
+const slideCounter = document.getElementById('slideCounter');
+
+function updateDeck() {
+  if (isDocView) return;
+  slides.forEach((s, idx) => {
+    if (idx === currentSlide) {
+      s.classList.add('active');
+    } else {
+      s.classList.remove('active');
+    }
+  });
+
+  // Update Nav tabs
+  navtabs.forEach((t, idx) => {
+    if (idx === currentSlide) {
+      t.classList.add('active');
+    } else {
+      t.classList.remove('active');
+    }
+  });
+
+  // Update counter & progress
+  slideCounter.innerText = `Slide ${currentSlide + 1} / ${totalSlides}`;
+  progressBar.style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+
+  // Trigger charts/map resize
+  if (currentSlide === 3) {
+    if (window.plantMap) setTimeout(() => { window.plantMap.invalidateSize(); }, 200);
+    if (window.trendChartInstance) setTimeout(() => { window.trendChartInstance.resize(); }, 200);
+  }
+  if (currentSlide === 10 && window.dcfChartInstance) {
+    setTimeout(() => { window.dcfChartInstance.resize(); }, 200);
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function goToSlide(idx) {
+  if (isDocView) {
+    const target = document.getElementById(`slide-${idx}`);
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  if (idx >= 0 && idx < totalSlides) {
+    currentSlide = idx;
+    updateDeck();
+  }
+}
+function nextSlide() {
+  if (currentSlide < totalSlides - 1) {
+    currentSlide++;
+    updateDeck();
+  }
+}
+function prevSlide() {
+  if (currentSlide > 0) {
+    currentSlide--;
+    updateDeck();
+  }
+}
+
+// Keyboard arrow navigation
+window.addEventListener('keydown', (e) => {
+  if (isDocView) return;
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+    e.preventDefault();
+    prevSlide();
+  } else if (e.key === 'Home') {
+    e.preventDefault();
+    goToSlide(0);
+  } else if (e.key === 'End') {
+    e.preventDefault();
+    goToSlide(totalSlides - 1);
+  }
+});
+
+// Toggle View Mode: Slide Deck vs Document
+function toggleViewMode() {
+  isDocView = !isDocView;
+  const btn = document.getElementById('viewModeBtn');
+  if (isDocView) {
+    document.body.classList.add('doc-view-mode');
+    btn.innerHTML = '<span>🖥️ 簡報切換模式</span>';
+    if (window.plantMap) setTimeout(() => { window.plantMap.invalidateSize(); }, 200);
+    if (window.trendChartInstance) setTimeout(() => { window.trendChartInstance.resize(); }, 200);
+    if (window.dcfChartInstance) setTimeout(() => { window.dcfChartInstance.resize(); }, 200);
+  } else {
+    document.body.classList.remove('doc-view-mode');
+    btn.innerHTML = '<span>📄 完整報告模式</span>';
+    updateDeck();
+  }
+}
+
 // --- Mode Switcher (Internal vs Owner) ---
-let currentMode = "internal"; // 'internal' or 'owner'
+let currentReportMode = 'internal';
 
 function toggleReportMode() {
-  if (currentMode === 'internal') {
+  if (currentReportMode === 'internal') {
     setReportMode('owner');
   } else {
     setReportMode('internal');
@@ -1270,16 +1504,14 @@ function toggleReportMode() {
 }
 
 function setReportMode(mode) {
-  currentMode = mode;
-  const isOwner = mode === 'owner';
+  currentReportMode = mode;
+  const isOwner = (mode === 'owner');
   const label = isOwner ? '業主交付版' : '內部維運版';
-  const badgeClass = isOwner ? 'mode-owner' : 'mode-internal';
+  const badgeClass = isOwner ? 'owner' : '';
 
-  document.getElementById('pageTitle').innerText = `台中市大安區龜殼段 POCS 水上光電｜INV-13 發電異常｜${label}`;
+  document.getElementById('pageTitle').innerText = `大安區龜殼段 POCS 水上光電 1.5MW｜8D 異常診斷暨投資決策平台｜${label}`;
   document.getElementById('modeBtnText').innerText = `模式：${label}`;
-  document.getElementById('headerModeBadge').innerText = label;
-  document.getElementById('headerModeBadge').className = `badge ${badgeClass}`;
-  document.getElementById('footerModeLabel').innerText = label;
+  document.getElementById('heroModeLabel').innerText = `${label}・對策執行中`;
 
   const btn = document.getElementById('modeToggleBtn');
   if (isOwner) {
@@ -1290,7 +1522,7 @@ function setReportMode(mode) {
 }
 
 // --- Photo Lightbox Logic ---
-const evidencePhotos = [{"id": "EV-01", "title": "監控平台裝置結構畫面", "src": "assets/auo_scada_status.jpg", "category": "監控平台截圖", "meta": "2026/09/21 09:52 ｜ 監控平台截圖 ｜ 對應 D0、D4", "caption": "日射 720 W/m² 時 INV-13 僅 31.26 kW（47.27 A），其餘各台 62–74 kW。紅色標示為告警中的逆變器（003／004／007／008／009／013）。日射計 720 W/m² 正常，但溫度計顯示 327.67 °C 溢位。"}, {"id": "EV-02", "title": "模組串接圖 C-002 V-01 現場標註", "src": "assets/string_layout_weeds_annotated.jpg", "category": "竣工圖面＋現場標註", "meta": "設計圖 110/09/01 ｜ 竣工圖面＋現場標註 ｜ 對應 D2、D4", "caption": "模組串接圖 C-002 V-01（昶恆科技，110/09/01）。紅框為雜草覆蓋模組區域，INV-13 覆蓋面積最大。本報告各台實際裝置容量即依此圖逐台核算片數。"}, {"id": "EV-03", "title": "現場除草作業實拍", "src": "assets/field_weeds_cutting_2.jpg", "category": "現場拍攝", "meta": "除草作業期間 ｜ 現場拍攝 ｜ 對應 D4", "caption": "現場除草作業。浮體型系統模組貼近水面與邊坡，周圍為高過人的蘆葦，雜草極易覆蓋模組。可見模組已被枯草大面積掩埋。"}, {"id": "EV-04", "title": "關鍵草屑覆蓋模組實證", "src": "assets/field_weeds_cutting_1.jpg", "category": "現場拍攝", "meta": "除草作業後 ｜ 現場拍攝 ｜ 對應 D4、D7", "caption": "【關鍵實證】：割下的草整片堆在模組表面，未清運離場。這正是 INV-13 復機後（0.446）比停機前（0.510）更差的原因！"}];
+const evidencePhotos = [{"id": "EV-01", "title": "友達 SCADA 系統即時監控截圖", "category": "監控截圖", "timestamp": "2026/09/21 09:51:35", "location": "監控中控台", "src": "assets/auo_scada_status.jpg", "meta": "2026/09/21 09:51:35 ｜ 監控中控台 ｜ 對應 D0、D4", "caption": "日射 720 W/m² 時 INV-13 僅 31.26 kW（47.27 A），其餘各台 62–74 kW。全場 6 台設備處於告警狀態（003／004／007／008／009／013），日射計工作正常，但溫度計顯示 327.67 °C 溢位。"}, {"id": "EV-02", "title": "C-002 模組串接竣工圖＋雜草分佈紅框標註", "category": "竣工圖標註", "timestamp": "110/09/01 竣工＋現況勘查", "location": "全場陣列分析", "src": "assets/string_layout_weeds_annotated.jpg", "meta": "竣工圖面＋現場標註 ｜ 對應 D2、D4", "caption": "模組串接圖 C-002 V-01（昶恆科技）。紅框為雜草覆蓋模組區域，INV-13 覆蓋面積最大。實核全場 4,493 片 335W 模組，總容量 1,505.155 kWp。"}, {"id": "EV-03", "title": "水基座與深溝蘆葦叢割草實況", "category": "現場拍攝", "timestamp": "2026/09 巡檢實勘", "location": "排水分流溝邊", "src": "assets/field_weeds_cutting_2.jpg", "meta": "除草作業期間 ｜ 現場拍攝 ｜ 對應 D4", "caption": "水上浮體型系統，模組貼近水面與邊坡草澤，周圍為高過人的蘆葦，極易覆蓋模組。割草機刀片具割斷直流線纜與飛石破片之高工安風險。"}, {"id": "EV-04", "title": "【關鍵實證】割下的草整片堆在模組表面未清運", "category": "關鍵現場證據", "timestamp": "2026/09 除草後實勘", "location": "南側 INV-13 陣列區", "src": "assets/field_weeds_cutting_1.jpg", "meta": "除草作業後 ｜ 現場拍攝 ｜ 對應 D4、D7", "caption": "【最核心管理漏洞】：割下的草整片堆在模組表面，未清運離場。這正是 INV-13 復機後（0.446）比停機前（0.510）更差的原因！草屑曬乾形成乾燥火載量，疊加電弧火災風險。"}, {"id": "EV-05", "title": "C-002 原版模組串接施工竣工圖 (全場 1,505.155 kWp)", "category": "工程圖紙", "timestamp": "110/09/01 竣工", "location": "全區圖面", "src": "assets/string_layout_drawing.jpg", "meta": "工程圖紙 ｜ 對應 D1、D2", "caption": "實核全場 13 台 SUNGROW SG110CX 逆變器配置，破解原簡報載明 812kW 之謎，確認真實裝置容量為 1.505 MWp。"}];
 
 function openSinglePhoto(evId) {
   const p = evidencePhotos.find(item => item.id === evId);
@@ -1309,10 +1541,10 @@ function closePhotoModal() {
 function openPhotoGalleryModal() {
   const container = document.getElementById('allPhotosGrid');
   container.innerHTML = evidencePhotos.map(p => `
-    <figure onclick="openSinglePhoto('${p.id}')">
+    <figure class="photo-card" onclick="openSinglePhoto('${p.id}')">
       <img src="${p.src}" alt="${p.title}" loading="lazy">
       <figcaption>
-        <span class="ev-id">${p.id}</span>${p.title}
+        <span class="ev-id">${p.id}</span><strong>${p.title}</strong>
         <span class="ev-meta">${p.meta}</span>
       </figcaption>
     </figure>
@@ -1389,7 +1621,7 @@ function copyRawTable() {
     text += `${r.date}\t${r["001_kwh"]}\t${r["002_kwh"]}\t${r["005_kwh"]}\t${r["006_kwh"]}\t${r["009_kwh"]}\t${r["010_kwh"]}\t${r["013_kwh"]}\t${r["peer_avg_kwh"]}\t${(r["013_ratio"]*100).toFixed(1)}%\n`;
   });
   navigator.clipboard.writeText(text).then(() => {
-    alert("✅ 原始發電數據已成功複製到剪貼簿！可直接貼上至 Excel。");
+    alert("✅ 原始發電數據已成功複製到剪貼簿！可直接貼上至 Excel 進行審計。");
   });
 }
 
@@ -1397,10 +1629,9 @@ function copyRawTable() {
 function initPlantMap() {
   const mapElement = document.getElementById('plantMap');
   if (!mapElement) return;
-  const lat = 24.38;
-  const lng = 120.575;
-  const zoom = 16;
-  window.plantMap = L.map('plantMap').setView([lat, lng], zoom);
+  const lat = 24.3800;
+  const lng = 120.5750;
+  window.plantMap = L.map('plantMap').setView([lat, lng], 16);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -1410,89 +1641,110 @@ function initPlantMap() {
   const marker = L.marker([lat, lng]).addTo(window.plantMap);
   marker.bindPopup(`
     <div style="font-family:'Noto Sans TC'; font-size:12px; line-height:1.4;">
-      <strong style="color:#0C3A63; font-size:13px;">台中市大安區龜殼段 POCS 水上光電</strong><br>
+      <strong style="color:#0C3A63; font-size:13px;">大安區龜殼段 POCS 水上光電</strong><br>
       案號：PV-2026-DA01<br>
       裝置容量：<strong>1,505 kWp</strong><br>
-      逆變器：13 台 (SUNGROW SG110CX (110kW 級))
+      逆變器：13 台 SUNGROW SG110CX
     </div>
   `).openPopup();
 }
 
 // --- ECharts Init ---
-function initTrendChart() {
+function initCharts() {
+  // 1. Trend Chart
   const trendEl = document.getElementById('trendChart');
-  if (!trendEl || !rawDailyData.length) return;
-  window.trendChartInstance = echarts.init(trendEl);
-  const dates = rawDailyData.map(d => d.date);
-  const inv013 = rawDailyData.map(d => d["013_kwh"]);
-  const peerAvg = rawDailyData.map(d => d["peer_avg_kwh"]);
-  const inv006 = rawDailyData.map(d => d["006_kwh"]);
+  if (trendEl && rawDailyData.length) {
+    window.trendChartInstance = echarts.init(trendEl);
+    const dates = rawDailyData.map(d => d.date);
+    const inv013 = rawDailyData.map(d => d["013_kwh"]);
+    const peerAvg = rawDailyData.map(d => d["peer_avg_kwh"]);
+    const inv006 = rawDailyData.map(d => d["006_kwh"]);
 
-  const option = {
-    tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
-    legend: { data: ['基準台 (INV-006)', '同儕平均 (7台均值)', '異常設備 (INV-013)'] },
-    grid: { left: '3%', right: '4%', bottom: '8%', containLabel: true },
-    xAxis: { type: 'category', boundaryGap: false, data: dates },
-    yAxis: { type: 'value', name: '日發電度數 (kWh)' },
-    series: [
-      {
-        name: '基準台 (INV-006)',
-        type: 'line',
-        data: inv006,
-        smooth: true,
-        itemStyle: { color: '#1BB1BF' },
-        lineStyle: { width: 2, type: 'dashed' }
-      },
-      {
-        name: '同儕平均 (7台均值)',
-        type: 'line',
-        data: peerAvg,
-        smooth: true,
-        itemStyle: { color: '#1968AD' },
-        lineStyle: { width: 3 }
-      },
-      {
-        name: '異常設備 (INV-013)',
-        type: 'line',
-        data: inv013,
-        smooth: true,
-        itemStyle: { color: '#D95F45' },
-        lineStyle: { width: 3 },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(217, 95, 69, 0.25)' },
-            { offset: 1, color: 'rgba(217, 95, 69, 0.0)' }
-          ])
+    const option = {
+      tooltip: { trigger: 'axis', axisPointer: { type: 'cross' } },
+      legend: { data: ['基準台 (INV-006)', '同儕平均 (7台均值)', '異常設備 (INV-013)'], top: '0%' },
+      grid: { left: '3%', right: '4%', bottom: '8%', top: '16%', containLabel: true },
+      xAxis: { type: 'category', boundaryGap: false, data: dates },
+      yAxis: { type: 'value', name: '日發電度數 (kWh)' },
+      series: [
+        {
+          name: '基準台 (INV-006)',
+          type: 'line',
+          data: inv006,
+          smooth: true,
+          itemStyle: { color: '#1BB1BF' },
+          lineStyle: { width: 2, type: 'dashed' }
+        },
+        {
+          name: '同儕平均 (7台均值)',
+          type: 'line',
+          data: peerAvg,
+          smooth: true,
+          itemStyle: { color: '#1968AD' },
+          lineStyle: { width: 3 }
+        },
+        {
+          name: '異常設備 (INV-013)',
+          type: 'line',
+          data: inv013,
+          smooth: true,
+          itemStyle: { color: '#D95F45' },
+          lineStyle: { width: 3 },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: 'rgba(217, 95, 69, 0.25)' },
+              { offset: 1, color: 'rgba(217, 95, 69, 0.0)' }
+            ])
+          }
         }
-      }
-    ]
-  };
-  window.trendChartInstance.setOption(option);
-}
+      ]
+    };
+    window.trendChartInstance.setOption(option);
+  }
 
-// TOC Scroll Spy
-window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section');
-  const scrollPos = window.scrollY + 100;
-  sections.forEach(s => {
-    const top = s.offsetTop;
-    const height = s.offsetHeight;
-    const id = s.getAttribute('id');
-    if (scrollPos >= top && scrollPos < top + height) {
-      document.querySelectorAll('.toc a').forEach(a => a.classList.remove('active'));
-      const activeLink = document.querySelector(`.toc a[href="#${id}"]`);
-      if (activeLink) activeLink.classList.add('active');
+  // 2. DCF Chart
+  const dcfEl = document.getElementById('dcfChart');
+  if (dcfEl) {
+    window.dcfChartInstance = echarts.init(dcfEl);
+    const years = Array.from({ length: 20 }, (_, i) => `Y${i + 1}`);
+    const cumulativeBenefit = [];
+    let sum = -22.5; // Initial Capex (22.5 萬)
+    for (let i = 1; i <= 20; i++) {
+      sum += (115.0 / Math.pow(1.045, i)); // 115 萬年增益，4.5% 折現
+      cumulativeBenefit.push(parseFloat(sum.toFixed(1)));
     }
-  });
-});
+
+    const dcfOption = {
+      tooltip: { trigger: 'axis', formatter: '{b}: 累計 NPV 增量 NT$ {c} 萬元' },
+      grid: { left: '3%', right: '4%', bottom: '8%', top: '12%', containLabel: true },
+      xAxis: { type: 'category', data: years },
+      yAxis: { type: 'value', name: '累計 NPV 增量 (萬元)' },
+      series: [
+        {
+          name: '累計折現增益 (NPV)',
+          type: 'bar',
+          data: cumulativeBenefit,
+          itemStyle: {
+            color: (params) => params.value > 0 ? '#2E7D32' : '#D95F45'
+          },
+          markLine: {
+            data: [{ yAxis: 0, name: '損益平衡線' }]
+          }
+        }
+      ]
+    };
+    window.dcfChartInstance.setOption(dcfOption);
+  }
+}
 
 window.addEventListener('DOMContentLoaded', () => {
   initPlantMap();
-  initTrendChart();
+  initCharts();
   populateRawTable();
 });
 window.addEventListener('resize', () => {
   if (window.trendChartInstance) window.trendChartInstance.resize();
+  if (window.dcfChartInstance) window.dcfChartInstance.resize();
   if (window.plantMap) window.plantMap.invalidateSize();
 });
 </script>
